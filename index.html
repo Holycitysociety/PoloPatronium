@@ -14,12 +14,13 @@
   <style>
     :root {
       --bg: #050505;
-      --bg-alt: #0d0d0d;
+      --bg-inner: #111111;
       --fg: #f5f5f5;
-      --muted: #aaaaaa;
+      --muted: #b5b5b5;
       --accent: #d9a85a; /* soft gold accent */
-      --border: #262626;
-      --radius: 10px;
+      --border: #3a3a3a;
+      --border-strong: #77716a;
+      --radius: 8px;
     }
 
     * {
@@ -28,10 +29,38 @@
 
     body {
       margin: 0;
-      background: radial-gradient(circle at top, #151515 0, #050505 55%);
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #202020 0, #050505 55%);
       color: var(--fg);
       font-family: "IM Fell English", Georgia, "Times New Roman", serif;
       line-height: 1.6;
+      display: flex;
+      justify-content: center;
+    }
+
+    .page {
+      max-width: 940px;
+      width: 100%;
+      margin: 24px 12px 32px;
+      padding: 24px 20px 40px;
+      background: var(--bg-inner);
+      border: 2px solid var(--border-strong);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+
+    /* Subtle inner frame like an old broadside */
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border: 1px solid rgba(150, 150, 150, 0.2);
+      pointer-events: none;
+    }
+
+    .content-inner {
+      position: relative;
+      z-index: 1;
     }
 
     a {
@@ -43,64 +72,77 @@
       text-decoration: underline;
     }
 
-    .page {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 32px 20px 64px;
+    /* Masthead / Newspaper title */
+    .masthead {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .masthead-title {
+      font-family: "IM Fell English SC", "IM Fell English", serif;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .masthead-rule {
+      margin: 6px auto 0;
+      width: 70%;
+      border-top: 2px solid var(--border-strong);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      height: 5px;
     }
 
     header {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
     }
 
-    header .brand-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      font-size: 0.85rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      font-family: "IM Fell English SC", "IM Fell English", serif;
+    .hero-poster {
+      padding: 24px 18px 26px;
+      margin-top: 14px;
+      border-radius: 0;
+      border: 2px solid var(--border-strong);
+      background: radial-gradient(circle at top, #222222 0, #111111 60%);
+      text-align: center;
+      position: relative;
     }
 
-    .logo-text {
-      font-weight: 400;
+    .hero-poster::before,
+    .hero-poster::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(0, 0, 0, 0.7);
+      inset: 6px;
+      pointer-events: none;
     }
 
-    .hero {
-      padding: 24px 20px 28px;
-      border-radius: var(--radius);
-      background: linear-gradient(135deg, #101010, #050505);
-      border: 1px solid var(--border);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.65);
+    .hero-poster::after {
+      border-color: rgba(255, 255, 255, 0.06);
+      inset: 9px;
     }
 
     .hero-title {
-      font-size: 2.4rem;
+      font-size: 2.3rem;
       margin: 0 0 4px;
       font-family: "IM Fell English SC", "IM Fell English", serif;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
     }
 
     .hero-subtitle {
-      font-size: 1.02rem;
+      font-size: 0.98rem;
       color: var(--muted);
-      margin-bottom: 20px;
+      margin-bottom: 14px;
     }
 
-    .hero-meta {
+    .hero-meta-row {
       display: flex;
+      justify-content: center;
       flex-wrap: wrap;
-      gap: 14px;
-      margin-bottom: 24px;
-      font-size: 0.86rem;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-size: 0.8rem;
       color: var(--muted);
     }
 
@@ -108,11 +150,11 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 10px;
+      padding: 4px 11px;
       border-radius: 999px;
       border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.02);
-      font-size: 0.75rem;
+      background: rgba(0, 0, 0, 0.55);
+      font-size: 0.76rem;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       font-family: "IM Fell English SC", "IM Fell English", serif;
@@ -129,8 +171,9 @@
     .hero-actions {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-bottom: 10px;
+      gap: 8px;
+      max-width: 420px;
+      margin: 0 auto 6px;
     }
 
     .btn {
@@ -138,17 +181,17 @@
       justify-content: center;
       align-items: center;
       gap: 8px;
-      padding: 12px 18px;
+      padding: 10px 18px;
       border-radius: 999px;
       border: 1px solid transparent;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 500;
       cursor: pointer;
       background: none;
       color: var(--fg);
       text-decoration: none;
-      font-family: "IM Fell English", Georgia, serif;
-      letter-spacing: 0.04em;
+      font-family: "IM Fell English SC", "IM Fell English", serif;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
     }
 
@@ -164,97 +207,107 @@
 
     .btn-secondary {
       border-color: var(--border);
-      background: rgba(255, 255, 255, 0.02);
+      background: rgba(0, 0, 0, 0.7);
     }
 
     .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.04);
     }
 
     .btn-outline {
       border-color: var(--border);
       background: transparent;
       color: var(--muted);
-      font-size: 0.86rem;
+      font-size: 0.82rem;
     }
 
     .hero-note {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--muted);
       margin-top: 6px;
     }
 
+    /* Newspaper-style section layout */
     main {
-      margin-top: 36px;
+      margin-top: 26px;
     }
 
-    section {
-      margin-bottom: 32px;
-      padding: 20px 18px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background: rgba(0, 0, 0, 0.5);
+    .section-block {
+      margin-bottom: 26px;
+      padding: 14px 12px 18px;
+      border-top: 2px solid var(--border-strong);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .section-heading-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
     }
 
     section h2 {
-      margin-top: 0;
-      margin-bottom: 8px;
-      font-size: 1.3rem;
+      margin: 0;
+      font-size: 1.12rem;
       font-family: "IM Fell English SC", "IM Fell English", serif;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
     }
 
     section h3 {
-      margin-bottom: 6px;
-      font-size: 1.03rem;
+      margin: 0 0 4px;
+      font-size: 0.98rem;
       font-family: "IM Fell English SC", "IM Fell English", serif;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .section-kicker {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: "IM Fell English SC", "IM Fell English", serif;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
     }
 
     .muted {
       color: var(--muted);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
     }
 
     .grid-2 {
       display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 18px;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 9px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-      font-family: "IM Fell English SC", "IM Fell English", serif;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 16px;
     }
 
     ul {
       padding-left: 18px;
       margin-top: 6px;
+      margin-bottom: 0;
+    }
+
+    .roles-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 16px;
     }
 
     footer {
-      margin-top: 40px;
-      padding-top: 18px;
-      border-top: 1px solid var(--border);
-      font-size: 0.85rem;
+      margin-top: 30px;
+      padding-top: 10px;
+      border-top: 2px solid var(--border-strong);
+      font-size: 0.8rem;
       color: var(--muted);
     }
 
     footer .footer-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px 20px;
+      gap: 8px 16px;
       justify-content: space-between;
       align-items: center;
     }
@@ -262,227 +315,273 @@
     footer nav {
       display: flex;
       flex-wrap: wrap;
-      gap: 14px;
+      gap: 12px;
       font-family: "IM Fell English SC", "IM Fell English", serif;
-      letter-spacing: 0.09em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
     }
 
     @media (max-width: 720px) {
-      .hero-title {
-        font-size: 2rem;
+      .page {
+        margin: 20px 8px 28px;
+        padding: 20px 14px 32px;
       }
-      .grid-2 {
+      .hero-title {
+        font-size: 1.9rem;
+      }
+      .grid-2,
+      .roles-grid {
         grid-template-columns: 1fr;
       }
-      .page {
-        padding: 24px 16px 48px;
+      .hero-actions {
+        max-width: 100%;
       }
     }
   </style>
 </head>
 <body>
   <div class="page">
-    <header>
-      <div class="brand-row">
-        <div class="logo-text">
+    <div class="content-inner">
+      <div class="masthead">
+        <div class="masthead-title">
           UNITED STATES POLO PATRONS ASSOCIATION
         </div>
-        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-          <span class="pill">string + 777 brand remuda</span>
-        </div>
+        <div class="masthead-rule"></div>
       </div>
 
-      <div class="hero">
-        <h1 class="hero-title">Polo Patronium (PATRON)</h1>
-        <div class="hero-subtitle">
-          Stewardship token and participation seal of the US Polo Patrons Association, supporting
-          Cowboy Polo, the <span style="white-space:nowrap;">string&nbsp;777</span> remuda, and local chapters.
-        </div>
-
-        <div class="hero-meta">
-          <span class="badge">
-            <span class="base-badge-placeholder"></span>
-            Built on Base
-          </span>
-          <span class="badge">On-chain stewardship model</span>
-          <span class="badge">Founding Patrons prelaunch</span>
-        </div>
-
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#buy" id="btn-buy-fiat">
-            Buy PATRON (Fiat via Thirdweb)
-          </a>
-          <a class="btn btn-secondary" href="#buy" id="btn-buy-crypto">
-            Buy PATRON (Crypto on Base)
-          </a>
-          <a class="btn btn-outline" href="#founding-patrons">
-            Apply to be a Founding Patron
-          </a>
-        </div>
-
-        <div class="hero-note">
-          Prelaunch: this page is for early stewards, chapter founders, and Cowboy Polo supporters.
-          All language is stewardship- and utility-focused, not an investment promise.
-        </div>
-      </div>
-    </header>
-
-    <main>
-      <section id="announcement">
-        <h2>Announcement & Origin</h2>
-        <p class="muted">
-          This section is for the short announcement from USPolopatrons.org that explains what the
-          USPPA is, how Polo Patronium fits in, and why the token exists as a stewardship tool.
-        </p>
-        <p>
-          Polo Patronium (PATRON) is issued as a living token of support and tradition within the
-          United States Polo Patrons Association. It is designed to coordinate tribute, rewards, and
-          recognition across chapters, horses, hosts, and patrons in the Cowboy Polo ecosystem.
-        </p>
-      </section>
-
-      <section id="patronium-model">
-        <div class="grid-2">
-          <div>
-            <h2>Patronium Model</h2>
-            <p class="muted">
-              This section summarizes the overall model you described: stewardship-based rewards,
-              tribute allocation, and claim-based distribution rather than staking or yield framing.
-            </p>
-            <p>
-              Polo Patronium operates as a stewardship-based coordination tool rather than a
-              speculative product. Rewards, when granted, are discretionary acknowledgments of
-              contribution across the Cowboy Polo ecosystem&mdash;not guaranteed returns.
-            </p>
+      <header>
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+          <div style="font-size:0.8rem; color:var(--muted); font-family:'IM Fell English SC','IM Fell English',serif; text-transform:uppercase; letter-spacing:0.14em;">
+            Polo Patronium &mdash; Official Stewardship Token
           </div>
-          <div>
-            <h3>At a Glance</h3>
-            <ul>
-              <li>Utility token for tracking stewardship and participation</li>
-              <li>Tribute flows across chapters, hosts, and the national association</li>
-              <li>No staking contracts, no yield promises, claim-based rewards only</li>
-              <li>Supports horses, arenas, riders, and Cowboy Polo events</li>
-            </ul>
+          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+            <span class="badge">string + 777 brand remuda</span>
           </div>
         </div>
-      </section>
 
-      <section id="stewardship">
-        <h2>Stewardship-Based Rewards</h2>
-        <p class="muted">
-          Translate your <em>Stewardship-Based Rewards</em> section here: how rewards may be allocated
-          manually, off-chain or on-chain, based on discernment and contribution rather than
-          automated yield.
-        </p>
-        <ul>
-          <li>Rewards are discretionary acknowledgments of service and support.</li>
-          <li>No automatic APR, no “number go up” promises.</li>
-          <li>Focus is on noblesse oblige, not extraction.</li>
-          <li>Founding Patrons may receive additional recognition for early risk and support.</li>
-        </ul>
-      </section>
-
-      <section id="tribute">
-        <h2>Tribute Allocation Framework</h2>
-        <p class="muted">
-          Here is where your 51% / 24.5% / 24.5% logic and 49% Founding Patron boost in year one can
-          live, with full detail.
-        </p>
-        <ul>
-          <li>Portions of net tribute can be routed to: national pool, local steward, and chapter.</li>
-          <li>Founding Patrons may receive a defined share of tribute during an initial launch period.</li>
-          <li>Allocations can be adjusted by governance as the ecosystem matures.</li>
-        </ul>
-      </section>
-
-      <section id="claim-dont-stake">
-        <h2>Claim, Don’t Stake</h2>
-        <p class="muted">
-          This is where you explain why you are not using staking contracts, but rather
-          snapshot-based, claim-driven distributions.
-        </p>
-        <ul>
-          <li>No lockups, no staking contracts, no “yield farms.”</li>
-          <li>Snapshots may be taken periodically to see who held or supported what, and when.</li>
-          <li>When rewards are granted, they are claimed directly, not streamed from a staking pool.</li>
-        </ul>
-      </section>
-
-      <section id="chapters">
-        <h2>Chapter Pipeline & Local Stewards</h2>
-        <p class="muted">
-          Use this section to carry over your chapter pipeline / steward compensation model,
-          especially how tribute flows, how local hosts can be treated as “wage” or “share” stewards,
-          and how Cowboy Polo chapters come online.
-        </p>
-        <ul>
-          <li>Local stewards can choose wage-like compensation or share-like participation.</li>
-          <li>Chapters grow from clinics → tryouts → Cowboy Polo Circuit events.</li>
-          <li>Tribute and Patronium flows are transparent and chapter-aware.</li>
-        </ul>
-      </section>
-
-      <section id="founding-patrons">
-        <h2>Founding Patrons & Roles</h2>
-        <p class="muted">
-          Invite early supporters to apply for defined roles. This is mirrored by your application
-          form or future NFT / SBT membership.
-        </p>
-
-        <div class="grid-2">
-          <div>
-            <h3>Roles</h3>
-            <ul>
-              <li><strong>Patron</strong> &mdash; financially supports horses, riders, and arenas.</li>
-              <li><strong>Host (Arena / Barn)</strong> &mdash; provides facilities for Cowboy Polo.</li>
-              <li><strong>Rider</strong> &mdash; participates in clinics, tryouts, and the Circuit.</li>
-              <li><strong>Chapter Leader</strong> &mdash; helps organize local Cowboy Polo chapters.</li>
-            </ul>
+        <div class="hero-poster">
+          <h1 class="hero-title">Polo Patronium (PATRON)</h1>
+          <div class="hero-subtitle">
+            Stewardship token and participation seal of the US Polo Patrons Association, supporting
+            Cowboy Polo, the <span style="white-space:nowrap;">string&nbsp;777</span> remuda, and local chapters.
           </div>
-          <div>
-            <h3>Apply</h3>
-            <p class="muted">
-              For now, this can be a simple form submission that you handle manually. Later,
-              this could mint a non-transferable membership NFT or issue a chapter credential.
-            </p>
-            <a class="btn btn-secondary" href="YOUR_FOUNDING_PATRON_FORM_URL" target="_blank" rel="noopener">
+
+          <div class="hero-meta-row">
+            <span class="badge">
+              <span class="base-badge-placeholder"></span>
+              Built on Base
+            </span>
+            <span class="badge">On-chain stewardship model</span>
+            <span class="badge">Founding Patrons prelaunch</span>
+          </div>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#buy" id="btn-buy-fiat">
+              Buy PATRON (Fiat via Thirdweb)
+            </a>
+            <a class="btn btn-secondary" href="#buy" id="btn-buy-crypto">
+              Buy PATRON (Crypto on Base)
+            </a>
+            <a class="btn btn-outline" href="#founding-patrons">
               Apply to be a Founding Patron
             </a>
           </div>
-        </div>
-      </section>
 
-      <section id="buy">
-        <h2>Buy PATRON</h2>
-        <p class="muted">
-          This section is just an anchor for the buttons above and a place to explain how buying
-          works. Once Thirdweb and Base integration are set up, you can update the links.
-        </p>
-        <h3>Options</h3>
-        <ul>
-          <li><strong>Fiat via Thirdweb:</strong> Credit card, Apple Pay, Google Pay, bank.</li>
-          <li><strong>Crypto on Base:</strong> Swap from USDC, ETH, or other supported assets.</li>
-          <li><strong>Coinbase users:</strong> Easiest path is via Coinbase Wallet / Smart Wallet.</li>
-        </ul>
-      </section>
-    </main>
-
-    <footer>
-      <div class="footer-row">
-        <div>
-          &copy; <span id="year"></span> US Polo Patrons Association &mdash; Polo Patronium (PATRON).  
-          Built on Base. All stewardship language is descriptive only and not financial advice.
+          <div class="hero-note">
+            Prelaunch: this page is for early stewards, chapter founders, and Cowboy Polo supporters.
+            All language is stewardship- and utility-focused, not an investment promise.
+          </div>
         </div>
-        <nav>
-          <a href="#patronium-model">Model</a>
-          <a href="#tribute">Tribute</a>
-          <a href="#chapters">Chapters</a>
-          <a href="#founding-patrons">Founding Patrons</a>
-        </nav>
-      </div>
-    </footer>
+      </header>
+
+      <main>
+        <!-- ANNOUNCEMENT -->
+        <section id="announcement" class="section-block">
+          <div class="section-heading-row">
+            <h2>Announcement &amp; Origin</h2>
+            <div class="section-kicker">Official Notice</div>
+          </div>
+          <p class="muted">
+            This section is for the short announcement from USPolopatrons.org that explains what the
+            USPPA is, how Polo Patronium fits in, and why the token exists as a stewardship tool.
+          </p>
+          <p>
+            Polo Patronium (PATRON) is issued as a living token of support and tradition within the
+            United States Polo Patrons Association. It is designed to coordinate tribute, rewards, and
+            recognition across chapters, horses, hosts, and patrons in the Cowboy Polo ecosystem.
+          </p>
+        </section>
+
+        <!-- PATRONIUM MODEL -->
+        <section id="patronium-model" class="section-block">
+          <div class="section-heading-row">
+            <h2>Patronium Model</h2>
+            <div class="section-kicker">Stewardship Framework</div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <p class="muted">
+                This section summarizes the overall model you described: stewardship-based rewards,
+                tribute allocation, and claim-based distribution rather than staking or yield framing.
+              </p>
+              <p>
+                Polo Patronium operates as a stewardship-based coordination tool rather than a
+                speculative product. Rewards, when granted, are discretionary acknowledgments of
+                contribution across the Cowboy Polo ecosystem&mdash;not guaranteed returns.
+              </p>
+            </div>
+            <div>
+              <h3>At a Glance</h3>
+              <ul>
+                <li>Utility token for tracking stewardship and participation</li>
+                <li>Tribute flows across chapters, hosts, and the national association</li>
+                <li>No staking contracts, no yield promises, claim-based rewards only</li>
+                <li>Supports horses, arenas, riders, and Cowboy Polo events</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEWARDSHIP-BASED REWARDS -->
+        <section id="stewardship" class="section-block">
+          <div class="section-heading-row">
+            <h2>Stewardship-Based Rewards</h2>
+            <div class="section-kicker">Noblesse Oblige</div>
+          </div>
+          <p class="muted">
+            Translate your <em>Stewardship-Based Rewards</em> section here: how rewards may be allocated
+            manually, off-chain or on-chain, based on discernment and contribution rather than
+            automated yield.
+          </p>
+          <ul>
+            <li>Rewards are discretionary acknowledgments of service and support.</li>
+            <li>No automatic APR, no “number go up” promises.</li>
+            <li>Focus is on noblesse oblige, not extraction.</li>
+            <li>Founding Patrons may receive additional recognition for early risk and support.</li>
+          </ul>
+        </section>
+
+        <!-- TRIBUTE ALLOCATION -->
+        <section id="tribute" class="section-block">
+          <div class="section-heading-row">
+            <h2>Tribute Allocation Framework</h2>
+            <div class="section-kicker">Flow of Tribute</div>
+          </div>
+          <p class="muted">
+            Here is where your 51% / 24.5% / 24.5% logic and 49% Founding Patron boost in year one can
+            live, with full detail.
+          </p>
+          <ul>
+            <li>Portions of net tribute can be routed to: national pool, local steward, and chapter.</li>
+            <li>Founding Patrons may receive a defined share of tribute during an initial launch period.</li>
+            <li>Allocations can be adjusted by governance as the ecosystem matures.</li>
+          </ul>
+        </section>
+
+        <!-- CLAIM, DON'T STAKE -->
+        <section id="claim-dont-stake" class="section-block">
+          <div class="section-heading-row">
+            <h2>Claim, Don’t Stake</h2>
+            <div class="section-kicker">No Farms, No Lockups</div>
+          </div>
+          <p class="muted">
+            This is where you explain why you are not using staking contracts, but rather
+            snapshot-based, claim-driven distributions.
+          </p>
+          <ul>
+            <li>No lockups, no staking contracts, no “yield farms.”</li>
+            <li>Snapshots may be taken periodically to see who held or supported what, and when.</li>
+            <li>When rewards are granted, they are claimed directly, not streamed from a staking pool.</li>
+          </ul>
+        </section>
+
+        <!-- CHAPTER PIPELINE -->
+        <section id="chapters" class="section-block">
+          <div class="section-heading-row">
+            <h2>Chapter Pipeline &amp; Local Stewards</h2>
+            <div class="section-kicker">Cowboy Polo Circuit</div>
+          </div>
+          <p class="muted">
+            Use this section to carry over your chapter pipeline / steward compensation model,
+            especially how tribute flows, how local hosts can be treated as “wage” or “share” stewards,
+            and how Cowboy Polo chapters come online.
+          </p>
+          <ul>
+            <li>Local stewards can choose wage-like compensation or share-like participation.</li>
+            <li>Chapters grow from clinics → tryouts → Cowboy Polo Circuit events.</li>
+            <li>Tribute and Patronium flows are transparent and chapter-aware.</li>
+          </ul>
+        </section>
+
+        <!-- FOUNDING PATRONS -->
+        <section id="founding-patrons" class="section-block">
+          <div class="section-heading-row">
+            <h2>Founding Patrons &amp; Roles</h2>
+            <div class="section-kicker">Early Stewards</div>
+          </div>
+          <p class="muted">
+            Invite early supporters to apply for defined roles. This is mirrored by your application
+            form or future NFT / SBT membership.
+          </p>
+
+          <div class="roles-grid">
+            <div>
+              <h3>Roles</h3>
+              <ul>
+                <li><strong>Patron</strong> &mdash; financially supports horses, riders, and arenas.</li>
+                <li><strong>Host (Arena / Barn)</strong> &mdash; provides facilities for Cowboy Polo.</li>
+                <li><strong>Rider</strong> &mdash; participates in clinics, tryouts, and the Circuit.</li>
+                <li><strong>Chapter Leader</strong> &mdash; helps organize local Cowboy Polo chapters.</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Apply</h3>
+              <p class="muted">
+                For now, this can be a simple form submission that you handle manually. Later,
+                this could mint a non-transferable membership NFT or issue a chapter credential.
+              </p>
+              <a class="btn btn-secondary" href="YOUR_FOUNDING_PATRON_FORM_URL" target="_blank" rel="noopener">
+                Apply to be a Founding Patron
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- BUY SECTION -->
+        <section id="buy" class="section-block">
+          <div class="section-heading-row">
+            <h2>Buy PATRON</h2>
+            <div class="section-kicker">On Base by Coinbase</div>
+          </div>
+          <p class="muted">
+            This section is just an anchor for the buttons above and a place to explain how buying
+            works. Once Thirdweb and Base integration are set up, you can update the links.
+          </p>
+          <h3>Options</h3>
+          <ul>
+            <li><strong>Fiat via Thirdweb:</strong> Credit card, Apple Pay, Google Pay, bank.</li>
+            <li><strong>Crypto on Base:</strong> Swap from USDC, ETH, or other supported assets.</li>
+            <li><strong>Coinbase users:</strong> Easiest path is via Coinbase Wallet / Smart Wallet.</li>
+          </ul>
+        </section>
+      </main>
+
+      <footer>
+        <div class="footer-row">
+          <div>
+            &copy; <span id="year"></span> US Polo Patrons Association &mdash; Polo Patronium (PATRON).  
+            Built on Base. All stewardship language is descriptive only and not financial advice.
+          </div>
+          <nav>
+            <a href="#patronium-model">Model</a>
+            <a href="#tribute">Tribute</a>
+            <a href="#chapters">Chapters</a>
+            <a href="#founding-patrons">Founding</a>
+          </nav>
+        </div>
+      </footer>
+    </div>
   </div>
 
   <script>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Polo Patronium (PATRON) — Prelaunch</title>
+<script src="https://cdn.thirdweb.com/js@latest"></script>
+<style>
+  body {
+    background-color: #000;
+    color: #eee;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    padding: 0;
+  }
+  .container {
+    max-width: 720px;
+    margin: auto;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  h1 { font-size: 2.6rem; margin-bottom: 10px; }
+  h2 { font-size: 1.4rem; margin-bottom: 20px; color: #bbb; }
+  button {
+    width: 100%;
+    padding: 14px;
+    margin: 8px 0;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
+  .primary { background: #1a73e8; color: white; }
+  .secondary { background: #333; color: white; }
+  .tertiary { background: #111; color: #aaa; }
+  .footer {
+    margin-top: 50px;
+    font-size: 0.85rem;
+    color: #666;
+  }
+  .role-btn {
+    background: #111;
+    color: #eee;
+    margin-bottom: 10px;
+    border: 1px solid #333;
+  }
+  #modal-bg {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+  }
+  #modal {
+    background: #111;
+    padding: 30px;
+    max-width: 400px;
+    margin: 80px auto;
+    border-radius: 10px;
+    color: #ddd;
+  }
+  input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    background: #000;
+    border: 1px solid #333;
+    border-radius: 6px;
+    color: white;
+    margin-bottom: 12px;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Polo Patronium (PATRON)</h1>
+  <h2>Official Token of the U.S. Polo Patrons Association<br>Built on Base — by Coinbase</h2>
+
+  <!-- Connect Wallet -->
+  <thirdweb-connect walletconnect="coinbase" theme="dark">
+  </thirdweb-connect>
+
+  <!-- Buy Patron (Fiat) -->
+  <thirdweb-pay
+    contractAddress="YOUR_TOKEN_CONTRACT"
+    theme="dark"
+  ></thirdweb-pay>
+
+  <!-- Buy Patron (Crypto) -->
+  <button class="secondary" onclick="buyCrypto()">Buy PATRON with Crypto</button>
+
+  <script>
+    function buyCrypto() {
+      window.open("https://thirdweb.com/base/YOUR_TOKEN_CONTRACT/buy", "_blank");
+    }
+  </script>
+
+
+  <hr style="border-color:#222; margin:40px 0;">
+
+
+  <h2>Apply to Become a Founding Patron</h2>
+
+  <button class="role-btn" onclick="openModal()">Apply Now</button>
+
+  <div id="modal-bg" onclick="closeModal()">
+    <div id="modal" onclick="event.stopPropagation()">
+      <h2 style="text-align:center;">Founding Patron Application</h2>
+      
+      <input type="text" id="name" placeholder="Name" />
+      <input type="email" id="email" placeholder="Email" />
+      <select id="role">
+        <option value="" disabled selected>Select Role</option>
+        <option>Patron</option>
+        <option>Host (Arena/Barn)</option>
+        <option>Rider</option>
+        <option>Chapter Leader</option>
+      </select>
+      <textarea id="notes" placeholder="Tell us more..." rows="4"></textarea>
+
+      <button class="primary" onclick="submitForm()">Submit</button>
+      <button class="tertiary" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    function openModal() {
+      document.getElementById("modal-bg").style.display = "block";
+    }
+    function closeModal() {
+      document.getElementById("modal-bg").style.display = "none";
+    }
+    function submitForm() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const role = document.getElementById("role").value;
+      const notes = document.getElementById("notes").value;
+      
+      fetch("https://formspree.io/f/YOUR_FORMSPREE_ID", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ name, email, role, notes })
+      });
+
+      alert("Application Submitted");
+      closeModal();
+    }
+  </script>
+
+
+  <div class="footer">
+    US Polo Patrons Association • Cowboy Polo Circuit • 777 Remuda • Built on Base<br>
+    Contact: info@uspolopatrons.org
+  </div>
+
+</div>
+
+</body>
+</html>

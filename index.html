@@ -14,16 +14,13 @@
   <style>
     :root {
       --bg: #050505;
-      --bg-panel: #101010;
       --fg: #f5f5f5;
       --muted: #a7a7a7;
       --accent: #e3bf72; /* soft gold accent */
       --border: #2b2b2b;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -37,66 +34,54 @@
       color: var(--accent);
       text-decoration: none;
     }
-
-    a:hover {
-      text-decoration: underline;
-    }
+    a:hover { text-decoration: underline; }
 
     .page {
       max-width: 760px;
-      margin: 24px auto 64px;
+      margin: 32px auto 64px;
       padding: 0 16px;
     }
 
     /* Masthead */
     .masthead {
       text-align: center;
-      padding: 24px 0 16px;
+      padding: 24px 0 20px;
     }
 
     .masthead-line-1 {
       font-family: "Cormorant Garamond", "EB Garamond", serif;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
-      font-size: 0.78rem;
-      color: var(--muted);
+      font-size: 1rem;              /* increased size */
+      color: var(--fg);
     }
 
     .masthead-rule {
       margin: 10px auto 10px;
-      width: 70%;
+      width: 72%;
       border-top: 1px solid var(--border);
     }
 
     .masthead-line-2 {
       font-family: "Cormorant Garamond", "EB Garamond", serif;
-      letter-spacing: 0.24em;
+      letter-spacing: 0.26em;
       text-transform: uppercase;
-      font-size: 0.82rem;
-      color: #f8f8f8;
+      font-size: 0.86rem;
+      color: var(--fg);
     }
 
-    /* Hero */
+    /* Hero (no card) */
     header {
-      padding: 24px 0 12px;
-    }
-
-    .hero {
-      background: var(--bg-panel);
-      border-radius: 10px;
-      padding: 40px 20px 40px;
+      padding: 32px 0 8px;
       text-align: center;
-      border: 1px solid var(--border);
     }
 
     .hero-title {
       font-family: "Cormorant Garamond", "EB Garamond", serif;
-      font-size: 1.7rem; /* slimmer, reduced size */
+      font-size: 1.7rem;
       text-transform: uppercase;
-      letter-spacing: 0.28em;
+      letter-spacing: 0.3em;
       margin: 0 0 30px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid #252525;
     }
 
     .hero-actions {
@@ -148,13 +133,13 @@
       color: var(--fg);
     }
 
-    /* Main content area for future sections */
+    /* Space for future sections */
     main {
-      margin-top: 32px;
+      margin-top: 40px;
     }
 
     .content-section {
-      padding: 20px 12px 0;
+      padding-top: 20px;
       border-top: 1px solid var(--border);
       margin-top: 20px;
     }
@@ -189,18 +174,14 @@
     /* Mobile */
     @media (max-width: 600px) {
       .page {
-        margin-top: 16px;
+        margin-top: 20px;
         margin-bottom: 48px;
         padding: 0 12px;
       }
 
-      .hero {
-        padding: 30px 16px 30px;
-      }
-
       .hero-title {
         font-size: 1.45rem;
-        letter-spacing: 0.22em;
+        letter-spacing: 0.24em;
         margin-bottom: 24px;
       }
 
@@ -233,34 +214,30 @@
       </div>
     </div>
 
-    <!-- Hero -->
+    <!-- Hero (flat, typography only) -->
     <header>
-      <div class="hero">
-        <h1 class="hero-title">POLO PATRONIUM (PATRON)</h1>
+      <h1 class="hero-title">POLO PATRONIUM (PATRON)</h1>
 
-        <div class="hero-actions">
-          <!-- TODO: replace hrefs with real Thirdweb/Base URLs -->
-          <a class="btn btn-primary" href="#buy-fiat">
-            BUY PATRON (FIAT VIA THIRDWEB)
-          </a>
-          <a class="btn btn btn-secondary" href="#buy-crypto">
-            BUY PATRON (CRYPTO ON BASE)
-          </a>
-          <a class="btn btn-outline" href="#founding-patrons">
-            APPLY TO BE A FOUNDING PATRON
-          </a>
-        </div>
+      <div class="hero-actions">
+        <!-- TODO: replace hrefs with real Thirdweb/Base URLs -->
+        <a class="btn btn-primary" href="#buy-fiat">
+          BUY PATRON (FIAT VIA THIRDWEB)
+        </a>
+        <a class="btn btn-secondary" href="#buy-crypto">
+          BUY PATRON (CRYPTO ON BASE)
+        </a>
+        <a class="btn btn-outline" href="#founding-patrons">
+          APPLY TO BE A FOUNDING PATRON
+        </a>
       </div>
     </header>
 
-    <!-- Future sections (placeholders) -->
+    <!-- Future sections -->
     <main>
       <section class="content-section" id="section-1">
         <h2>SECTION TITLE</h2>
         <p>Placeholder copy for a future section. You can describe the model, remuda, or Cowboy Polo circuit here.</p>
       </section>
-
-      <!-- Add more sections below as needed -->
     </main>
 
     <footer>
@@ -268,7 +245,7 @@
         &copy; <span id="year"></span> US Polo Patrons Association &mdash; Polo Patronium (PATRON).
       </div>
       <div>
-        Built on Base &middot; string 7̶7̶7̶ remuda
+        Built on Base by Coinbase &middot; String 7̶7̶7̶ Remuda
       </div>
     </footer>
   </div>

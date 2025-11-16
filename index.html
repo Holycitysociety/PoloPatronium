@@ -49,15 +49,15 @@
     }
 
     .masthead-inner {
-      max-width: 100%;        /* FILL PAGE WIDTH */
+      max-width: 100%;
       margin: 0 auto;
     }
 
     .masthead-line-1 {
       font-family: "Cormorant Garamond", "EB Garamond", serif;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.16em;      /* a bit tighter so it reaches wider */
       text-transform: uppercase;
-      font-size: 1.4rem;
+      font-size: 1.6rem;           /* bigger so it visually fills width */
       color: var(--fg);
       line-height: 1.25;
     }
@@ -167,7 +167,7 @@
       grid-template-columns: 1fr;
       gap: 32px;
       margin-top: 12px;
-      max-width: 100%;        /* FILL PAGE WIDTH */
+      max-width: 100%;
       margin-left: auto;
       margin-right: auto;
     }
@@ -182,27 +182,27 @@
       text-transform: uppercase;
       font-family: "IM Fell English SC", "Cormorant Garamond", serif;
       letter-spacing: 0.26em;
-      font-size: 0.82rem;
+      font-size: 0.95rem;       /* larger overall */
       color: var(--fg);
     }
 
     .logo-string-sevens-remuda .line-top {
       display: block;
-      font-size: 0.76rem;
+      font-size: 0.9rem;
     }
 
     .logo-string-sevens-remuda .line-middle {
       display: inline-block;
-      font-size: 1.1rem;
+      font-size: 1.4rem;        /* bigger 7̶7̶7̶ */
       margin: 6px 0 4px;
-      padding: 2px 10px;
+      padding: 2px 16px;
       border-top: 1px solid var(--fg);
       border-bottom: 1px solid var(--fg);
     }
 
     .logo-string-sevens-remuda .line-bottom {
       display: block;
-      font-size: 0.76rem;
+      font-size: 0.9rem;
       color: var(--muted);
       letter-spacing: 0.22em;
     }
@@ -212,12 +212,12 @@
       text-transform: uppercase;
       font-family: "IM Fell English SC", "Cormorant Garamond", serif;
       letter-spacing: 0.24em;
-      font-size: 0.9rem;
+      font-size: 1.0rem;        /* bump size */
     }
 
     .logo-cowboy-polo-circuit span {
       display: inline-block;
-      padding: 4px 14px;
+      padding: 6px 24px;
       border: 1px solid var(--fg);
     }
 
@@ -230,14 +230,14 @@
     .logo-the-polo-life .top {
       text-transform: uppercase;
       letter-spacing: 0.2em;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       color: var(--muted);
       display: block;
     }
 
     .logo-the-polo-life .main {
       display: block;
-      font-size: 1.4rem;
+      font-size: 1.7rem;         /* larger main wordmark */
       letter-spacing: 0.12em;
       text-transform: uppercase;
       margin-top: 2px;
@@ -248,12 +248,12 @@
       font-family: "Cormorant Garamond", serif;
       text-transform: uppercase;
       letter-spacing: 0.22em;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
     }
 
     .logo-charleston-polo .top {
       display: block;
-      font-size: 0.8rem;
+      font-size: 0.86rem;
       color: var(--muted);
     }
 
@@ -262,7 +262,7 @@
       margin-top: 4px;
       padding-bottom: 3px;
       border-bottom: 1px solid var(--fg);
-      font-size: 1.05rem;
+      font-size: 1.2rem;        /* bigger main word */
     }
 
     footer {
@@ -288,8 +288,8 @@
       }
 
       .masthead-line-1 {
-        font-size: 1.1rem;
-        letter-spacing: 0.16em;
+        font-size: 1.3rem;      /* still big on mobile */
+        letter-spacing: 0.14em;
       }
 
       .hero-title {
@@ -342,6 +342,7 @@
       <div class="hero-symbol">SYMBOL: PATRON</div>
 
       <div class="hero-actions">
+        <!-- TODO: replace hrefs with real Thirdweb/Base URLs -->
         <a class="btn btn-primary" href="#buy-fiat">
           BUY PATRON (FIAT VIA THIRDWEB)
         </a>
@@ -395,7 +396,7 @@
 
     <footer>
       <div>
-        &copy; <span id="year"></span> US POLO PATRONS ASSOCIATION — POLO PATRONIUM (PATRON).
+        &copy; <span id="year"></span> US POLO PATRONS ASSOCIATION — POLO PATRONIUM.
       </div>
       <div>
         BUILT ON BASE BY COINBASE · STRING 7̶7̶7̶ REMUDA

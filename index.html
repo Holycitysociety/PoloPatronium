@@ -22,9 +22,7 @@
       --border-strong: #77716a;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -49,7 +47,6 @@
       position: relative;
     }
 
-    /* Subtle inner frame like an old broadside */
     .page::before {
       content: "";
       position: absolute;
@@ -68,17 +65,15 @@
       text-decoration: none;
     }
 
-    a:hover {
-      text-decoration: underline;
-    }
+    a:hover { text-decoration: underline; }
 
-    /* Masthead / Newspaper title */
+    /* Masthead */
     .masthead {
-      text-align: center;
       margin-bottom: 18px;
     }
 
-    .masthead-title {
+    .masthead-line-1 {
+      text-align: center;
       font-family: "IM Fell English SC", "IM Fell English", serif;
       letter-spacing: 0.16em;
       text-transform: uppercase;
@@ -87,32 +82,47 @@
     }
 
     .masthead-rule {
-      margin: 6px auto 0;
+      margin: 6px auto 10px;
       width: 70%;
       border-top: 2px solid var(--border-strong);
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       height: 5px;
     }
 
-    header {
-      margin-bottom: 18px;
-    }
-
-    .hero-header-row {
+    .masthead-subrow {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
-      margin-bottom: 10px;
     }
 
-    .hero-header-meta {
-      font-size: 0.8rem;
-      color: var(--muted);
+    .masthead-center {
+      flex: 1 1 auto;
+      text-align: center;
+    }
+
+    .masthead-subtitle-main {
       font-family: "IM Fell English SC", "IM Fell English", serif;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      letter-spacing: 0.14em;
+      font-size: 0.85rem;
+      color: var(--fg);
+    }
+
+    .masthead-subtitle-sub {
+      font-family: "IM Fell English SC", "IM Fell English", serif;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .masthead-right {
+      flex: 0 0 auto;
+      display: flex;
+      justify-content: flex-end;
     }
 
     .badge {
@@ -130,12 +140,7 @@
       box-shadow: 0 8px 22px rgba(0, 0, 0, 0.9);
     }
 
-    .hero-badge-row {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
+    header { margin-bottom: 18px; }
 
     .hero-poster {
       padding: 24px 18px 22px;
@@ -164,7 +169,7 @@
 
     .hero-title {
       font-size: 2.3rem;
-      margin: 0 0 8px;
+      margin: 0 0 6px;
       font-family: "IM Fell English SC", "IM Fell English", serif;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -177,10 +182,29 @@
         0 0 40px rgba(255,255,255,0.05);
     }
 
+    .hero-subline {
+      font-family: "IM Fell English SC", "IM Fell English", serif;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .hero-subline-2 {
+      font-family: "IM Fell English SC", "IM Fell English", serif;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
     .hero-subtitle {
       font-size: 0.98rem;
       color: var(--muted);
-      margin-bottom: 14px;
+      margin-top: 14px;
+      margin-bottom: 18px;
       max-width: 620px;
       margin-left: auto;
       margin-right: auto;
@@ -191,17 +215,9 @@
       justify-content: center;
       flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       font-size: 0.8rem;
       color: var(--muted);
-    }
-
-    .base-badge-placeholder {
-      width: 14px;
-      height: 14px;
-      border-radius: 4px;
-      border: 1px solid var(--accent);
-      display: inline-block;
     }
 
     .hero-actions {
@@ -238,9 +254,7 @@
       border-color: #d9a85a;
     }
 
-    .btn-primary:hover {
-      filter: brightness(1.05);
-    }
+    .btn-primary:hover { filter: brightness(1.05); }
 
     .btn-secondary {
       border-color: var(--border);
@@ -257,12 +271,6 @@
       color: var(--muted);
       font-size: 0.82rem;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
-    }
-
-    .hero-note {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-top: 6px;
     }
 
     footer {
@@ -282,80 +290,78 @@
         margin: 20px 8px 24px;
         padding: 20px 14px 24px;
       }
-      .hero-title {
-        font-size: 1.9rem;
-      }
-      .hero-actions {
-        max-width: 100%;
-      }
+      .hero-title { font-size: 1.9rem; }
+      .hero-actions { max-width: 100%; }
     }
   </style>
 </head>
 <body>
   <div class="page">
     <div class="content-inner">
+
+      <!-- Masthead -->
       <div class="masthead">
-        <div class="masthead-title">
+        <div class="masthead-line-1">
           UNITED STATES POLO PATRONS ASSOCIATION
         </div>
         <div class="masthead-rule"></div>
-      </div>
 
-      <header>
-        <div class="hero-header-row">
-          <div class="hero-header-meta">
-            Polo Patronium &mdash; Official Stewardship Token
+        <div class="masthead-subrow">
+          <div class="masthead-center">
+            <div class="masthead-subtitle-main">
+              POLO PATRONIUM
+            </div>
+            <div class="masthead-subtitle-sub">
+              OFFICIAL STEWARDSHIP TOKEN
+            </div>
           </div>
-          <div class="hero-badge-row">
-            <span class="badge">string + 777 brand remuda</span>
+          <div class="masthead-right">
+            <span class="badge">string 7̶7̶7̶ remuda</span>
           </div>
         </div>
+      </div>
 
+      <!-- Hero -->
+      <header>
         <div class="hero-poster">
-          <h1 class="hero-title">Polo Patronium (PATRON)</h1>
+          <h1 class="hero-title">POLO PATRONIUM (PATRON)</h1>
+
+          <div class="hero-subline">OFFICIAL STEWARDSHIP TOKEN</div>
+          <div class="hero-subline-2">FOUNDING PATRONS PRELAUNCH</div>
 
           <div class="hero-subtitle">
-            Stewardship token and participation seal of the US Polo Patrons Association, supporting
-            Cowboy Polo, the <span style="white-space:nowrap;">string&nbsp;777</span> remuda, and local chapters.
+            Stewardship token and participation seal of the US Polo Patrons Association.
           </div>
 
           <div class="hero-meta-row">
-            <span class="badge">
-              <span class="base-badge-placeholder"></span>
-              Built on Base
-            </span>
-            <span class="badge">On-chain stewardship model</span>
-            <span class="badge">Founding Patrons prelaunch</span>
+            <span class="badge">Founding Patrons Prelaunch</span>
           </div>
 
           <div class="hero-actions">
             <!-- TODO: replace hrefs with real Thirdweb/Base URLs -->
-            <a class="btn btn-primary" href="#buy" id="btn-buy-fiat">
-              Buy PATRON (Fiat via Thirdweb)
+            <a class="btn btn-primary" href="#buy-fiat">
+              BUY PATRON (FIAT VIA THIRDWEB)
             </a>
-            <a class="btn btn-secondary" href="#buy" id="btn-buy-crypto">
-              Buy PATRON (Crypto on Base)
+            <a class="btn btn-secondary" href="#buy-crypto">
+              BUY PATRON (CRYPTO ON BASE)
             </a>
             <a class="btn btn-outline" href="#founding-patrons">
-              Apply to be a Founding Patron
+              APPLY TO BE A FOUNDING PATRON
             </a>
-          </div>
-
-          <div class="hero-note">
-            Prelaunch: for early stewards, chapter founders, and Cowboy Polo supporters.
-            Stewardship language only, not an investment promise.
           </div>
         </div>
       </header>
 
+      <!-- Footer -->
       <footer>
         <div>
           &copy; <span id="year"></span> US Polo Patrons Association &mdash; Polo Patronium (PATRON).
         </div>
         <div>
-          Built on Base &middot; string + 777 remuda
+          Built on Base &middot; string 7̶7̶7̶ remuda
         </div>
       </footer>
+
     </div>
   </div>
 

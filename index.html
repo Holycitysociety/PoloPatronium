@@ -93,17 +93,17 @@
       font-family: "Cormorant Garamond", serif;
       text-transform: uppercase;
       letter-spacing: 0.22em;
-      font-size: 1.0rem;         /* increased size */
+      font-size: 1.0rem;
       color: var(--muted);
-      margin-bottom: 48px;       /* big spacer before buttons */
+      margin-bottom: 32px;        /* connects to title, still some air */
     }
 
     .hero-actions {
       display: flex;
       flex-direction: column;
-      gap: 30px;                 /* triple spacing between buttons */
+      gap: 30px;                  /* big gaps between buttons */
       max-width: 420px;
-      margin: 0 auto;
+      margin: 32px auto 48px;     /* more space above and below buttons */
     }
 
     .btn {
@@ -159,17 +159,17 @@
 
     .brand-grid {
       display: grid;
-      grid-template-columns: 1fr;   /* stack initiatives vertically */
-      gap: 24px;
+      grid-template-columns: 1fr;  /* stack initiatives vertically */
+      gap: 32px;                   /* spacer between each initiative */
       margin-top: 12px;
     }
 
     .logo-block {
       text-align: center;
-      padding: 4px 6px;
+      padding: 8px 6px;
     }
 
-    /* STRING / SEVENS / REMUDA */
+    /* STRING / 7̶7̶7̶ / REMUDA */
     .logo-string-sevens-remuda {
       text-transform: uppercase;
       font-family: "IM Fell English SC", "Cormorant Garamond", serif;
@@ -199,7 +199,7 @@
       letter-spacing: 0.22em;
     }
 
-    /* COWBOY POLO CIRCUIT */
+    /* COWBOY POLO */
     .logo-cowboy-polo-circuit {
       text-transform: uppercase;
       font-family: "IM Fell English SC", "Cormorant Garamond", serif;
@@ -221,7 +221,7 @@
 
     .logo-the-polo-life .top {
       text-transform: uppercase;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.2em;
       font-size: 0.7rem;
       color: var(--muted);
       display: block;
@@ -230,12 +230,12 @@
     .logo-the-polo-life .main {
       display: block;
       font-size: 1.4rem;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.12em;     /* tightened tracking */
       text-transform: uppercase;
-      margin-top: 6px;
+      margin-top: 2px;            /* tighter vertical spacing */
     }
 
-    /* CHARLESTON POLO */
+    /* CHARLESTON POLO CLUB */
     .logo-charleston-polo {
       font-family: "Cormorant Garamond", serif;
       text-transform: uppercase;
@@ -267,7 +267,7 @@
       justify-content: space-between;
       gap: 8px;
       flex-wrap: wrap;
-      text-transform: uppercase;   /* footer text all caps */
+      text-transform: uppercase;
     }
 
     /* Mobile */
@@ -292,11 +292,12 @@
       .hero-symbol {
         font-size: 0.95rem;
         letter-spacing: 0.2em;
-        margin-bottom: 40px;
+        margin-bottom: 28px;
       }
 
       .hero-actions {
         max-width: 100%;
+        margin: 28px auto 40px;
       }
 
       .btn {
@@ -352,19 +353,19 @@
     <main>
       <section class="brand-row" id="brands">
         <div class="brand-grid">
-          <!-- STRING / SEVENS / REMUDA -->
+          <!-- STRING / 7̶7̶7̶ / REMUDA -->
           <div class="logo-block">
             <div class="logo-string-sevens-remuda">
               <span class="line-top">STRING</span>
-              <span class="line-middle">SEVENS</span>
+              <span class="line-middle">7̶7̶7̶</span>
               <span class="line-bottom">REMUDA</span>
             </div>
           </div>
 
-          <!-- COWBOY POLO CIRCUIT -->
+          <!-- COWBOY POLO -->
           <div class="logo-block">
             <div class="logo-cowboy-polo-circuit">
-              <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
+              <span>COWBOY&nbsp;POLO</span>
             </div>
           </div>
 
@@ -376,11 +377,11 @@
             </div>
           </div>
 
-          <!-- CHARLESTON POLO -->
+          <!-- CHARLESTON POLO CLUB -->
           <div class="logo-block">
             <div class="logo-charleston-polo">
               <span class="top">CHARLESTON</span>
-              <span class="main">POLO</span>
+              <span class="main">POLO CLUB</span>
             </div>
           </div>
         </div>

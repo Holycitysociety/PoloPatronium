@@ -1,160 +1,493 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Polo Patronium (PATRON) — Prelaunch</title>
-<script src="https://cdn.thirdweb.com/js@latest"></script>
-<style>
-  body {
-    background-color: #000;
-    color: #eee;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    padding: 0;
-  }
-  .container {
-    max-width: 720px;
-    margin: auto;
-    padding: 40px 20px;
-    text-align: center;
-  }
-  h1 { font-size: 2.6rem; margin-bottom: 10px; }
-  h2 { font-size: 1.4rem; margin-bottom: 20px; color: #bbb; }
-  button {
-    width: 100%;
-    padding: 14px;
-    margin: 8px 0;
-    font-size: 1.1rem;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-  }
-  .primary { background: #1a73e8; color: white; }
-  .secondary { background: #333; color: white; }
-  .tertiary { background: #111; color: #aaa; }
-  .footer {
-    margin-top: 50px;
-    font-size: 0.85rem;
-    color: #666;
-  }
-  .role-btn {
-    background: #111;
-    color: #eee;
-    margin-bottom: 10px;
-    border: 1px solid #333;
-  }
-  #modal-bg {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.7);
-  }
-  #modal {
-    background: #111;
-    padding: 30px;
-    max-width: 400px;
-    margin: 80px auto;
-    border-radius: 10px;
-    color: #ddd;
-  }
-  input, select, textarea {
-    width: 100%;
-    padding: 12px;
-    background: #000;
-    border: 1px solid #333;
-    border-radius: 6px;
-    color: white;
-    margin-bottom: 12px;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <title>Polo Patronium (PATRON) — Stewardship Token of the USPPA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bg: #050505;
+      --bg-alt: #0d0d0d;
+      --fg: #f5f5f5;
+      --muted: #aaaaaa;
+      --accent: #d9a85a; /* soft gold accent */
+      --border: #262626;
+      --danger: #ff4c4c;
+      --radius: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, #151515 0, #050505 55%);
+      color: var(--fg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    header .brand-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .logo-text {
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+    }
+
+    .hero {
+      padding: 24px 20px 28px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #101010, #050505);
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.65);
+    }
+
+    .hero-title {
+      font-size: 2.4rem;
+      margin: 0 0 4px;
+    }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 24px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .base-badge-placeholder {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      border: 1px solid var(--accent);
+      display: inline-block;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 0.98rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: none;
+      color: var(--fg);
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f0c674, #d9a85a);
+      color: #000;
+      border-color: #d9a85a;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+    }
+
+    .btn-secondary {
+      border-color: var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .btn-outline {
+      border-color: var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .hero-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    main {
+      margin-top: 36px;
+    }
+
+    section {
+      margin-bottom: 32px;
+      padding: 20px 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.5);
+    }
+
+    section h2 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+    }
+
+    section h3 {
+      margin-bottom: 6px;
+      font-size: 1.05rem;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 18px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+    }
+
+    ul {
+      padding-left: 18px;
+      margin-top: 6px;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    footer .footer-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    @media (max-width: 720px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .page {
+        padding: 24px 16px 48px;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="page">
+    <header>
+      <div class="brand-row">
+        <div class="logo-text">
+          UNITED STATES POLO PATRONS ASSOCIATION
+        </div>
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <!-- string + 777 brand reference in text form -->
+          <span class="pill">string + 777 brand remuda</span>
+        </div>
+      </div>
 
-<div class="container">
-  <h1>Polo Patronium (PATRON)</h1>
-  <h2>Official Token of the U.S. Polo Patrons Association<br>Built on Base — by Coinbase</h2>
+      <div class="hero">
+        <h1 class="hero-title">Polo Patronium (PATRON)</h1>
+        <div class="hero-subtitle">
+          Stewardship token and participation seal of the US Polo Patrons Association, supporting
+          Cowboy Polo, the <span style="white-space:nowrap;">string&nbsp;777</span> remuda, and local chapters.
+        </div>
 
-  <!-- Connect Wallet -->
-  <thirdweb-connect walletconnect="coinbase" theme="dark">
-  </thirdweb-connect>
+        <div class="hero-meta">
+          <span class="badge">
+            <span class="base-badge-placeholder"></span>
+            Built on Base
+          </span>
+          <span class="badge">On-chain stewardship model</span>
+          <span class="badge">Founding Patrons prelaunch</span>
+        </div>
 
-  <!-- Buy Patron (Fiat) -->
-  <thirdweb-pay
-    contractAddress="YOUR_TOKEN_CONTRACT"
-    theme="dark"
-  ></thirdweb-pay>
+        <div class="hero-actions">
+          <!-- TODO: link to Thirdweb Pay / Buy page once set up -->
+          <a class="btn btn-primary" href="#buy" id="btn-buy-fiat">
+            Buy PATRON (Fiat via Thirdweb)
+          </a>
+          <!-- TODO: link to crypto buy path (e.g. Thirdweb / Base swap URL) -->
+          <a class="btn btn-secondary" href="#buy" id="btn-buy-crypto">
+            Buy PATRON (Crypto on Base)
+          </a>
+          <a class="btn btn-outline" href="#founding-patrons">
+            Apply to be a Founding Patron
+          </a>
+        </div>
 
-  <!-- Buy Patron (Crypto) -->
-  <button class="secondary" onclick="buyCrypto()">Buy PATRON with Crypto</button>
+        <div class="hero-note">
+          Prelaunch: this page is for early stewards, chapter founders, and Cowboy Polo supporters.
+          All language is stewardship- and utility-focused, not an investment promise.
+        </div>
+      </div>
+    </header>
 
-  <script>
-    function buyCrypto() {
-      window.open("https://thirdweb.com/base/YOUR_TOKEN_CONTRACT/buy", "_blank");
-    }
-  </script>
+    <main>
+      <!-- ANNOUNCEMENT / ORIGIN -->
+      <section id="announcement">
+        <h2>Announcement & Origin</h2>
+        <p class="muted">
+          This section is for the short announcement from USPolopatrons.org that explains what the
+          USPPA is, how Polo Patronium fits in, and why the token exists as a stewardship tool.
+        </p>
+        <!--
+          TODO: paste your existing "Announcement" text here, slightly adapted to mention:
+          - Polo Patronium as the stewardship token
+          - Connection to Cowboy Polo / chapters / remuda
+        -->
+        <p>
+          Polo Patronium (PATRON) is issued as a living token of support and tradition within the
+          United States Polo Patrons Association. It is designed to coordinate tribute, rewards, and
+          recognition across chapters, horses, hosts, and patrons in the Cowboy Polo ecosystem.
+        </p>
+      </section>
 
+      <!-- PATRONIUM MODEL -->
+      <section id="patronium-model">
+        <div class="grid-2">
+          <div>
+            <h2>Patronium Model</h2>
+            <p class="muted">
+              This section summarizes the overall model you described: stewardship-based rewards,
+              tribute allocation, and claim-based distribution rather than staking or yield framing.
+            </p>
+            <!--
+              TODO: paste / adapt your "Patronium Model" intro paragraph here.
+            -->
+            <p>
+              Polo Patronium operates as a stewardship-based coordination tool rather than a
+              speculative product. Rewards, when granted, are discretionary acknowledgments of
+              contribution across the Cowboy Polo ecosystem&mdash;not guaranteed returns.
+            </p>
+          </div>
+          <div>
+            <h3>At a glance</h3>
+            <ul>
+              <li>Utility token for tracking stewardship and participation</li>
+              <li>Tribute flows across chapters, hosts, and the national association</li>
+              <li>No staking contracts, no yield promises, claim-based rewards only</li>
+              <li>Supports horses, arenas, riders, and Cowboy Polo events</li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
-  <hr style="border-color:#222; margin:40px 0;">
+      <!-- STEWARDSHIP-BASED REWARDS -->
+      <section id="stewardship">
+        <h2>Stewardship-Based Rewards</h2>
+        <p class="muted">
+          Translate your <em>Stewardship-Based Rewards</em> section here: how rewards may be allocated
+          manually, off-chain or on-chain, based on discernment and contribution rather than
+          automated yield.
+        </p>
+        <!-- TODO: paste your original "Stewardship-Based Rewards" text here. -->
+        <ul>
+          <li>Rewards are discretionary acknowledgments of service and support.</li>
+          <li>No automatic APR, no “number go up” promises.</li>
+          <li>Focus is on noblesse oblige, not extraction.</li>
+          <li>Founding Patrons may receive additional recognition for early risk and support.</li>
+        </ul>
+      </section>
 
+      <!-- TRIBUTE ALLOCATION FRAMEWORK -->
+      <section id="tribute">
+        <h2>Tribute Allocation Framework</h2>
+        <p class="muted">
+          Here is where your 51% / 24.5% / 24.5% logic and 49% Founding Patron boost in year one can
+          live, with full detail.
+        </p>
+        <!-- TODO: paste your full Tribute Allocation Framework text here -->
+        <ul>
+          <li>Portions of net tribute can be routed to: national pool, local steward, and chapter.</li>
+          <li>Founding Patrons may receive a defined share of tribute during an initial launch period.</li>
+          <li>Allocations can be adjusted by governance as the ecosystem matures.</li>
+        </ul>
+      </section>
 
-  <h2>Apply to Become a Founding Patron</h2>
+      <!-- CLAIM, DON'T STAKE -->
+      <section id="claim-dont-stake">
+        <h2>Claim, Don’t Stake</h2>
+        <p class="muted">
+          This is where you explain why you are not using staking contracts, but rather
+          snapshot-based, claim-driven distributions.
+        </p>
+        <!-- TODO: paste your "Claim, Don't Stake" language here -->
+        <ul>
+          <li>No lockups, no staking contracts, no “yield farms.”</li>
+          <li>Snapshots may be taken periodically to see who held or supported what, and when.</li>
+          <li>When rewards are granted, they are claimed directly, not streamed from a staking pool.</li>
+        </ul>
+      </section>
 
-  <button class="role-btn" onclick="openModal()">Apply Now</button>
+      <!-- CHAPTER PIPELINE & STEWARDS -->
+      <section id="chapters">
+        <h2>Chapter Pipeline & Local Stewards</h2>
+        <p class="muted">
+          Use this section to carry over your chapter pipeline / steward compensation model,
+          especially how tribute flows, how local hosts can be treated as “wage” or “share” stewards,
+          and how Cowboy Polo chapters come online.
+        </p>
+        <!-- TODO: paste your Chapter Pipeline text here -->
+        <ul>
+          <li>Local stewards can choose wage-like compensation or share-like participation.</li>
+          <li>Chapters grow from clinics → tryouts → Cowboy Polo Circuit events.</li>
+          <li>Tribute and Patronium flows are transparent and chapter-aware.</li>
+        </ul>
+      </section>
 
-  <div id="modal-bg" onclick="closeModal()">
-    <div id="modal" onclick="event.stopPropagation()">
-      <h2 style="text-align:center;">Founding Patron Application</h2>
-      
-      <input type="text" id="name" placeholder="Name" />
-      <input type="email" id="email" placeholder="Email" />
-      <select id="role">
-        <option value="" disabled selected>Select Role</option>
-        <option>Patron</option>
-        <option>Host (Arena/Barn)</option>
-        <option>Rider</option>
-        <option>Chapter Leader</option>
-      </select>
-      <textarea id="notes" placeholder="Tell us more..." rows="4"></textarea>
+      <!-- FOUNDING PATRONS APPLICATION -->
+      <section id="founding-patrons">
+        <h2>Founding Patrons & Roles</h2>
+        <p class="muted">
+          Invite early supporters to apply for defined roles. This is mirrored by your application
+          form or future NFT / SBT membership.
+        </p>
 
-      <button class="primary" onclick="submitForm()">Submit</button>
-      <button class="tertiary" onclick="closeModal()">Cancel</button>
-    </div>
+        <div class="grid-2">
+          <div>
+            <h3>Roles</h3>
+            <ul>
+              <li><strong>Patron</strong> &mdash; financially supports horses, riders, and arenas.</li>
+              <li><strong>Host (Arena / Barn)</strong> &mdash; provides facilities for Cowboy Polo.</li>
+              <li><strong>Rider</strong> &mdash; participates in clinics, tryouts, and the Circuit.</li>
+              <li><strong>Chapter Leader</strong> &mdash; helps organize local Cowboy Polo chapters.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Apply</h3>
+            <p class="muted">
+              For now, this can be a simple form submission that you handle manually. Later,
+              this could mint a non-transferable membership NFT or issue a chapter credential.
+            </p>
+            <!-- TODO: replace href with your actual form (e.g. Typeform, Google Form, Netlify form) -->
+            <a class="btn btn-secondary" href="YOUR_FOUNDING_PATRON_FORM_URL" target="_blank" rel="noopener">
+              Apply to be a Founding Patron
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- BUY SECTION (ANCHOR FOR BUTTONS) -->
+      <section id="buy">
+        <h2>Buy PATRON</h2>
+        <p class="muted">
+          This section is just an anchor for the buttons above and a place to explain how buying
+          works. Once Thirdweb and Base integration are set up, you can update the links.
+        </p>
+        <h3>Options</h3>
+        <ul>
+          <li><strong>Fiat via Thirdweb:</strong> Credit card, Apple Pay, Google Pay, bank.</li>
+          <li><strong>Crypto on Base:</strong> Swap from USDC, ETH, or other supported assets.</li>
+          <li><strong>Coinbase users:</strong> Easiest path is via Coinbase Wallet / Smart Wallet.</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-row">
+        <div>
+          &copy; <span id="year"></span> US Polo Patrons Association &mdash; Polo Patronium (PATRON).  
+          Built on Base. All stewardship language is descriptive only and not financial advice.
+        </div>
+        <nav>
+          <a href="#patronium-model">Model</a>
+          <a href="#tribute">Tribute</a>
+          <a href="#chapters">Chapters</a>
+          <a href="#founding-patrons">Founding Patrons</a>
+        </nav>
+      </div>
+    </footer>
   </div>
 
   <script>
-    function openModal() {
-      document.getElementById("modal-bg").style.display = "block";
-    }
-    function closeModal() {
-      document.getElementById("modal-bg").style.display = "none";
-    }
-    function submitForm() {
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const role = document.getElementById("role").value;
-      const notes = document.getElementById("notes").value;
-      
-      fetch("https://formspree.io/f/YOUR_FORMSPREE_ID", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ name, email, role, notes })
-      });
-
-      alert("Application Submitted");
-      closeModal();
-    }
+    document.getElementById("year").textContent = new Date().getFullYear();
   </script>
-
-
-  <div class="footer">
-    US Polo Patrons Association • Cowboy Polo Circuit • 777 Remuda • Built on Base<br>
-    Contact: info@uspolopatrons.org
-  </div>
-
-</div>
-
 </body>
 </html>

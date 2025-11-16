@@ -70,7 +70,7 @@
       color: var(--fg);
     }
 
-    /* Hero (no card) */
+    /* Hero (flat) */
     header {
       padding: 32px 0 8px;
       text-align: center;
@@ -133,30 +133,114 @@
       color: var(--fg);
     }
 
-    /* Space for future sections */
+    /* Brand/logo row at bottom */
     main {
       margin-top: 40px;
     }
 
-    .content-section {
-      padding-top: 20px;
+    .brand-row {
+      padding-top: 24px;
       border-top: 1px solid var(--border);
-      margin-top: 20px;
     }
 
-    .content-section h2 {
-      font-family: "Cormorant Garamond", "EB Garamond", serif;
+    .brand-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px 18px;
+      margin-top: 12px;
+    }
+
+    .logo-block {
+      text-align: center;
+      padding: 4px 6px;
+    }
+
+    /* STRING / SEVENS / REMUDA */
+    .logo-string-sevens-remuda {
       text-transform: uppercase;
-      letter-spacing: 0.2em;
-      font-size: 0.95rem;
-      margin: 0 0 6px;
-      color: #f0f0f0;
+      font-family: "IM Fell English SC", "Cormorant Garamond", serif;
+      letter-spacing: 0.26em;
+      font-size: 0.82rem;
+      color: var(--fg);
     }
 
-    .content-section p {
-      margin: 0 0 10px;
+    .logo-string-sevens-remuda .line-top {
+      display: block;
+      font-size: 0.76rem;
+    }
+
+    .logo-string-sevens-remuda .line-middle {
+      display: inline-block;
+      font-size: 1.1rem;
+      margin: 6px 0 4px;
+      padding: 2px 10px;
+      border-top: 1px solid var(--fg);
+      border-bottom: 1px solid var(--fg);
+    }
+
+    .logo-string-sevens-remuda .line-bottom {
+      display: block;
+      font-size: 0.76rem;
       color: var(--muted);
-      font-size: 0.98rem;
+      letter-spacing: 0.22em;
+    }
+
+    /* COWBOY POLO CIRCUIT */
+    .logo-cowboy-polo-circuit {
+      text-transform: uppercase;
+      font-family: "IM Fell English SC", "Cormorant Garamond", serif;
+      letter-spacing: 0.24em;
+      font-size: 0.9rem;
+    }
+
+    .logo-cowboy-polo-circuit span {
+      display: inline-block;
+      padding: 4px 14px;
+      border: 1px solid var(--fg);
+    }
+
+    /* THE POLO LIFE */
+    .logo-the-polo-life {
+      font-family: "Cormorant Garamond", serif;
+      color: var(--fg);
+    }
+
+    .logo-the-polo-life .top {
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      font-size: 0.7rem;
+      color: var(--muted);
+      display: block;
+    }
+
+    .logo-the-polo-life .main {
+      display: block;
+      font-size: 1.4rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    /* CHARLESTON POLO */
+    .logo-charleston-polo {
+      font-family: "Cormorant Garamond", serif;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      font-size: 0.9rem;
+    }
+
+    .logo-charleston-polo .top {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .logo-charleston-polo .main {
+      display: inline-block;
+      margin-top: 4px;
+      padding-bottom: 3px;
+      border-bottom: 1px solid var(--fg);
+      font-size: 1.05rem;
     }
 
     footer {
@@ -194,6 +278,10 @@
         font-size: 0.84rem;
       }
 
+      .brand-grid {
+        grid-template-columns: 1fr; /* stack logos on mobile */
+      }
+
       footer {
         flex-direction: column;
         align-items: flex-start;
@@ -214,7 +302,7 @@
       </div>
     </div>
 
-    <!-- Hero (flat, typography only) -->
+    <!-- Hero -->
     <header>
       <h1 class="hero-title">POLO PATRONIUM (PATRON)</h1>
 
@@ -232,11 +320,42 @@
       </div>
     </header>
 
-    <!-- Future sections -->
+    <!-- Bottom brand/wordmark section -->
     <main>
-      <section class="content-section" id="section-1">
-        <h2>SECTION TITLE</h2>
-        <p>Placeholder copy for a future section. You can describe the model, remuda, or Cowboy Polo circuit here.</p>
+      <section class="brand-row" id="brands">
+        <div class="brand-grid">
+          <!-- STRING / SEVENS / REMUDA -->
+          <div class="logo-block">
+            <div class="logo-string-sevens-remuda">
+              <span class="line-top">STRING</span>
+              <span class="line-middle">SEVENS</span>
+              <span class="line-bottom">REMUDA</span>
+            </div>
+          </div>
+
+          <!-- COWBOY POLO CIRCUIT -->
+          <div class="logo-block">
+            <div class="logo-cowboy-polo-circuit">
+              <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
+            </div>
+          </div>
+
+          <!-- THE POLO LIFE -->
+          <div class="logo-block">
+            <div class="logo-the-polo-life">
+              <span class="top">THE</span>
+              <span class="main">POLO LIFE</span>
+            </div>
+          </div>
+
+          <!-- CHARLESTON POLO -->
+          <div class="logo-block">
+            <div class="logo-charleston-polo">
+              <span class="top">CHARLESTON</span>
+              <span class="main">POLO</span>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
 

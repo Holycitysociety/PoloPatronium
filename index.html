@@ -17,7 +17,7 @@
       --bg-inner: #111111;
       --fg: #f5f5f5;
       --muted: #b5b5b5;
-      --accent: #d9a85a; /* soft gold accent */
+      --accent: #d9a85a;
       --border: #3a3a3a;
       --border-strong: #77716a;
     }
@@ -33,32 +33,27 @@
       line-height: 1.6;
       display: flex;
       justify-content: center;
-      align-items: center;
-      padding: 24px 0;
+      align-items: stretch;
+      padding: 48px 0;              /* more vertical breathing */
     }
 
     .page {
-      max-width: 720px;              /* narrower = more portrait */
+      max-width: 720px;
       width: 100%;
       margin: 0 12px;
-      padding: 32px 22px 36px;       /* a bit more vertical padding */
+      padding: 48px 24px 64px;       /* taller page interior */
       background: var(--bg-inner);
       border: 2px solid var(--border-strong);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.85);
+      box-shadow: 0 40px 120px rgba(0, 0, 0, 0.9);
       position: relative;
-    }
-
-    .page::before {
-      content: "";
-      position: absolute;
-      inset: 10px;
-      border: 1px solid rgba(150, 150, 150, 0.2);
-      pointer-events: none;
     }
 
     .content-inner {
       position: relative;
       z-index: 1;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
     }
 
     a {
@@ -70,7 +65,7 @@
 
     /* Masthead */
     .masthead {
-      margin-bottom: 24px;
+      margin-bottom: 48px;   /* more space above hero */
       text-align: center;
     }
 
@@ -78,12 +73,13 @@
       font-family: "IM Fell English SC", "IM Fell English", serif;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      font-size: 0.85rem;
-      color: var(--muted);
+      font-size: 0.9rem;
+      color: #ffffff;                            /* brighter */
+      text-shadow: 0 0 12px rgba(255,255,255,0.35);
     }
 
     .masthead-rule {
-      margin: 8px auto 10px;
+      margin: 10px auto 12px;
       width: 70%;
       border-top: 2px solid var(--border-strong);
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -92,58 +88,53 @@
 
     .masthead-line-2 {
       font-family: "IM Fell English SC", "IM Fell English", serif;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      font-size: 0.82rem;
-      color: var(--fg);
-    }
-
-    header { margin-bottom: 24px; }
-
-    .hero-poster {
-      padding: 40px 22px 40px;       /* taller hero box */
-      margin-top: 6px;
-      border-radius: 0;
-      border: 2px solid var(--border-strong);
-      background: radial-gradient(circle at top, #232323 0, #101010 60%);
-      text-align: center;
-      position: relative;
-      box-shadow: 0 26px 80px rgba(0, 0, 0, 0.9);
-    }
-
-    .hero-poster::before,
-    .hero-poster::after {
-      content: "";
-      position: absolute;
-      border: 1px solid rgba(0, 0, 0, 0.7);
-      inset: 6px;
-      pointer-events: none;
-    }
-
-    .hero-poster::after {
-      border-color: rgba(255, 255, 255, 0.06);
-      inset: 9px;
-    }
-
-    .hero-title {
-      font-size: 2.4rem;
-      margin: 0 0 32px;              /* more space below title */
-      font-family: "IM Fell English SC", "IM Fell English", serif;
       letter-spacing: 0.18em;
       text-transform: uppercase;
+      font-size: 0.86rem;
+      color: #f7f7f7;                            /* brighter */
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+
+    header {
+      margin-bottom: 40px;
+      flex: 1 0 auto;
+      display: flex;
+      align-items: stretch;
+    }
+
+    .hero-poster {
+      padding: 80px 26px 80px;   /* triple-ish height inside hero */
+      margin-top: 0;
+      border-radius: 0;
+      border: 2px solid var(--border-strong);
+      background: radial-gradient(circle at top, #232323 0, #101010 70%);
+      text-align: center;
+      position: relative;
+      box-shadow: 0 50px 130px rgba(0, 0, 0, 0.95);
+      width: 100%;
+    }
+
+    /* Removed inner frames for a cleaner poster look */
+
+    .hero-title {
+      font-size: 1.7rem;         /* ~30% smaller than before */
+      margin: 0 0 40px;
+      font-family: "IM Fell English SC", "IM Fell English", serif;
+      letter-spacing: 0.22em;    /* a touch more tracking to compensate */
+      text-transform: uppercase;
       display: inline-block;
-      padding: 8px 20px 10px;
-      background: radial-gradient(circle at center, rgba(255,255,255,0.08) 0, rgba(0,0,0,0.9) 70%);
-      border: 1px solid rgba(255,255,255,0.16);
+      padding: 10px 22px 12px;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.08) 0, rgba(0,0,0,0.95) 75%);
+      border: 1px solid rgba(255,255,255,0.18);
       box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.9),
-        0 0 40px rgba(255,255,255,0.05);
+        0 16px 40px rgba(0, 0, 0, 0.95),
+        0 0 50px rgba(255,255,255,0.06);
     }
 
     .hero-actions {
       display: flex;
       flex-direction: column;
-      gap: 10px;                    /* slightly bigger gaps */
+      gap: 14px;                /* more gap between buttons */
       max-width: 420px;
       margin: 0 auto;
     }
@@ -153,7 +144,7 @@
       justify-content: center;
       align-items: center;
       gap: 8px;
-      padding: 12px 20px;
+      padding: 13px 22px;
       border-radius: 999px;
       border: 1px solid transparent;
       font-size: 0.9rem;
@@ -163,9 +154,9 @@
       color: var(--fg);
       text-decoration: none;
       font-family: "IM Fell English SC", "IM Fell English", serif;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.85);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9);
     }
 
     .btn-primary {
@@ -178,7 +169,7 @@
 
     .btn-secondary {
       border-color: var(--border);
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.8);
     }
 
     .btn-secondary:hover {
@@ -190,12 +181,12 @@
       background: transparent;
       color: var(--muted);
       font-size: 0.82rem;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
     }
 
     footer {
-      margin-top: 8px;
-      padding-top: 10px;
+      margin-top: auto;
+      padding-top: 14px;
       border-top: 2px solid var(--border-strong);
       font-size: 0.8rem;
       color: var(--muted);
@@ -207,18 +198,25 @@
 
     @media (max-width: 720px) {
       body {
-        align-items: flex-start;
-        padding: 16px 0;
+        padding: 24px 0;
       }
 
       .page {
         margin: 0 8px;
-        padding: 24px 14px 28px;
+        padding: 32px 14px 40px;
+      }
+
+      .masthead {
+        margin-bottom: 32px;
+      }
+
+      .hero-poster {
+        padding: 56px 18px 56px;
       }
 
       .hero-title {
-        font-size: 2rem;
-        margin-bottom: 24px;
+        font-size: 1.5rem;
+        margin-bottom: 32px;
       }
 
       .hero-actions {

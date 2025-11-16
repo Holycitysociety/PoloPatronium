@@ -70,10 +70,10 @@
     /* Masthead */
     .masthead {
       margin-bottom: 18px;
+      text-align: center;
     }
 
     .masthead-line-1 {
-      text-align: center;
       font-family: "IM Fell English SC", "IM Fell English", serif;
       letter-spacing: 0.16em;
       text-transform: uppercase;
@@ -82,68 +82,25 @@
     }
 
     .masthead-rule {
-      margin: 6px auto 10px;
+      margin: 6px auto 8px;
       width: 70%;
       border-top: 2px solid var(--border-strong);
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       height: 5px;
     }
 
-    .masthead-subrow {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .masthead-center {
-      flex: 1 1 auto;
-      text-align: center;
-    }
-
-    .masthead-subtitle-main {
+    .masthead-line-2 {
       font-family: "IM Fell English SC", "IM Fell English", serif;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--fg);
-    }
-
-    .masthead-subtitle-sub {
-      font-family: "IM Fell English SC", "IM Fell English", serif;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    .masthead-right {
-      flex: 0 0 auto;
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 11px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(0, 0, 0, 0.7);
-      font-size: 0.76rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-family: "IM Fell English SC", "IM Fell English", serif;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.9);
     }
 
     header { margin-bottom: 18px; }
 
     .hero-poster {
-      padding: 24px 18px 22px;
+      padding: 28px 18px 26px;
       margin-top: 6px;
       border-radius: 0;
       border: 2px solid var(--border-strong);
@@ -169,7 +126,7 @@
 
     .hero-title {
       font-size: 2.3rem;
-      margin: 0 0 6px;
+      margin: 0 0 26px;
       font-family: "IM Fell English SC", "IM Fell English", serif;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -180,44 +137,6 @@
       box-shadow:
         0 10px 30px rgba(0, 0, 0, 0.9),
         0 0 40px rgba(255,255,255,0.05);
-    }
-
-    .hero-subline {
-      font-family: "IM Fell English SC", "IM Fell English", serif;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-top: 6px;
-    }
-
-    .hero-subline-2 {
-      font-family: "IM Fell English SC", "IM Fell English", serif;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    .hero-subtitle {
-      font-size: 0.98rem;
-      color: var(--muted);
-      margin-top: 14px;
-      margin-bottom: 18px;
-      max-width: 620px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .hero-meta-row {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 18px;
-      font-size: 0.8rem;
-      color: var(--muted);
     }
 
     .hero-actions {
@@ -305,19 +224,8 @@
           UNITED STATES POLO PATRONS ASSOCIATION
         </div>
         <div class="masthead-rule"></div>
-
-        <div class="masthead-subrow">
-          <div class="masthead-center">
-            <div class="masthead-subtitle-main">
-              POLO PATRONIUM
-            </div>
-            <div class="masthead-subtitle-sub">
-              OFFICIAL STEWARDSHIP TOKEN
-            </div>
-          </div>
-          <div class="masthead-right">
-            <span class="badge">string 7̶7̶7̶ remuda</span>
-          </div>
+        <div class="masthead-line-2">
+          OFFICIAL STEWARDSHIP TOKEN
         </div>
       </div>
 
@@ -325,17 +233,6 @@
       <header>
         <div class="hero-poster">
           <h1 class="hero-title">POLO PATRONIUM (PATRON)</h1>
-
-          <div class="hero-subline">OFFICIAL STEWARDSHIP TOKEN</div>
-          <div class="hero-subline-2">FOUNDING PATRONS PRELAUNCH</div>
-
-          <div class="hero-subtitle">
-            Stewardship token and participation seal of the US Polo Patrons Association.
-          </div>
-
-          <div class="hero-meta-row">
-            <span class="badge">Founding Patrons Prelaunch</span>
-          </div>
 
           <div class="hero-actions">
             <!-- TODO: replace hrefs with real Thirdweb/Base URLs -->

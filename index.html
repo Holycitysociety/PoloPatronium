@@ -50,14 +50,19 @@
 
     .masthead-line-1 {
       font-family: "Cormorant Garamond", "EB Garamond", serif;
-      letter-spacing: 0.24em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      font-size: 1rem;              /* increased size */
+      font-size: 1.4rem;              /* larger, fills width */
       color: var(--fg);
+      line-height: 1.25;
+    }
+
+    .masthead-line-1 span {
+      display: block;
     }
 
     .masthead-rule {
-      margin: 10px auto 10px;
+      margin: 12px auto 10px;
       width: 72%;
       border-top: 1px solid var(--border);
     }
@@ -81,7 +86,16 @@
       font-size: 1.7rem;
       text-transform: uppercase;
       letter-spacing: 0.3em;
-      margin: 0 0 30px;
+      margin: 0 0 10px;
+    }
+
+    .hero-symbol {
+      font-family: "Cormorant Garamond", serif;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 26px;
     }
 
     .hero-actions {
@@ -263,10 +277,21 @@
         padding: 0 12px;
       }
 
+      .masthead-line-1 {
+        font-size: 1.1rem;
+        letter-spacing: 0.16em;
+      }
+
       .hero-title {
         font-size: 1.45rem;
         letter-spacing: 0.24em;
-        margin-bottom: 24px;
+        margin-bottom: 8px;
+      }
+
+      .hero-symbol {
+        font-size: 0.78rem;
+        letter-spacing: 0.2em;
+        margin-bottom: 22px;
       }
 
       .hero-actions {
@@ -294,7 +319,8 @@
     <!-- Masthead -->
     <div class="masthead">
       <div class="masthead-line-1">
-        UNITED STATES POLO PATRONS ASSOCIATION
+        <span>UNITED STATES POLO</span>
+        <span>PATRONS ASSOCIATION</span>
       </div>
       <div class="masthead-rule"></div>
       <div class="masthead-line-2">
@@ -305,6 +331,7 @@
     <!-- Hero -->
     <header>
       <h1 class="hero-title">POLO PATRONIUM (PATRON)</h1>
+      <div class="hero-symbol">SYMBOL — PATRON</div>
 
       <div class="hero-actions">
         <!-- TODO: replace hrefs with real Thirdweb/Base URLs -->

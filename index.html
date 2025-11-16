@@ -16,7 +16,7 @@
       --bg: #050505;
       --fg: #f5f5f5;
       --muted: #a7a7a7;
-      --accent: #e3bf72; /* soft gold accent */
+      --accent: #e3bf72;
       --border: #2b2b2b;
     }
 
@@ -49,8 +49,8 @@
     }
 
     .masthead-inner {
-      max-width: 80%;
-      margin: 0 auto;          /* lock title + subtitle to same width */
+      max-width: 100%;        /* FILL PAGE WIDTH */
+      margin: 0 auto;
     }
 
     .masthead-line-1 {
@@ -68,7 +68,7 @@
 
     .masthead-rule {
       margin: 12px auto 10px;
-      width: 100%;              /* match masthead-inner width */
+      width: 100%;
       border-top: 1px solid var(--border);
     }
 
@@ -80,7 +80,7 @@
       color: var(--fg);
     }
 
-    /* Hero (flat) */
+    /* Hero */
     header {
       padding: 32px 0 8px;
       text-align: center;
@@ -100,15 +100,15 @@
       letter-spacing: 0.22em;
       font-size: 1.0rem;
       color: var(--muted);
-      margin-bottom: 80px;       /* huge space before first button */
+      margin-bottom: 80px;   /* big space before first button */
     }
 
     .hero-actions {
       display: flex;
       flex-direction: column;
-      gap: 30px;                 /* big gaps between buttons */
+      gap: 30px;
       max-width: 420px;
-      margin: 0 auto 56px;       /* more space below buttons */
+      margin: 0 auto 56px;
     }
 
     .btn {
@@ -152,7 +152,7 @@
       color: var(--fg);
     }
 
-    /* Brand/wordmark row at bottom */
+    /* Brand / wordmarks */
     main {
       margin-top: 40px;
     }
@@ -164,10 +164,10 @@
 
     .brand-grid {
       display: grid;
-      grid-template-columns: 1fr;   /* stacked initiatives */
+      grid-template-columns: 1fr;
       gap: 32px;
       margin-top: 12px;
-      max-width: 90%;               /* wordmarks at ~90% width */
+      max-width: 100%;        /* FILL PAGE WIDTH */
       margin-left: auto;
       margin-right: auto;
     }
@@ -238,9 +238,9 @@
     .logo-the-polo-life .main {
       display: block;
       font-size: 1.4rem;
-      letter-spacing: 0.12em;     /* tightened tracking */
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-top: 2px;            /* tighter vertical spacing */
+      margin-top: 2px;
     }
 
     /* CHARLESTON POLO CLUB */
@@ -269,10 +269,10 @@
       margin-top: 40px;
       padding: 14px 0 8px;
       border-top: 1px solid var(--border);
-      font-size: 0.7rem;              /* reduced */
+      font-size: 0.7rem;
       color: var(--muted);
       display: flex;
-      flex-direction: column;         /* stacked */
+      flex-direction: column;
       align-items: center;
       gap: 4px;
       text-align: center;
@@ -285,10 +285,6 @@
         margin-top: 20px;
         margin-bottom: 48px;
         padding: 0 12px;
-      }
-
-      .masthead-inner {
-        max-width: 100%;
       }
 
       .masthead-line-1 {
@@ -346,7 +342,6 @@
       <div class="hero-symbol">SYMBOL: PATRON</div>
 
       <div class="hero-actions">
-        <!-- TODO: replace hrefs with real Thirdweb/Base URLs -->
         <a class="btn btn-primary" href="#buy-fiat">
           BUY PATRON (FIAT VIA THIRDWEB)
         </a>

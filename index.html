@@ -66,9 +66,8 @@
       display: block;
     }
 
-    /* second line slightly smaller to sit inside the first */
     .masthead-line-1 span:last-child {
-      font-size: 0.86em;
+      font-size: 0.86em;        /* slightly smaller so it sits inside */
       letter-spacing: 0.14em;
     }
 
@@ -145,10 +144,6 @@
       border-color: #f1cf86;
     }
 
-    .btn-secondary:hover {
-      background: #181818;
-    }
-
     .btn-outline {
       color: var(--muted);
     }
@@ -166,13 +161,24 @@
     .brand-row {
       padding-top: 24px;
       border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    /* small linear tagline with USPPA + string 777 remuda */
+    .brand-tagline {
+      font-family: "Cormorant Garamond", "EB Garamond", serif;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.78rem;      /* about half the size of big wordmarks */
+      color: var(--muted);
+      margin-bottom: 28px;
     }
 
     .brand-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 40px;
-      margin-top: 20px;
+      margin-top: 0;
       max-width: 100%;
       margin-left: auto;
       margin-right: auto;
@@ -181,15 +187,6 @@
     .logo-block {
       text-align: center;
       padding: 8px 4px;
-    }
-
-    /* STRING 7̶7̶7̶ REMUDA — linear */
-    .logo-string-sevens-remuda {
-      text-transform: uppercase;
-      font-family: "IM Fell English SC", "Cormorant Garamond", serif;
-      letter-spacing: 0.22em;
-      font-size: clamp(1.1rem, 3.6vw, 1.6rem);
-      color: var(--fg);
     }
 
     /* COWBOY POLO CIRCUIT */
@@ -303,13 +300,11 @@
       <div class="hero-symbol">ERC-777 &middot; SYMBOL: PATRON</div>
 
       <div class="hero-actions">
-        <!-- TODO: replace hrefs with real Thirdweb/Base URLs -->
-        <a class="btn btn-primary" href="#buy-fiat">
-          BUY PATRON (CARD VIA STRIPE)
+        <!-- Single buy button -->
+        <a class="btn btn-primary" href="#buy">
+          BUY PATRON
         </a>
-        <a class="btn btn-secondary" href="#buy-crypto">
-          BUY PATRON (CRYPTO ON COINBASE)
-        </a>
+        <!-- Apply button stays -->
         <a class="btn btn-outline" href="#founding-patrons">
           APPLY TO BE A FOUNDING PATRON
         </a>
@@ -319,14 +314,11 @@
     <!-- Bottom brand/wordmark section -->
     <main>
       <section class="brand-row" id="brands">
-        <div class="brand-grid">
-          <!-- STRING 7̶7̶7̶ REMUDA (linear) -->
-          <div class="logo-block">
-            <div class="logo-string-sevens-remuda">
-              STRING&nbsp;7̶7̶7̶&nbsp;REMUDA
-            </div>
-          </div>
+        <div class="brand-tagline">
+          US POLO PATRONS ASSOCIATION &middot; STRING 7̶7̶7̶ REMUDA
+        </div>
 
+        <div class="brand-grid">
           <!-- COWBOY POLO CIRCUIT -->
           <div class="logo-block">
             <div class="logo-cowboy-polo-circuit">
@@ -355,10 +347,10 @@
 
     <footer>
       <div>
-        &copy; <span id="year"></span> US POLO PATRONS ASSOCIATION — POLO PATRONIUM
+        &copy; <span id="year"></span> US POLO PATRONS ASSOCIATION — POLO PATRONIUM.
       </div>
       <div>
-        BUILT ON BASE BY COINBASE
+        BUILT ON BASE BY COINBASE · STRING 7̶7̶7̶ REMUDA
       </div>
     </footer>
   </div>

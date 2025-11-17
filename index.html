@@ -94,7 +94,10 @@
     }
 
     .masthead-stewardship {
-      margin-bottom: var(--block-gap); /* GAP 1 to hero */
+      font-size: 0.8rem;
+      max-width: 640px;
+      margin: 6px auto var(--block-gap);
+      line-height: 1.6;
     }
 
     /* Hero */
@@ -117,8 +120,7 @@
       text-transform: uppercase;
       letter-spacing: 0.2em;
       font-size: 0.95rem;
-      /* slightly tighter so tagline “moves up” */
-      margin-bottom: 14px;
+      margin-bottom: var(--block-gap);
     }
 
     .hero-symbol-main {
@@ -150,19 +152,6 @@
       font-family: "EB Garamond", Georgia, serif;
       letter-spacing: 0.08em;
       margin-left: 0.35em;
-    }
-
-    /* economy tagline under token info */
-    .hero-tagline {
-      font-family: "Cormorant Garamond", "EB Garamond", serif;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      font-size: 0.75rem;
-      color: var(--fg);
-      font-weight: 500;
-      /* sits closer to contract, but same gap to buttons */
-      margin-top: 2px;
-      margin-bottom: var(--block-gap);
     }
 
     .hero-actions {
@@ -212,7 +201,7 @@
 
     /* Brand / wordmarks */
     main {
-      margin-top: var(--block-gap); /* GAP 3 */
+      margin-top: var(--block-gap);
     }
 
     .brand-row {
@@ -407,7 +396,7 @@
           PRESENTS THE
         </div>
         <div class="masthead-line-2 masthead-stewardship">
-          OFFICIAL POLO PATRONAGE TOKEN
+          OFFICIAL POLO PATRONAGE TOKEN OF THE DECENTRALISED POLO PATRONAGE ECOSYSTEM
         </div>
       </div>
     </div>
@@ -422,17 +411,12 @@
           ERC-777 &middot; SYMBOL "PATRON"
         </div>
         <div class="hero-network">
-          ON BASE NETWORK &mdash; AN ETHEREUM L2 CHAIN BY COINBASE
+          ON BASE NETWORK BY COINBASE
         </div>
         <div class="hero-contract">
           <span class="hero-contract-label">CONTRACT (BASE):</span>
           <span class="hero-contract-value">0xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span>
         </div>
-      </div>
-
-      <!-- tagline directly under token info -->
-      <div class="hero-tagline">
-        OFFICIAL POLO PATRONAGE TOKEN OF THE DECENTRALISED POLO ECOSYSTEM
       </div>
 
       <div class="hero-actions">
@@ -445,7 +429,7 @@
       </div>
     </header>
 
-    <!-- Bottom brand/wordmark section (unchanged) -->
+    <!-- Bottom brand/wordmark section -->
     <main>
       <section class="brand-row" id="brands">
         <h2 class="roadmap-title">INITIATIVE ROADMAP</h2>

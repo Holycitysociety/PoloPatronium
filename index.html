@@ -66,7 +66,6 @@
       display: block;
     }
 
-    /* Second line smaller so it visually nests inside the first */
     .masthead-line-1 span:last-child {
       font-size: 0.86em;
       letter-spacing: 0.14em;
@@ -106,7 +105,7 @@
       letter-spacing: 0.2em;
       font-size: 0.95rem;
       color: var(--muted);
-      margin-bottom: 104px;   /* more space before button */
+      margin-bottom: 104px;
     }
 
     .hero-actions {
@@ -114,7 +113,7 @@
       flex-direction: column;
       gap: 34px;
       max-width: 460px;
-      margin: 0 auto 88px;    /* more space before wordmarks */
+      margin: 0 auto 88px;
     }
 
     .btn {
@@ -167,7 +166,7 @@
     .brand-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 44px;              /* increased spacing between wordmarks */
+      gap: 44px;
       margin-top: 22px;
       max-width: 100%;
       margin-left: auto;
@@ -179,34 +178,32 @@
       padding: 8px 4px;
     }
 
-    /* STRING / 7̶7̶7̶ / REMUDA — stacked */
-    .logo-string-sevens-remuda {
-      text-transform: uppercase;
+    /* NEW: USPPA over STRING 777 REMUDA */
+    .logo-usp-string-remuda {
       font-family: "IM Fell English SC", "Cormorant Garamond", serif;
-      letter-spacing: 0.18em;
-      font-size: clamp(1.1rem, 3.6vw, 1.6rem);
+      text-transform: uppercase;
       color: var(--fg);
     }
 
-    .logo-string-sevens-remuda .line-top {
+    .logo-usp-string-remuda .usp {
       display: block;
-      font-size: 0.9em;
+      font-size: clamp(1.2rem, 3.8vw, 1.8rem);
+      letter-spacing: 0.26em;   /* wider */
+      margin-bottom: 10px;
     }
 
-    .logo-string-sevens-remuda .line-middle {
-      display: inline-block;
-      font-size: 1.4em;
-      margin: 8px 0 6px;
-      padding: 2px 24px;
+    .logo-usp-string-remuda .rule {
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto 14px;
       border-top: 1px solid var(--fg);
-      border-bottom: 1px solid var(--fg);
+      opacity: 0.9;
     }
 
-    .logo-string-sevens-remuda .line-bottom {
+    .logo-usp-string-remuda .string-line {
       display: block;
-      font-size: 0.9em;
-      color: var(--muted);
-      letter-spacing: 0.2em;
+      font-size: clamp(0.95rem, 3.2vw, 1.3rem);
+      letter-spacing: 0.24em;   /* wide tracking */
     }
 
     /* COWBOY POLO CIRCUIT */
@@ -320,11 +317,9 @@
       <div class="hero-symbol">ERC-777 &middot; SYMBOL: PATRON</div>
 
       <div class="hero-actions">
-        <!-- Single buy button -->
         <a class="btn btn-primary" href="#buy">
           BUY PATRON
         </a>
-        <!-- Apply button -->
         <a class="btn btn-outline" href="#founding-patrons">
           APPLY TO BE A FOUNDING PATRON
         </a>
@@ -335,12 +330,12 @@
     <main>
       <section class="brand-row" id="brands">
         <div class="brand-grid">
-          <!-- STRING / 7̶7̶7̶ / REMUDA (stacked) -->
+          <!-- USPPA / STRING 7̶7̶7̶ REMUDA -->
           <div class="logo-block">
-            <div class="logo-string-sevens-remuda">
-              <span class="line-top">STRING</span>
-              <span class="line-middle">7̶7̶7̶</span>
-              <span class="line-bottom">REMUDA</span>
+            <div class="logo-usp-string-remuda">
+              <span class="usp">USPPA</span>
+              <div class="rule"></div>
+              <span class="string-line">STRING&nbsp;7̶7̶7̶&nbsp;REMUDA</span>
             </div>
           </div>
 

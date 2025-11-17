@@ -85,6 +85,17 @@
       text-transform: uppercase;
       font-size: 0.92rem;
       color: var(--muted);
+      margin-bottom: 0;
+    }
+
+    .masthead-presents {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+
+    .masthead-stewardship {
       margin-bottom: var(--block-gap); /* GAP 1 */
     }
 
@@ -102,26 +113,16 @@
       margin: 0 0 12px;
     }
 
-    /* NEW: movie-poster style tagline */
-    .hero-tagline {
-      font-family: "Cormorant Garamond", "EB Garamond", serif;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-
+    /* token info block */
     .hero-symbol {
       font-family: "Cormorant Garamond", serif;
       text-transform: uppercase;
       letter-spacing: 0.2em;
       font-size: 0.95rem;
       color: var(--muted);
-      margin-bottom: var(--block-gap); /* GAP 2 */
+      margin-bottom: 12px; /* tight to tagline */
     }
 
-    /* break out inner lines of hero-symbol */
     .hero-symbol-main {
       margin-bottom: 6px;
     }
@@ -147,6 +148,16 @@
       font-family: "EB Garamond", Georgia, serif;
       letter-spacing: 0.08em;
       margin-left: 0.35em;
+    }
+
+    /* economy tagline under token info */
+    .hero-tagline {
+      font-family: "Cormorant Garamond", "EB Garamond", serif;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: var(--block-gap); /* GAP 2: to buttons */
     }
 
     .hero-actions {
@@ -388,7 +399,10 @@
           <span>PATRONS ASSOCIATION</span>
         </div>
         <div class="masthead-rule"></div>
-        <div class="masthead-line-2">
+        <div class="masthead-line-2 masthead-presents">
+          PRESENTS
+        </div>
+        <div class="masthead-line-2 masthead-stewardship">
           OFFICIAL STEWARDSHIP TOKEN
         </div>
       </div>
@@ -398,11 +412,7 @@
     <header>
       <h1 class="hero-title">POLO PATRONIUM</h1>
 
-      <!-- movie-poster style verbiage -->
-      <div class="hero-tagline">
-        US POLO PATRONS ASSOCIATION PRESENTS &mdash; A DECENTRALISED POLO ECONOMY FOR PATRONS, PLAYERS &amp; HORSES
-      </div>
-
+      <!-- token info (specs, network, contract) -->
       <div class="hero-symbol">
         <div class="hero-symbol-main">
           ERC-777 &middot; SYMBOL "PATRON"
@@ -414,6 +424,11 @@
           <span class="hero-contract-label">CONTRACT (BASE):</span>
           <span class="hero-contract-value">0xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span>
         </div>
+      </div>
+
+      <!-- economy tagline below token info -->
+      <div class="hero-tagline">
+        A DECENTRALISED POLO ECONOMY FOR PATRONS, PLAYERS &amp; HORSES
       </div>
 
       <div class="hero-actions">

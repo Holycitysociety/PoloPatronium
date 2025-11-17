@@ -73,7 +73,6 @@
     }
 
     .masthead-rule {
-      /* more breathing room around the line */
       margin: 26px auto 26px;
       width: 100%;
       border-top: 1px solid var(--border);
@@ -84,7 +83,6 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       font-size: 0.92rem;
-      /* brighten + slightly bolder for importance */
       color: var(--fg);
       font-weight: 500;
       margin-top: 4px;
@@ -119,8 +117,8 @@
       text-transform: uppercase;
       letter-spacing: 0.2em;
       font-size: 0.95rem;
-      /* more space before the tagline block */
-      margin-bottom: 22px;
+      /* slightly tighter so tagline “moves up” */
+      margin-bottom: 14px;
     }
 
     .hero-symbol-main {
@@ -132,7 +130,7 @@
     .hero-network {
       font-size: 0.72rem;
       letter-spacing: 0.16em;
-      color: var(--fg);      /* brighten */
+      color: var(--fg);
       font-weight: 500;
       margin-bottom: 4px;
     }
@@ -140,7 +138,7 @@
     .hero-contract {
       font-size: 0.72rem;
       letter-spacing: 0.16em;
-      color: var(--fg);      /* brighten */
+      color: var(--fg);
       font-weight: 500;
     }
 
@@ -160,10 +158,11 @@
       text-transform: uppercase;
       letter-spacing: 0.18em;
       font-size: 0.75rem;
-      color: var(--fg);      /* brighten */
+      color: var(--fg);
       font-weight: 500;
-      /* a little more air before the buttons */
-      margin-bottom: calc(var(--block-gap) + 8px);
+      /* sits closer to contract, but same gap to buttons */
+      margin-top: 2px;
+      margin-bottom: var(--block-gap);
     }
 
     .hero-actions {
@@ -431,9 +430,9 @@
         </div>
       </div>
 
-      <!-- economy tagline below token info -->
+      <!-- tagline directly under token info -->
       <div class="hero-tagline">
-        A DECENTRALISED POLO ECONOMY FOR PATRONS, PLAYERS &amp; HORSES
+        OFFICIAL POLO PATRONAGE TOKEN OF THE DECENTRALISED POLO ECOSYSTEM
       </div>
 
       <div class="hero-actions">

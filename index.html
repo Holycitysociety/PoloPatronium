@@ -178,7 +178,7 @@
       padding: 8px 4px;
     }
 
-    /* USPPA tiny / 777 large / hairline rule */
+    /* USPPA tiny / 777 big / hairline rule with aligned tops */
     .logo-usp-string-remuda {
       font-family: "IM Fell English SC", "Cormorant Garamond", serif;
       text-transform: uppercase;
@@ -195,20 +195,27 @@
     .logo-usp-string-remuda .rule {
       width: 70%;
       max-width: 260px;
-      margin: 0 auto 6px;
-      border-top: 0.5px solid var(--fg);       /* micro thin */
+      margin: 0 auto 4px;            /* closer to the text */
+      border-top: 0.5px solid var(--fg);  /* micro thin */
       opacity: 0.9;
     }
 
     .logo-usp-string-remuda .string-line {
-      display: block;
+      display: inline-flex;
+      align-items: flex-start;       /* align tops */
+      gap: 0.55em;
+      line-height: 1;
       font-size: clamp(0.9rem, 2.8vw, 1.2rem);
+    }
+
+    .logo-usp-string-remuda .string-word {
       letter-spacing: 0.24em;
     }
 
-    .logo-usp-string-remuda .string-line .sevens {
-      font-size: 1.55em;        /* 777 bigger */
-      letter-spacing: 0.08em;   /* slightly tighter inside */
+    .logo-usp-string-remuda .sevens {
+      font-size: 1.45em;             /* larger 777 */
+      letter-spacing: 0.08em;
+      line-height: 1;
     }
 
     /* COWBOY POLO CIRCUIT */
@@ -335,13 +342,15 @@
     <main>
       <section class="brand-row" id="brands">
         <div class="brand-grid">
-          <!-- USPPA tiny / 777 big / hairline rule -->
+          <!-- USPPA tiny / 777 big / hairline rule / aligned tops -->
           <div class="logo-block">
             <div class="logo-usp-string-remuda">
               <span class="usp">USPPA</span>
               <div class="rule"></div>
               <span class="string-line">
-                STRING&nbsp;<span class="sevens">7̶7̶7̶</span>&nbsp;REMUDA
+                <span class="string-word">STRING</span>
+                <span class="sevens">7̶7̶7̶</span>
+                <span class="string-word">REMUDA</span>
               </span>
             </div>
           </div>

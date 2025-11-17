@@ -56,8 +56,7 @@
     .masthead-line-1 {
       font-family: "Cormorant Garamond", "EB Garamond", serif;
       text-transform: uppercase;
-      /* wide, but not screamy */
-      font-size: clamp(1.8rem, 5.2vw, 2.5rem);
+      font-size: clamp(1.8rem, 5.2vw, 2.4rem);
       letter-spacing: 0.12em;
       color: var(--fg);
       line-height: 1.28;
@@ -65,6 +64,12 @@
 
     .masthead-line-1 span {
       display: block;
+    }
+
+    /* second line slightly smaller to sit inside the first */
+    .masthead-line-1 span:last-child {
+      font-size: 0.86em;
+      letter-spacing: 0.14em;
     }
 
     .masthead-rule {
@@ -90,18 +95,18 @@
     .hero-title {
       font-family: "Cormorant Garamond", "EB Garamond", serif;
       text-transform: uppercase;
-      font-size: clamp(2.0rem, 5.4vw, 2.7rem);
-      letter-spacing: 0.18em;          /* closer to wordmark feel */
+      font-size: clamp(1.7rem, 4.6vw, 2.2rem); /* reduced */
+      letter-spacing: 0.18em;
       margin: 0 0 10px;
     }
 
     .hero-symbol {
       font-family: "Cormorant Garamond", serif;
       text-transform: uppercase;
-      letter-spacing: 0.22em;
-      font-size: 1.0rem;
+      letter-spacing: 0.2em;
+      font-size: 0.95rem;
       color: var(--muted);
-      margin-bottom: 88px;             /* big, but slightly tighter */
+      margin-bottom: 88px;
     }
 
     .hero-actions {
@@ -178,47 +183,26 @@
       padding: 8px 4px;
     }
 
-    /* STRING / 7̶7̶7̶ / REMUDA */
+    /* STRING 7̶7̶7̶ REMUDA — linear */
     .logo-string-sevens-remuda {
       text-transform: uppercase;
       font-family: "IM Fell English SC", "Cormorant Garamond", serif;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.22em;
       font-size: clamp(1.1rem, 3.6vw, 1.6rem);
       color: var(--fg);
     }
 
-    .logo-string-sevens-remuda .line-top {
-      display: block;
-      font-size: 0.9em;
-    }
-
-    .logo-string-sevens-remuda .line-middle {
-      display: inline-block;
-      font-size: 1.4em;
-      margin: 8px 0 6px;
-      padding: 2px 24px;
-      border-top: 1px solid var(--fg);
-      border-bottom: 1px solid var(--fg);
-    }
-
-    .logo-string-sevens-remuda .line-bottom {
-      display: block;
-      font-size: 0.9em;
-      color: var(--muted);
-      letter-spacing: 0.2em;
-    }
-
-    /* COWBOY POLO */
+    /* COWBOY POLO CIRCUIT */
     .logo-cowboy-polo-circuit {
       text-transform: uppercase;
       font-family: "IM Fell English SC", "Cormorant Garamond", serif;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.18em;
       font-size: clamp(1.0rem, 3.4vw, 1.4rem);
     }
 
     .logo-cowboy-polo-circuit span {
       display: inline-block;
-      padding: 8px 32px;
+      padding: 8px 28px;
       border: 1px solid var(--fg);
     }
 
@@ -316,7 +300,7 @@
     <!-- Hero -->
     <header>
       <h1 class="hero-title">POLO PATRONIUM</h1>
-      <div class="hero-symbol">SYMBOL: PATRON</div>
+      <div class="hero-symbol">ERC-777 &middot; SYMBOL: PATRON</div>
 
       <div class="hero-actions">
         <!-- TODO: replace hrefs with real Thirdweb/Base URLs -->
@@ -336,19 +320,17 @@
     <main>
       <section class="brand-row" id="brands">
         <div class="brand-grid">
-          <!-- STRING / 7̶7̶7̶ / REMUDA -->
+          <!-- STRING 7̶7̶7̶ REMUDA (linear) -->
           <div class="logo-block">
             <div class="logo-string-sevens-remuda">
-              <span class="line-top">STRING</span>
-              <span class="line-middle">7̶7̶7̶</span>
-              <span class="line-bottom">REMUDA</span>
+              STRING&nbsp;7̶7̶7̶&nbsp;REMUDA
             </div>
           </div>
 
-          <!-- COWBOY POLO -->
+          <!-- COWBOY POLO CIRCUIT -->
           <div class="logo-block">
             <div class="logo-cowboy-polo-circuit">
-              <span>COWBOY&nbsp;POLO</span>
+              <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
             </div>
           </div>
 

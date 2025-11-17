@@ -178,7 +178,7 @@
       padding: 8px 4px;
     }
 
-    /* NEW: USPPA over STRING 777 REMUDA */
+    /* USPPA tiny / 777 large / hairline rule */
     .logo-usp-string-remuda {
       font-family: "IM Fell English SC", "Cormorant Garamond", serif;
       text-transform: uppercase;
@@ -187,23 +187,28 @@
 
     .logo-usp-string-remuda .usp {
       display: block;
-      font-size: clamp(1.2rem, 3.8vw, 1.8rem);
-      letter-spacing: 0.26em;   /* wider */
-      margin-bottom: 10px;
+      font-size: clamp(0.7rem, 1.9vw, 0.9rem); /* tiny */
+      letter-spacing: 0.22em;
+      margin-bottom: 6px;
     }
 
     .logo-usp-string-remuda .rule {
-      width: 100%;
-      max-width: 320px;
-      margin: 0 auto 14px;
-      border-top: 1px solid var(--fg);
+      width: 70%;
+      max-width: 260px;
+      margin: 0 auto 6px;
+      border-top: 0.5px solid var(--fg);       /* micro thin */
       opacity: 0.9;
     }
 
     .logo-usp-string-remuda .string-line {
       display: block;
-      font-size: clamp(0.95rem, 3.2vw, 1.3rem);
-      letter-spacing: 0.24em;   /* wide tracking */
+      font-size: clamp(0.9rem, 2.8vw, 1.2rem);
+      letter-spacing: 0.24em;
+    }
+
+    .logo-usp-string-remuda .string-line .sevens {
+      font-size: 1.55em;        /* 777 bigger */
+      letter-spacing: 0.08em;   /* slightly tighter inside */
     }
 
     /* COWBOY POLO CIRCUIT */
@@ -330,12 +335,14 @@
     <main>
       <section class="brand-row" id="brands">
         <div class="brand-grid">
-          <!-- USPPA / STRING 7̶7̶7̶ REMUDA -->
+          <!-- USPPA tiny / 777 big / hairline rule -->
           <div class="logo-block">
             <div class="logo-usp-string-remuda">
               <span class="usp">USPPA</span>
               <div class="rule"></div>
-              <span class="string-line">STRING&nbsp;7̶7̶7̶&nbsp;REMUDA</span>
+              <span class="string-line">
+                STRING&nbsp;<span class="sevens">7̶7̶7̶</span>&nbsp;REMUDA
+              </span>
             </div>
           </div>
 

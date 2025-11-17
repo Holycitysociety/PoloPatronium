@@ -57,7 +57,6 @@
     .masthead-line-1 {
       font-family: "Cormorant Garamond", "EB Garamond", serif;
       text-transform: uppercase;
-      /* ~35% smaller than before */
       font-size: clamp(1.2rem, 3.4vw, 1.6rem);
       letter-spacing: 0.12em;
       color: var(--fg);
@@ -74,7 +73,8 @@
     }
 
     .masthead-rule {
-      margin: 18px auto 14px;
+      /* more breathing room around the line */
+      margin: 26px auto 26px;
       width: 100%;
       border-top: 1px solid var(--border);
     }
@@ -84,9 +84,11 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       font-size: 0.92rem;
-      color: var(--muted);
+      /* brighten + slightly bolder for importance */
+      color: var(--fg);
+      font-weight: 500;
       margin-top: 4px;
-      margin-bottom: 4px; /* equal spacing between the two lines */
+      margin-bottom: 4px;
     }
 
     .masthead-presents {
@@ -94,7 +96,7 @@
     }
 
     .masthead-stewardship {
-      margin-bottom: var(--block-gap); /* GAP 1 to hero title */
+      margin-bottom: var(--block-gap); /* GAP 1 to hero */
     }
 
     /* Hero */
@@ -117,29 +119,33 @@
       text-transform: uppercase;
       letter-spacing: 0.2em;
       font-size: 0.95rem;
-      color: var(--muted);
-      margin-bottom: 12px; /* tight to tagline */
+      /* more space before the tagline block */
+      margin-bottom: 22px;
     }
 
     .hero-symbol-main {
       margin-bottom: 6px;
+      color: var(--fg);
+      font-weight: 500;
     }
 
     .hero-network {
       font-size: 0.72rem;
       letter-spacing: 0.16em;
-      color: var(--muted);
+      color: var(--fg);      /* brighten */
+      font-weight: 500;
       margin-bottom: 4px;
     }
 
     .hero-contract {
       font-size: 0.72rem;
       letter-spacing: 0.16em;
-      color: var(--muted);
+      color: var(--fg);      /* brighten */
+      font-weight: 500;
     }
 
     .hero-contract-label {
-      opacity: 0.85;
+      opacity: 0.9;
     }
 
     .hero-contract-value {
@@ -154,8 +160,10 @@
       text-transform: uppercase;
       letter-spacing: 0.18em;
       font-size: 0.75rem;
-      color: var(--muted);
-      margin-bottom: var(--block-gap); /* GAP 2: to buttons */
+      color: var(--fg);      /* brighten */
+      font-weight: 500;
+      /* a little more air before the buttons */
+      margin-bottom: calc(var(--block-gap) + 8px);
     }
 
     .hero-actions {
@@ -228,7 +236,6 @@
       padding: 8px 4px;
     }
 
-    /* roadmap heading + copy */
     .roadmap-title {
       text-align: center;
       text-transform: uppercase;
@@ -439,13 +446,12 @@
       </div>
     </header>
 
-    <!-- Bottom brand/wordmark section -->
+    <!-- Bottom brand/wordmark section (unchanged) -->
     <main>
       <section class="brand-row" id="brands">
         <h2 class="roadmap-title">INITIATIVE ROADMAP</h2>
 
         <div class="brand-grid">
-          <!-- USPPA tiny / 777 big / hairline rule / aligned tops -->
           <div class="logo-block">
             <div class="logo-usp-string-remuda">
               <span class="usp">USPPA</span>
@@ -463,7 +469,6 @@
             </p>
           </div>
 
-          <!-- COWBOY POLO CIRCUIT -->
           <div class="logo-block">
             <div class="logo-cowboy-polo-circuit">
               <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
@@ -475,7 +480,6 @@
             </p>
           </div>
 
-          <!-- THE POLO LIFE -->
           <div class="logo-block">
             <div class="logo-the-polo-life">
               <span class="top">THE</span>
@@ -488,7 +492,6 @@
             </p>
           </div>
 
-          <!-- CHARLESTON POLO CLUB -->
           <div class="logo-block">
             <div class="logo-charleston-polo">
               <span class="top">CHARLESTON</span>

@@ -102,6 +102,16 @@
       margin: 0 0 12px;
     }
 
+    /* NEW: movie-poster style tagline */
+    .hero-tagline {
+      font-family: "Cormorant Garamond", "EB Garamond", serif;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
     .hero-symbol {
       font-family: "Cormorant Garamond", serif;
       text-transform: uppercase;
@@ -109,6 +119,34 @@
       font-size: 0.95rem;
       color: var(--muted);
       margin-bottom: var(--block-gap); /* GAP 2 */
+    }
+
+    /* break out inner lines of hero-symbol */
+    .hero-symbol-main {
+      margin-bottom: 6px;
+    }
+
+    .hero-network {
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .hero-contract {
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    .hero-contract-label {
+      opacity: 0.85;
+    }
+
+    .hero-contract-value {
+      font-family: "EB Garamond", Georgia, serif;
+      letter-spacing: 0.08em;
+      margin-left: 0.35em;
     }
 
     .hero-actions {
@@ -359,7 +397,24 @@
     <!-- Hero -->
     <header>
       <h1 class="hero-title">POLO PATRONIUM</h1>
-      <div class="hero-symbol">ERC-777 &middot; SYMBOL "PATRON"</div>
+
+      <!-- movie-poster style verbiage -->
+      <div class="hero-tagline">
+        US POLO PATRONS ASSOCIATION PRESENTS &mdash; A DECENTRALISED POLO ECONOMY FOR PATRONS, PLAYERS &amp; HORSES
+      </div>
+
+      <div class="hero-symbol">
+        <div class="hero-symbol-main">
+          ERC-777 &middot; SYMBOL "PATRON"
+        </div>
+        <div class="hero-network">
+          DEPLOYED ON BASE &mdash; AN ETHEREUM L2 NETWORK INCUBATED BY COINBASE
+        </div>
+        <div class="hero-contract">
+          <span class="hero-contract-label">CONTRACT (BASE):</span>
+          <span class="hero-contract-value">0xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span>
+        </div>
+      </div>
 
       <div class="hero-actions">
         <a class="btn btn-primary" href="#buy">

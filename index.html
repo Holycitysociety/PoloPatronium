@@ -18,7 +18,12 @@
       --muted: #a7a7a7;
       --accent: #e3bf72;
       --border: #2b2b2b;
-      --block-gap: 56px; /* shared vertical spacing */
+
+      --font-lg: 1.9rem;
+      --font-md: 1.05rem;
+      --font-sm: 0.8rem;
+
+      --block-gap: 48px; /* shared vertical spacing */
     }
 
     * { box-sizing: border-box; }
@@ -28,6 +33,7 @@
       background: var(--bg);
       color: var(--fg);
       font-family: "EB Garamond", Georgia, "Times New Roman", serif;
+      font-size: var(--font-md);
       line-height: 1.6;
     }
 
@@ -47,6 +53,7 @@
     .masthead {
       text-align: center;
       padding: 4px 0 0;
+      margin-bottom: var(--block-gap);
     }
 
     .masthead-inner {
@@ -57,10 +64,10 @@
     .masthead-line-1 {
       font-family: "Cormorant Garamond", "EB Garamond", serif;
       text-transform: uppercase;
-      font-size: clamp(1.2rem, 3.4vw, 1.6rem);
+      font-size: var(--font-md);
       letter-spacing: 0.12em;
       color: var(--fg);
-      line-height: 1.28;
+      line-height: 1.35;
     }
 
     .masthead-line-1 span {
@@ -68,12 +75,12 @@
     }
 
     .masthead-line-1 span:last-child {
-      font-size: 0.86em;
+      font-size: 0.9em;
       letter-spacing: 0.14em;
     }
 
     .masthead-rule {
-      margin: 26px auto 26px;
+      margin: 22px auto;
       width: 100%;
       border-top: 1px solid var(--border);
     }
@@ -82,55 +89,55 @@
       font-family: "Cormorant Garamond", "EB Garamond", serif;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      font-size: 0.92rem;
+      font-size: var(--font-sm);
       color: var(--fg);
       font-weight: 500;
-      margin-top: 4px;
-      margin-bottom: 4px;
+      margin: 4px 0;
     }
 
     .masthead-presents {
-      font-size: 0.8rem;
+      font-size: var(--font-sm);
     }
 
     .masthead-stewardship {
-      font-size: 0.8rem;
+      font-size: var(--font-sm);
       max-width: 640px;
-      margin: 6px auto var(--block-gap);
-      line-height: 1.6;
+      margin: 6px auto 0;
+      line-height: 1.7;
     }
 
     /* Hero */
     header {
       padding: 0;
       text-align: center;
+      margin-bottom: var(--block-gap);
     }
 
     .hero-title {
       font-family: "Cormorant Garamond", "EB Garamond", serif;
       text-transform: uppercase;
-      font-size: clamp(1.7rem, 4.6vw, 2.2rem);
+      font-size: var(--font-lg);
       letter-spacing: 0.18em;
-      margin: 0 0 12px;
+      margin: 0 0 18px;
     }
 
     /* token info block */
     .hero-symbol {
       font-family: "Cormorant Garamond", serif;
       text-transform: uppercase;
-      letter-spacing: 0.2em;
-      font-size: 0.95rem;
+      letter-spacing: 0.18em;
+      font-size: var(--font-sm);
       margin-bottom: var(--block-gap);
     }
 
     .hero-symbol-main {
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       color: var(--fg);
       font-weight: 500;
     }
 
     .hero-network {
-      font-size: 0.72rem;
+      font-size: var(--font-sm);
       letter-spacing: 0.16em;
       color: var(--fg);
       font-weight: 500;
@@ -138,7 +145,7 @@
     }
 
     .hero-contract {
-      font-size: 0.72rem;
+      font-size: var(--font-sm);
       letter-spacing: 0.16em;
       color: var(--fg);
       font-weight: 500;
@@ -157,19 +164,20 @@
     .hero-actions {
       display: flex;
       flex-direction: column;
-      gap: 34px;
+      align-items: center;
+      gap: 24px;
       max-width: 460px;
-      margin: 0 auto 0;
+      margin: 0 auto;
     }
 
     .btn {
       display: inline-flex;
       justify-content: center;
       align-items: center;
-      padding: 12px 20px;
+      padding: 10px 32px;
       border-radius: 999px;
       border: 1px solid var(--border);
-      font-size: 0.9rem;
+      font-size: var(--font-sm);
       font-family: "Cormorant Garamond", "EB Garamond", serif;
       letter-spacing: 0.16em;
       text-transform: uppercase;
@@ -177,6 +185,8 @@
       color: var(--fg);
       cursor: pointer;
       transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      min-width: 240px;
+      max-width: 280px;
     }
 
     .btn-primary {
@@ -212,8 +222,8 @@
     .brand-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 44px;
-      margin-top: 22px;
+      gap: 40px;
+      margin-top: 24px;
       max-width: 100%;
       margin-left: auto;
       margin-right: auto;
@@ -229,14 +239,14 @@
       text-transform: uppercase;
       font-family: "Cormorant Garamond", "EB Garamond", serif;
       letter-spacing: 0.18em;
-      font-size: 0.85rem;
+      font-size: var(--font-sm);
       color: var(--muted);
-      margin-top: 10px;
+      margin-top: 12px;
     }
 
     .logo-block .initiative-text {
       margin-top: 12px;
-      font-size: 0.9rem;
+      font-size: var(--font-sm);
       color: var(--muted);
       max-width: 720px;
       margin-left: auto;
@@ -244,8 +254,8 @@
     }
 
     .roadmap-footnote {
-      margin-top: 32px;
-      font-size: 0.85rem;
+      margin-top: 28px;
+      font-size: var(--font-sm);
       color: var(--muted);
       text-align: center;
       max-width: 720px;
@@ -258,11 +268,11 @@
       font-family: "IM Fell English SC", "Cormorant Garamond", serif;
       text-transform: uppercase;
       color: var(--fg);
+      font-size: var(--font-sm);
     }
 
     .logo-usp-string-remuda .usp {
       display: block;
-      font-size: clamp(0.7rem, 1.9vw, 0.9rem);
       letter-spacing: 0.22em;
       margin-bottom: 6px;
     }
@@ -280,7 +290,6 @@
       align-items: flex-start;
       gap: 0.55em;
       line-height: 1;
-      font-size: clamp(0.9rem, 2.8vw, 1.2rem);
     }
 
     .logo-usp-string-remuda .string-word {
@@ -288,7 +297,7 @@
     }
 
     .logo-usp-string-remuda .sevens {
-      font-size: 1.45em;
+      font-size: 1.6em;
       letter-spacing: 0.08em;
       line-height: 1;
     }
@@ -298,7 +307,7 @@
       text-transform: uppercase;
       font-family: "IM Fell English SC", "Cormorant Garamond", serif;
       letter-spacing: 0.18em;
-      font-size: clamp(1.0rem, 3.4vw, 1.4rem);
+      font-size: var(--font-md);
     }
 
     .logo-cowboy-polo-circuit span {
@@ -311,12 +320,13 @@
     .logo-the-polo-life {
       font-family: "Cormorant Garamond", serif;
       color: var(--fg);
+      font-size: var(--font-md);
     }
 
     .logo-the-polo-life .top {
       text-transform: uppercase;
       letter-spacing: 0.18em;
-      font-size: 0.8rem;
+      font-size: var(--font-sm);
       color: var(--muted);
       display: block;
       margin-bottom: 2px;
@@ -324,7 +334,7 @@
 
     .logo-the-polo-life .main {
       display: block;
-      font-size: clamp(1.8rem, 5vw, 2.4rem);
+      font-size: var(--font-lg);
       letter-spacing: 0.12em;
       text-transform: uppercase;
     }
@@ -334,12 +344,12 @@
       font-family: "Cormorant Garamond", serif;
       text-transform: uppercase;
       letter-spacing: 0.2em;
-      font-size: clamp(1.1rem, 3.2vw, 1.5rem);
+      font-size: var(--font-md);
     }
 
     .logo-charleston-polo .top {
       display: block;
-      font-size: 0.9rem;
+      font-size: var(--font-sm);
       color: var(--muted);
       margin-bottom: 2px;
     }
@@ -351,10 +361,10 @@
     }
 
     footer {
-      margin-top: 72px;
+      margin-top: var(--block-gap);
       padding: 18px 0 10px;
       border-top: 1px solid var(--border);
-      font-size: 0.7rem;
+      font-size: var(--font-sm);
       color: var(--muted);
       display: flex;
       flex-direction: column;
@@ -370,14 +380,6 @@
         margin-top: 40px;
         margin-bottom: 80px;
         padding: 0 10px;
-      }
-
-      .hero-actions {
-        max-width: 100%;
-      }
-
-      .btn {
-        width: 100%;
       }
     }
   </style>
@@ -408,14 +410,16 @@
       <!-- token info (specs, network, contract) -->
       <div class="hero-symbol">
         <div class="hero-symbol-main">
-          ERC-777 &middot;TOKEN SYMBOL "PATRON"
+          ERC-777 &middot; TOKEN SYMBOL "PATRON"
         </div>
         <div class="hero-network">
           ON BASE NETWORK BY COINBASE
         </div>
         <div class="hero-contract">
           <span class="hero-contract-label">CA:</span>
-          <span class="hero-contract-value">0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913</span>
+          <span class="hero-contract-value">
+            0xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+          </span>
         </div>
       </div>
 
@@ -424,7 +428,7 @@
           BUY PATRON
         </a>
         <a class="btn btn-outline" href="#founding-patrons">
-          APPLY TO BE A FOUNDING PATRON
+          FOUNDING PATRON INQUIRIES
         </a>
       </div>
     </header>
@@ -446,7 +450,9 @@
               </span>
             </div>
             <p class="initiative-text">
-              Our managed herd of USPPA horses — consigned or owned by the Association, assigned to operating patrons trainers and local players, and developed for play, exhibition and training across our programmes.
+              A shared remuda of US PPA horses — either consigned to the Association or owned by it —
+              entering the USPPA herd, assigned to operating patrons, and developed for play and training
+              across our programmes.
             </p>
           </div>
 
@@ -455,8 +461,9 @@
               <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
             </div>
             <p class="initiative-text">
-              An American endeavour to broaden the sport’s reach, nurture emerging talent, and encourage
-              the next generation of American players — where riders not only learn to play, but learn to make the horses of the String 7̶7̶7̶ Remuda.
+              A national endeavour to broaden the sport’s reach, nurture emerging talent, and encourage
+              the next generation of American players — where riders not only learn to play, but to train
+              and help train the horses of the String 7̶7̶7̶ Remuda.
             </p>
           </div>
 
@@ -467,7 +474,8 @@
             </div>
             <p class="initiative-text">
               A platform dedicated to presenting the elegance and traditions of polo to new audiences in
-              the digital age — following our horses, patrons, and players across the Cowboy Polo Circuit.
+              the digital age — following our horses, patrons, and players across the Remuda, Charleston Polo,
+              and the Cowboy Polo Circuit.
             </p>
           </div>
 
@@ -489,7 +497,7 @@
         <p class="roadmap-footnote">
           All of these initiatives are coordinated and supported through Polo Patronium, the living token
           of patronage within the United States Polo Patrons Association, uniting patrons, players, and
-          clubs in a shared ecosystem of sport.
+          clubs in a shared economy of sport.
         </p>
       </section>
     </main>

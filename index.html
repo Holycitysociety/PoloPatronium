@@ -18,16 +18,28 @@
       --muted: #a7a7a7;
       --accent: #e3bf72;
       --border: #2b2b2b;
-      --block-gap: 56px; /* shared vertical spacing */
+
+      /* Three core sizes */
+      --font-lg: clamp(2.1rem, 5vw, 2.7rem);
+      --font-md: clamp(1.1rem, 3.2vw, 1.4rem);
+      --font-sm: 0.85rem;
+
+      --block-gap: 56px;      /* main vertical spacing */
+      --block-gap-sm: 24px;   /* smaller spacing */
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      background: var(--bg);
+      background:
+        radial-gradient(circle at top,
+          rgba(255,255,255,0.06) 0,
+          rgba(0,0,0,0.94) 55%),
+        var(--bg);
       color: var(--fg);
       font-family: "EB Garamond", Georgia, "Times New Roman", serif;
+      font-size: var(--font-md);
       line-height: 1.6;
     }
 
@@ -47,6 +59,7 @@
     .masthead {
       text-align: center;
       padding: 4px 0 0;
+      margin-bottom: var(--block-gap);
     }
 
     .masthead-inner {
@@ -57,9 +70,9 @@
     .masthead-line-1 {
       font-family: "Cormorant Garamond", "EB Garamond", serif;
       text-transform: uppercase;
-      font-size: clamp(1.2rem, 3.4vw, 1.6rem);
+      font-size: var(--font-md);
       letter-spacing: 0.12em;
-      color: var(--fg);
+      color: #e0e0e0;
       line-height: 1.28;
     }
 
@@ -73,7 +86,7 @@
     }
 
     .masthead-rule {
-      margin: 26px auto 26px;
+      margin: 26px auto;
       width: 100%;
       border-top: 1px solid var(--border);
     }
@@ -82,21 +95,17 @@
       font-family: "Cormorant Garamond", "EB Garamond", serif;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      font-size: 0.92rem;
-      color: var(--fg);
+      font-size: var(--font-sm);
+      color: #f0f0f0;
       font-weight: 500;
       margin-top: 4px;
       margin-bottom: 4px;
     }
 
-    .masthead-presents {
-      font-size: 0.8rem;
-    }
-
     .masthead-stewardship {
-      font-size: 0.8rem;
+      font-size: var(--font-sm);
       max-width: 640px;
-      margin: 6px auto var(--block-gap);
+      margin: 6px auto 0;
       line-height: 1.6;
     }
 
@@ -109,9 +118,9 @@
     .hero-title {
       font-family: "Cormorant Garamond", "EB Garamond", serif;
       text-transform: uppercase;
-      font-size: clamp(1.7rem, 4.6vw, 2.2rem);
+      font-size: var(--font-lg);
       letter-spacing: 0.18em;
-      margin: 0 0 12px;
+      margin: 0 0 14px;
     }
 
     /* token info block */
@@ -119,7 +128,7 @@
       font-family: "Cormorant Garamond", serif;
       text-transform: uppercase;
       letter-spacing: 0.2em;
-      font-size: 0.95rem;
+      font-size: var(--font-sm);
       margin-bottom: var(--block-gap);
     }
 
@@ -130,7 +139,7 @@
     }
 
     .hero-network {
-      font-size: 0.72rem;
+      font-size: var(--font-sm);
       letter-spacing: 0.16em;
       color: var(--fg);
       font-weight: 500;
@@ -138,7 +147,7 @@
     }
 
     .hero-contract {
-      font-size: 0.72rem;
+      font-size: var(--font-sm);
       letter-spacing: 0.16em;
       color: var(--fg);
       font-weight: 500;
@@ -150,53 +159,68 @@
 
     .hero-contract-value {
       font-family: "EB Garamond", Georgia, serif;
-      letter-spacing: 0.08em;
+      font-size: 0.9em;
+      letter-spacing: 0.04em;
       margin-left: 0.35em;
     }
 
     .hero-actions {
       display: flex;
       flex-direction: column;
-      gap: 34px;
+      gap: 26px;
       max-width: 460px;
-      margin: 0 auto 0;
+      margin: 0 auto var(--block-gap);
+      align-items: center;
     }
 
     .btn {
       display: inline-flex;
       justify-content: center;
       align-items: center;
-      padding: 12px 20px;
+      padding: 10px 28px;
       border-radius: 999px;
       border: 1px solid var(--border);
-      font-size: 0.9rem;
+      font-size: var(--font-sm);
       font-family: "Cormorant Garamond", "EB Garamond", serif;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       background: transparent;
       color: var(--fg);
       cursor: pointer;
-      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.15s ease;
+      min-width: 220px;
+      max-width: 260px;
+      margin: 0 auto;
     }
 
     .btn-primary {
       background: var(--accent);
       color: #000;
       border-color: var(--accent);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.55);
     }
 
     .btn-primary:hover {
       background: #f1cf86;
       border-color: #f1cf86;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 32px rgba(0,0,0,0.7);
     }
 
     .btn-outline {
       color: var(--muted);
+      border-color: #555;
     }
 
     .btn-outline:hover {
       background: #181818;
       color: var(--fg);
+      border-color: #777;
     }
 
     /* Brand / wordmarks */
@@ -205,8 +229,12 @@
     }
 
     .brand-row {
-      padding-top: 0;
+      padding-top: 32px;
+      padding-bottom: 40px;
       border-top: 1px solid var(--border);
+      background: radial-gradient(circle at top,
+                  rgba(255,255,255,0.06) 0,
+                  transparent 60%);
     }
 
     .brand-grid {
@@ -222,6 +250,8 @@
     .logo-block {
       text-align: center;
       padding: 8px 4px;
+      max-width: 90%;
+      margin: 0 auto;
     }
 
     .roadmap-title {
@@ -229,14 +259,14 @@
       text-transform: uppercase;
       font-family: "Cormorant Garamond", "EB Garamond", serif;
       letter-spacing: 0.18em;
-      font-size: 0.85rem;
+      font-size: var(--font-sm);
       color: var(--muted);
       margin-top: 10px;
     }
 
     .logo-block .initiative-text {
       margin-top: 12px;
-      font-size: 0.9rem;
+      font-size: var(--font-sm);
       color: var(--muted);
       max-width: 720px;
       margin-left: auto;
@@ -245,7 +275,7 @@
 
     .roadmap-footnote {
       margin-top: 32px;
-      font-size: 0.85rem;
+      font-size: var(--font-sm);
       color: var(--muted);
       text-align: center;
       max-width: 720px;
@@ -262,7 +292,7 @@
 
     .logo-usp-string-remuda .usp {
       display: block;
-      font-size: clamp(0.7rem, 1.9vw, 0.9rem);
+      font-size: var(--font-sm);
       letter-spacing: 0.22em;
       margin-bottom: 6px;
     }
@@ -280,7 +310,7 @@
       align-items: flex-start;
       gap: 0.55em;
       line-height: 1;
-      font-size: clamp(0.9rem, 2.8vw, 1.2rem);
+      font-size: var(--font-md);
     }
 
     .logo-usp-string-remuda .string-word {
@@ -298,7 +328,7 @@
       text-transform: uppercase;
       font-family: "IM Fell English SC", "Cormorant Garamond", serif;
       letter-spacing: 0.18em;
-      font-size: clamp(1.0rem, 3.4vw, 1.4rem);
+      font-size: var(--font-md);
     }
 
     .logo-cowboy-polo-circuit span {
@@ -316,7 +346,7 @@
     .logo-the-polo-life .top {
       text-transform: uppercase;
       letter-spacing: 0.18em;
-      font-size: 0.8rem;
+      font-size: var(--font-sm);
       color: var(--muted);
       display: block;
       margin-bottom: 2px;
@@ -324,7 +354,7 @@
 
     .logo-the-polo-life .main {
       display: block;
-      font-size: clamp(1.8rem, 5vw, 2.4rem);
+      font-size: var(--font-lg);
       letter-spacing: 0.12em;
       text-transform: uppercase;
     }
@@ -334,12 +364,12 @@
       font-family: "Cormorant Garamond", serif;
       text-transform: uppercase;
       letter-spacing: 0.2em;
-      font-size: clamp(1.1rem, 3.2vw, 1.5rem);
+      font-size: var(--font-md);
     }
 
     .logo-charleston-polo .top {
       display: block;
-      font-size: 0.9rem;
+      font-size: var(--font-sm);
       color: var(--muted);
       margin-bottom: 2px;
     }
@@ -351,10 +381,10 @@
     }
 
     footer {
-      margin-top: 72px;
+      margin-top: var(--block-gap);
       padding: 18px 0 10px;
       border-top: 1px solid var(--border);
-      font-size: 0.7rem;
+      font-size: var(--font-sm);
       color: var(--muted);
       display: flex;
       flex-direction: column;
@@ -377,7 +407,12 @@
       }
 
       .btn {
-        width: 100%;
+        min-width: 70%;
+        max-width: 280px;
+      }
+
+      footer {
+        padding-bottom: 32px;
       }
     }
   </style>
@@ -424,7 +459,7 @@
           BUY PATRON
         </a>
         <a class="btn btn-outline" href="#founding-patrons">
-          APPLY TO BE A FOUNDING PATRON
+          FOUNDING PATRON INQUIRIES
         </a>
       </div>
     </header>
@@ -446,7 +481,8 @@
               </span>
             </div>
             <p class="initiative-text">
-              Our managed herd of USPPA horses — consigned or owned by the Association, assigned to operating patrons trainers and local players, and developed for play, exhibition and training across our programmes.
+              Our managed herd of USPPA horses — consigned or owned by the Association, assigned to operating patrons,
+              trainers and local players, and developed for play, exhibition and training across our programmes.
             </p>
           </div>
 
@@ -456,7 +492,8 @@
             </div>
             <p class="initiative-text">
               An American endeavour to broaden the sport’s reach, nurture emerging talent, and encourage
-              the next generation of American players — where riders not only learn to play, but learn to make the horses of the String 7̶7̶7̶ Remuda.
+              the next generation of American players — where riders not only learn to play, but learn to make the
+              horses of the String 7̶7̶7̶ Remuda.
             </p>
           </div>
 

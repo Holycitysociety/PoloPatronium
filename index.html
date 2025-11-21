@@ -731,5 +731,32 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
+  <!-- Thirdweb Checkout Widget -->
+<script src="https://cdn.thirdweb.com/js/checkout/latest/dist/checkout.umd.js"></script>
+
+<script>
+  const widget = new CheckoutWidget.Checkout({
+    clientId: "YOUR_CLIENT_ID_HERE",  // Replace with your actual Thirdweb client ID
+
+    mode: "direct",
+    chain: "base",
+
+    tokenAddress: "0x128445CAAB304A9203CCb87D06dD888823749FbE",   // PATRON proxy
+    receiverAddress: "0xFEE3C75691E8C10eD4246b10635B19bfFf06Ce16", // Treasury wallet
+
+    price: {
+      currency: "USD",
+      amount: 0.10 // Set your price per PATRON
+    },
+
+    ui: {
+      theme: "dark",
+      title: "Buy PATRON",
+      description: "Purchase instantly with card, ACH, or crypto"
+    }
+  });
+
+  document.getElementById("buyPatronBtn").onclick = () => widget.open();
+</script>
 </body>
 </html>

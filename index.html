@@ -19,12 +19,13 @@
       --accent: #e3bf72;
       --border: #2b2b2b;
 
+      /* Three core sizes */
       --font-lg: clamp(2.1rem, 5vw, 2.7rem);
       --font-md: clamp(1.1rem, 3.2vw, 1.4rem);
       --font-sm: 0.85rem;
 
-      --block-gap: 56px;
-      --block-gap-sm: 24px;
+      --block-gap: 56px;      /* main vertical spacing */
+      --block-gap-sm: 24px;   /* smaller spacing */
     }
 
     * { box-sizing: border-box; }
@@ -32,8 +33,15 @@
     body {
       margin: 0;
       background:
-        radial-gradient(circle at 50% 0%, rgba(255,255,255,0.07) 0, rgba(0,0,0,0.95) 40%),
-        radial-gradient(circle at 50% 65%, rgba(255,255,255,0.05) 0, rgba(0,0,0,0.98) 55%),
+        /* top glow */
+        radial-gradient(circle at 50% 0%,
+          rgba(255,255,255,0.07) 0,
+          rgba(0,0,0,0.95) 40%),
+        /* mid / roadmap glow */
+        radial-gradient(circle at 50% 65%,
+          rgba(255,255,255,0.05) 0,
+          rgba(0,0,0,0.98) 55%),
+        /* base */
         var(--bg);
       color: var(--fg);
       font-family: "EB Garamond", Georgia, "Times New Roman", serif;
@@ -185,7 +193,12 @@
       background: transparent;
       color: var(--fg);
       cursor: pointer;
-      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.15s ease;
       min-width: 220px;
       max-width: 260px;
       margin: 0 auto;
@@ -215,17 +228,285 @@
       color: var(--fg);
       border-color: #777;
     }
+
+    /* Brand / wordmarks */
+    main {
+      margin-top: var(--block-gap);
+    }
+
+    .brand-row {
+      padding-top: 32px;
+      padding-bottom: 40px;
+      border-top: 1px solid var(--border);
+      background: radial-gradient(circle at top,
+                  rgba(255,255,255,0.06) 0,
+                  transparent 60%);
+    }
+
+    .brand-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 44px;
+      margin-top: 22px;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .logo-block {
+      text-align: center;
+      padding: 8px 4px;
+      max-width: 90%;
+      margin: 0 auto;
+    }
+
+    .roadmap-title {
+      text-align: center;
+      text-transform: uppercase;
+      font-family: "Cormorant Garamond", "EB Garamond", serif;
+      letter-spacing: 0.18em;
+      font-size: var(--font-sm);
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    .logo-block .initiative-text {
+      margin-top: 12px;
+      font-size: var(--font-sm);
+      color: var(--muted);
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: justify;
+      text-justify: inter-word;
+    }
+
+    .roadmap-footnote {
+      margin-top: 32px;
+      font-size: var(--font-sm);
+      color: var(--muted);
+      text-align: justify;
+      text-justify: inter-word;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* USPPA tiny / 777 big / hairline rule / aligned tops */
+    .logo-usp-string-remuda {
+      font-family: "IM Fell English SC", "Cormorant Garamond", serif;
+      text-transform: uppercase;
+      color: var(--fg);
+    }
+
+    .logo-usp-string-remuda .usp {
+      display: block;
+      font-size: var(--font-sm);
+      letter-spacing: 0.22em;
+      margin-bottom: 6px;
+    }
+
+    .logo-usp-string-remuda .rule {
+      width: 70%;
+      max-width: 260px;
+      margin: 0 auto 4px;
+      border-top: 0.5px solid var(--fg);
+      opacity: 0.9;
+    }
+
+    .logo-usp-string-remuda .string-line {
+      display: inline-flex;
+      align-items: flex-start;
+      gap: 0.55em;
+      line-height: 1;
+      font-size: var(--font-md);
+    }
+
+    .logo-usp-string-remuda .string-word {
+      letter-spacing: 0.24em;
+    }
+
+    .logo-usp-string-remuda .sevens {
+      font-size: 1.45em;
+      letter-spacing: 0.08em;
+      line-height: 1;
+    }
+
+    /* COWBOY POLO CIRCUIT */
+    .logo-cowboy-polo-circuit {
+      text-transform: uppercase;
+      font-family: "IM Fell English SC", "Cormorant Garamond", serif;
+      letter-spacing: 0.18em;
+      font-size: var(--font-md);
+    }
+
+    .logo-cowboy-polo-circuit span {
+      display: inline-block;
+      padding: 8px 28px;
+      border: 1px solid var(--fg);
+    }
+
+    /* THE POLO LIFE */
+    .logo-the-polo-life {
+      font-family: "Cormorant Garamond", serif;
+      color: var(--fg);
+    }
+
+    .logo-the-polo-life .top {
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: var(--font-sm);
+      color: var(--muted);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .logo-the-polo-life .main {
+      display: block;
+      font-size: var(--font-lg);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* CHARLESTON POLO CLUB */
+    .logo-charleston-polo {
+      font-family: "Cormorant Garamond", serif;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: var(--font-md);
+    }
+
+    .logo-charleston-polo .top {
+      display: block;
+      font-size: var(--font-sm);
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .logo-charleston-polo .main {
+      display: inline-block;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--fg);
+    }
+
+    /* Copy / framework section */
+    .copy-section {
+      margin-top: var(--block-gap);
+      border-top: 1px solid var(--border);
+      padding-top: 32px;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: var(--font-sm);
+      color: var(--muted);
+    }
+
+    .copy-section-title {
+      text-align: center;
+      text-transform: uppercase;
+      font-family: "Cormorant Garamond", "EB Garamond", serif;
+      letter-spacing: 0.18em;
+      font-size: var(--font-sm);
+      color: #f0f0f0;
+      margin-bottom: 24px;
+    }
+
+    .copy-block {
+      margin-bottom: var(--block-gap-sm);
+    }
+
+    .copy-block h3 {
+      margin: 0 0 8px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.02rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #f5f5f5;
+    }
+
+    .copy-block p {
+      margin: 0 0 10px;
+      text-align: justify;
+      text-justify: inter-word;
+    }
+
+    .copy-block ul {
+      margin: 6px 0 0 18px;
+      padding: 0;
+    }
+
+    .copy-block li {
+      margin-bottom: 4px;
+      text-align: justify;
+      text-justify: inter-word;
+    }
+
+    footer {
+      margin-top: var(--block-gap);
+      padding: 18px 0 10px;
+      border-top: 1px solid var(--border);
+      font-size: var(--font-sm);
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .page {
+        margin-top: 40px;
+        margin-bottom: 80px;
+        padding: 0 10px;
+      }
+
+      .hero-actions {
+        max-width: 100%;
+      }
+
+      .btn {
+        min-width: 70%;
+        max-width: 280px;
+      }
+
+      .copy-section {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      footer {
+        padding-bottom: 32px;
+      }
+    }
   </style>
 </head>
-
 <body>
   <div class="page">
+    <!-- Masthead -->
+    <div class="masthead">
+      <div class="masthead-inner">
+        <div class="masthead-line-1">
+          <span>UNITED STATES POLO</span>
+          <span>PATRONS ASSOCIATION</span>
+        </div>
+        <div class="masthead-rule"></div>
+        <div class="masthead-line-2 masthead-presents">
+          PRESENTS THE
+        </div>
+        <div class="masthead-line-2 masthead-stewardship">
+          OFFICIAL POLO PATRONAGE TOKEN
+        </div>
+      </div>
+    </div>
 
-    <!-- Masthead ... (unchanged) -->
-
+    <!-- Hero -->
     <header>
       <h1 class="hero-title">POLO PATRONIUM</h1>
 
+      <!-- token info (specs, network, contract) -->
       <div class="hero-symbol">
         <div class="hero-symbol-main">
           ERC-777 &middot;TOKEN SYMBOL "PATRON"
@@ -240,55 +521,212 @@
       </div>
 
       <div class="hero-actions">
-        
-        <!-- REPLACED OLD LINK WITH REAL BUTTON -->
-        <button id="buyPatronBtn" class="btn btn-primary">
+        <a class="btn btn-primary" href="#buy">
           BUY PATRON
-        </button>
-
+        </a>
         <a class="btn btn-outline" href="#founding-patrons">
           FOUNDING PATRON INQUIRIES
         </a>
       </div>
     </header>
 
-    <!-- Rest of page unchanged… -->
+    <!-- Bottom brand/wordmark section -->
+    <main>
+      <section class="brand-row" id="brands">
+        <h2 class="roadmap-title">INITIATIVE ROADMAP</h2>
+
+        <div class="brand-grid">
+          <div class="logo-block">
+            <div class="logo-usp-string-remuda">
+              <span class="usp">USPPA</span>
+              <div class="rule"></div>
+              <span class="string-line">
+                <span class="string-word">STRING</span>
+                <span class="sevens">7̶7̶7̶</span>
+                <span class="string-word">REMUDA</span>
+              </span>
+            </div>
+            <p class="initiative-text">
+              Our managed herd of USPPA horses — consigned or owned by the Association, assigned to operating patrons,
+              trainers and local players, and developed for play, exhibition and training across our programmes.
+            </p>
+          </div>
+
+          <div class="logo-block">
+            <div class="logo-cowboy-polo-circuit">
+              <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
+            </div>
+            <p class="initiative-text">
+              An American endeavour to broaden the Poko’s reach, nurture emerging talent, and encourage
+              the next generation of American players — where riders not only learn to play, but learn to make the
+              horses of the String 7̶7̶7̶ Remuda.
+            </p>
+          </div>
+
+          <div class="logo-block">
+            <div class="logo-the-polo-life">
+              <span class="top">THE</span>
+              <span class="main">POLO LIFE</span>
+            </div>
+            <p class="initiative-text">
+              A platform dedicated to presenting the elegance and traditions of polo to new audiences in
+              the digital age — following our horses, patrons, and players across the Cowboy Polo Circuit.
+            </p>
+          </div>
+
+          <div class="logo-block">
+            <div class="logo-charleston-polo">
+              <span class="top">CHARLESTON</span>
+              <span class="main">POLO CLUB</span>
+            </div>
+            <p class="initiative-text">
+              The renewal of Charleston, South Carolina’s polo tradition — our flagship Chapter and living
+              test model for the USPPA Polo Incubator, where horses are gathered, pasture secured, instruction
+              established, and the public welcomed to learn and play. Once an Incubator achieves steady
+              operations, sound horsemanship, and visible community benefit, it becomes a standing Chapter of
+              the Association.
+            </p>
+          </div>
+        </div>
+
+        <p class="roadmap-footnote">
+          All of these initiatives are coordinated and supported through Polo Patronium, the living token
+          of patronage within the United States Polo Patrons Association, uniting patrons, players, and
+          clubs in a shared Polo Life ecosystem.
+        </p>
+      </section>
+
+      <!-- Patronium framework copy section -->
+      <section class="copy-section" id="patronium-framework">
+        <div class="copy-section-title">THE PATRONIUM FRAMEWORK</div>
+
+        <div class="copy-block">
+          <h3>Patronium &mdash; Polo Patronage Perfected</h3>
+          <p>
+            Patronium is the living token of patronage within the United States Polo Patrons Association.
+            It is the medium through which honourable support is recognised and shared &mdash; not through
+            speculation, but through participation. Every token of Patronium represents a place within the
+            fellowship of those who uphold the game, its horses, and its players.
+          </p>
+          <p>
+            It serves as the bridge between patron and player: a clear record of contribution and belonging
+            within a high-trust mission driven community. When a Chapter prospers, it offers tribute to those whose
+            support made that prosperity possible. This is the essence of Patronium &mdash; recognition
+            earned through genuine patronage and service to the field.
+          </p>
+        </div>
+
+        <div class="copy-block">
+          <h3>Charleston Polo &mdash; The USPPA Chapter Test Model</h3>
+          <p>
+            Each USPPA Chapter is a fully integrated polo programme operating under the Association&rsquo;s
+            standards. A Chapter begins as a Polo Incubator &mdash; a local startup where horses are gathered,
+            pasture secured, instruction established, and the public welcomed to learn and play.
+          </p>
+          <p>
+            Once an Incubator achieves steady operations, sound horsemanship, and visible community benefit,
+            it becomes a standing Chapter of the Association.
+          </p>
+        </div>
+
+        <div class="copy-block">
+          <h3>Founding, Operating, and USPPA Patrons</h3>
+          <p>
+            There are three forms of Patronium holder.
+          </p>
+          <p>
+            Founding Patrons are the first to support the birth of a new Chapter. They provide the initial
+            horses, pasture, and capital that make it possible for a Polo Incubator to begin. During this
+            founding period, their Patronium receives the full measure of available tribute &mdash; a reflection
+            of their patronage in helping to seed the future of Polo.
+          </p>
+          <p>
+            Operating Patrons are the active stewards responsible for the management of each Chapter. They
+            receive a base salary during the incubator period and an operating share of tribute once the
+            incubator transitions to a full Chapter.
+          </p>
+          <p>
+            USPPA Patrons are the ongoing supporters who sustain and strengthen a Chapter once it is established.
+          </p>
+        </div>
+
+        <div class="copy-block">
+          <h3>The Tribute Framework</h3>
+          <p>
+            Each Chapter follows a principle of balanced and transparent patronage. From its net revenue
+            (gross revenue less operational costs), a Chapter aims to follow this allocation:
+          </p>
+          <ul>
+            <li>51%+ retained for reinvestment &mdash; horses, pasture, equipment, and operations.</li>
+            <li>49% max. available to the Patronium Tribute Pool, from which holders are recognised for
+                their continued patronage.</li>
+          </ul>
+          <p>
+            During the Polo Incubator period, the Founding Patrons are whitelisted for direct proportional
+            tribute from the Polo Incubators they support (49% of tribute). After the first year, or when the
+            Incubator can support itself, it transitions to a full Chapter and the tribute returns to the
+            standard USPPA Patron tribute.
+          </p>
+        </div>
+
+        <div class="copy-block">
+          <h3>Participation</h3>
+          <ul>
+            <li>Become a Founding Patron &mdash; assist in launching a new Chapter through contribution of capital, horses, or facilities.</li>
+            <li>Become an Operating Patron &mdash; oversee the daily life of a Chapter and its players.</li>
+            <li>Become a USPPA Patron &mdash; support the national network and share in ongoing tribute cycles.</li>
+            <li>Provide Horses or Land &mdash; supply the physical foundation of Polo under insured,
+                transparent, and fair agreements.</li>
+          </ul>
+        </div>
+
+        <div class="copy-block">
+          <h3>In Plain Terms</h3>
+          <p>
+            The Association seeks not to monetise polo, but to stabilise and decentralise it &mdash; to bring
+            clarity, fairness, and longevity to the way it is taught, funded, and shared. Patronium and the
+            Polo Incubator model together create a living, self-sustaining framework for the game&rsquo;s
+            renewal across America.
+          </p>
+          <p>
+            This is how the USPPA will grow the next American 10-Goal player.
+          </p>
+        </div>
+
+        <div class="copy-block">
+          <h3>An Invitation to Patrons and Partners</h3>
+          <p>
+            The Association welcomes discerning patrons, landholders, and professionals who wish to take part
+            in the restoration of polo as a sustainable, American-bred enterprise. Each Chapter is a living
+            investment in horses, land, and people &mdash; structured not for speculation, but for legacy.
+          </p>
+          <p>
+            Patronium ensures every act of patronage &mdash; whether a horse consigned, a pasture opened, or a
+            field sponsored &mdash; is recognised and recorded within a transparent, honourable system that
+            rewards those who build American Polo. Your contribution does not vanish into expense; it lives on in
+            horses trained, players formed, and fields maintained.
+          </p>
+          <p>
+            Those who have carried the game through their own time know: it survives only by the strength of
+            its patrons. The USPPA now offers a new way to hold that legacy &mdash; a means to see your support
+            endure in the form of living tribute.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        &copy; <span id="year"></span> US POLO PATRONS ASSOCIATION — POLO PATRONIUM
+      </div>
+      <div>
+        BUILT ON BASE BY COINBASE
+      </div>
+    </footer>
   </div>
 
-  <!-- YEAR FOOTER SCRIPT -->
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
-
-  <!-- 🔥 THIRDWEB CHECKOUT POPUP SCRIPT -->
-  <script src="https://cdn.thirdweb.com/js/checkout/latest/dist/checkout.umd.js"></script>
-
-  <script>
-    const widget = new CheckoutWidget.Checkout({
-      clientId: "YOUR_CLIENT_ID_HERE",  // ← replace this
-
-      mode: "direct",
-      chain: "base",
-
-      tokenAddress: "0x128445CAAB304A9203CCb87D06dD888823749FbE",
-      receiverAddress: "0xFEE3C75691E8C10eD4246b10635B19bfFf06Ce16",
-
-      price: {
-        currency: "USD",
-        amount: 0.10
-      },
-
-      ui: {
-        theme: "dark",
-        title: "Buy PATRON",
-        description: "Purchase instantly with card, ACH, or crypto"
-      }
-    });
-
-    document.getElementById("buyPatronBtn").addEventListener("click", () => {
-      widget.open();
-    });
-  </script>
-
 </body>
 </html>

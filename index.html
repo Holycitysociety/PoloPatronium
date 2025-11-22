@@ -297,7 +297,6 @@
       font-family: "IM Fell English SC", "Cormorant Garamond", serif;
       text-transform: uppercase;
       color: var(--fg);
-      text-align: center;
     }
 
     .logo-usp-string-remuda .usp {
@@ -317,25 +316,20 @@
 
     .logo-usp-string-remuda .string-line {
       display: inline-flex;
-      align-items: flex-end;
-      justify-content: center;
-      gap: 0.75em;
+      align-items: flex-start;
+      gap: 0.55em;
       line-height: 1;
-      font-size: clamp(1rem, 2.8vw, 1.3rem);
-      letter-spacing: 0.18em;
-      white-space: nowrap;
+      font-size: var(--font-md);
     }
 
     .logo-usp-string-remuda .string-word {
-      letter-spacing: 0.18em;
+      letter-spacing: 0.24em;
     }
 
     .logo-usp-string-remuda .sevens {
-      font-size: 1.3em;
-      letter-spacing: 0.12em;
+      font-size: 1.45em;
+      letter-spacing: 0.08em;
       line-height: 1;
-      position: relative;
-      top: 0.02em;
     }
 
     /* COWBOY POLO CIRCUIT */
@@ -487,10 +481,18 @@
         padding-bottom: 32px;
       }
 
+      /* MOBILE TWEAKS FOR STRING THREE 777 SEVENS REMUDA */
       .logo-usp-string-remuda .string-line {
-        font-size: 0.95rem;
-        gap: 0.55em;
+        flex-wrap: wrap;
+        justify-content: center;
       }
+
+      /* shrink only the words, keep 777 size */
+      .logo-usp-string-remuda .string-word {
+        font-size: 0.78rem;
+        letter-spacing: 0.18em;
+      }
+      /* .sevens stays unchanged so numerals stay big */
     }
   </style>
 </head>

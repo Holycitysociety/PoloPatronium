@@ -532,14 +532,15 @@
         </div>
         <div class="hero-contract">
           <span class="hero-contract-label">CA:</span>
-          <span class="hero-contract-value">0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913</span>
+          <span class="hero-contract-value">0x128445CAAB304A9203CCb87D06dD888823749FbE</span>
         </div>
       </div>
 
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#buy">
+        <button id="buyPatronBtn" class="btn btn-primary">
           BUY PATRON
-        </a>
+        </button>
+
         <a class="btn btn-outline" href="#founding-patrons">
           FOUNDING PATRON INQUIRIES
         </a>
@@ -573,7 +574,7 @@
               <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
             </div>
             <p class="initiative-text">
-              An American endeavour to broaden Polo’s reach, nurture emerging talent, and encourage
+              An American endeavour to broaden Polo's reach, nurture emerging talent, and encourage
               the next generation of American players — where riders not only learn to play, but learn to make the
               horses of the 7̶7̶7̶ (String Three Sevens) Remuda.
             </p>
@@ -596,7 +597,7 @@
               <span class="main">POLO CLUB</span>
             </div>
             <p class="initiative-text">
-              The renewal of Charleston, South Carolina’s polo tradition — our flagship Chapter and living
+              The renewal of Charleston, South Carolina's polo tradition — our flagship Chapter and living
               test model for the USPPA Polo Incubator, where horses are gathered, pasture secured, instruction
               established, and the public welcomed to learn and play. Once an Incubator achieves steady
               operations, sound horsemanship, and visible community benefit, it becomes a standing Chapter of
@@ -701,7 +702,7 @@
           <p>
             The Association seeks not to monetise polo, but to stabilise and decentralise it &mdash; to bring
             clarity, fairness, and longevity to the way it is taught, funded, and shared. Patronium and the
-            Polo Incubator model together create a living, self-sustaining framework for the game&rsquo;s
+            Polo Incubator model together create a living, self-sustaining framework for the game's
             renewal across America.
           </p>
           <p>
@@ -740,6 +741,28 @@
       </div>
     </footer>
   </div>
+
+  <!-- WORKING THIRDWEB BUY WIDGET SCRIPT (Vanilla JS, v5 Nov 2025) -->
+  <script type="module">
+    import { createThirdwebClient } from "https://cdn.jsdelivr.net/npm/thirdweb@5/+esm";
+    import { BuyWidget } from "https://cdn.jsdelivr.net/npm/thirdweb@5/dist/widgets/buy.js";
+
+    const client = createThirdwebClient({ clientId: "YOUR_CLIENT_ID_HERE" }); // Replace with your ID
+
+    const widget = new BuyWidget({
+      client,
+      chain: "base",
+      contractAddress: "0x128445CAAB304A9203CCb87D06dD888823749FbE",
+      pricePerToken: "1.00",  // $1 USD per PATRON
+      allowQuantity: true,    // Buyer chooses quantity
+      primaryColor: "#e3bf72",
+      theme: "dark",
+      title: "Buy PATRON",
+      recipientAddress: "0xFEE3C75691E8C10eD4246b10635B19bfFf06Ce16"
+    });
+
+    document.getElementById("buyPatronBtn").onclick = () => widget.open();
+  </script>
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();

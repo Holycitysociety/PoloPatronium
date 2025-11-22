@@ -297,6 +297,7 @@
       font-family: "IM Fell English SC", "Cormorant Garamond", serif;
       text-transform: uppercase;
       color: var(--fg);
+      text-align: center;
     }
 
     .logo-usp-string-remuda .usp {
@@ -316,20 +317,25 @@
 
     .logo-usp-string-remuda .string-line {
       display: inline-flex;
-      align-items: flex-start;
-      gap: 0.55em;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 0.75em;
       line-height: 1;
-      font-size: var(--font-md);
+      font-size: clamp(1rem, 2.8vw, 1.3rem);
+      letter-spacing: 0.18em;
+      white-space: nowrap;
     }
 
     .logo-usp-string-remuda .string-word {
-      letter-spacing: 0.24em;
+      letter-spacing: 0.18em;
     }
 
     .logo-usp-string-remuda .sevens {
-      font-size: 1.45em;
-      letter-spacing: 0.08em;
+      font-size: 1.3em;
+      letter-spacing: 0.12em;
       line-height: 1;
+      position: relative;
+      top: 0.02em;
     }
 
     /* COWBOY POLO CIRCUIT */
@@ -480,6 +486,11 @@
       footer {
         padding-bottom: 32px;
       }
+
+      .logo-usp-string-remuda .string-line {
+        font-size: 0.95rem;
+        gap: 0.55em;
+      }
     }
   </style>
 </head>
@@ -541,7 +552,7 @@
               <span class="usp">USPPA</span>
               <div class="rule"></div>
               <span class="string-line">
-                <span class="string-word">STRING THEEE</span>
+                <span class="string-word">STRING THREE</span>
                 <span class="sevens">7̶7̶7̶</span>
                 <span class="string-word">SEVENS REMUDA</span>
               </span>

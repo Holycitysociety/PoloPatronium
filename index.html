@@ -766,12 +766,12 @@
   });
 
   widget.on("complete", (order) => {
-    fetch('/api/mint-patron', { method: 'POST', body: JSON.stringify(order) });
+    alert(`Mint ${order.quantity} PATRON to ${order.buyer}?`);  // Manual alert – approve in wallet
+    // Or console.log(order) for details
   });
 
   document.getElementById("buyPatronBtn").onclick = () => widget.open();
 </script>
-  
   
   
   

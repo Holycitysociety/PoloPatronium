@@ -741,28 +741,43 @@
       </div>
     </footer>
   </div>
+  
+  
+  
+  
+  
+  
+<script type="module">
+  import { createThirdwebClient } from "https://cdn.jsdelivr.net/npm/thirdweb@5/+esm";
+  import { CheckoutWidget } from "https://cdn.jsdelivr.net/npm/thirdweb@5/dist/widgets/checkout.js";
 
-  <!-- WORKING THIRDWEB BUY WIDGET SCRIPT (Vanilla JS, v5 Nov 2025) -->
-  <script type="module">
-    import { createThirdwebClient } from "https://cdn.jsdelivr.net/npm/thirdweb@5/+esm";
-    import { BuyWidget } from "https://cdn.jsdelivr.net/npm/thirdweb@5/dist/widgets/buy.js";
+  const client = createThirdwebClient({ clientId: "f58c0bfc6e6a2c00092cc3c35db1eed8" });
 
-    const client = createThirdwebClient({ clientId: "f58c0bfc6e6a2c00092cc3c35db1eed8" }); // Replace with your ID
+  const widget = new CheckoutWidget({
+    client,
+    chain: "base",
+    price: "1.00",
+    allowQuantity: true,
+    supportedTokens: { base: ["0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"] },
+    primaryColor: "#e3bf72",
+    theme: "dark",
+    title: "Buy PATRON",
+    recipientAddress: "0xFEE3C75691E8C10eD4246b10635B19bfFf06Ce16"
+  });
 
-    const widget = new BuyWidget({
-      client,
-      chain: "base",
-      contractAddress: "0x128445CAAB304A9203CCb87D06dD888823749FbE",
-      pricePerToken: "1.00",  // $1 USD per PATRON
-      allowQuantity: true,    // Buyer chooses quantity
-      primaryColor: "#e3bf72",
-      theme: "dark",
-      title: "Buy PATRON",
-      recipientAddress: "0xFEE3C75691E8C10eD4246b10635B19bfFf06Ce16"
-    });
+  widget.on("complete", (order) => {
+    fetch('/api/mint-patron', { method: 'POST', body: JSON.stringify(order) });
+  });
 
-    document.getElementById("buyPatronBtn").onclick = () => widget.open();
-  </script>
+  document.getElementById("buyPatronBtn").onclick = () => widget.open();
+</script>
+  
+  
+  
+  
+  
+  
+  
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();

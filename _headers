@@ -1,1 +1,2 @@
-
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.jsdelivr.net https://thirdweb.com; connect-src 'self' https://thirdweb.com https://api.thirdweb.com; img-src 'self' data: https:;

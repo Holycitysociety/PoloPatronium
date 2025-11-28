@@ -748,7 +748,7 @@
   
   
   
-  <script type="module">
+<script type="module">
   import { createThirdwebClient } from "https://cdn.jsdelivr.net/npm/thirdweb@5/+esm";
   import { CheckoutWidget } from "https://cdn.jsdelivr.net/npm/thirdweb@5/dist/widgets/checkout.js";
 
@@ -766,13 +766,9 @@
     recipientAddress: "0xFEE3C75691E8C10eD4246b10635B19bfFf06Ce16"
   });
 
-  widget.on("complete", (order) => {
-    fetch('/api/mint-patron', { method: 'POST', body: JSON.stringify(order) });
-  });
-
-  document.getElementById("buyPatronBtn").onclick = () => widget.open();
+  // Render embedded (visible on load)
+  widget.render(document.getElementById("checkout-container"));
 </script>
-  
   
   
   

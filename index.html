@@ -746,8 +746,7 @@
   
   
   
-  
-<script type="module">
+  <script type="module">
   import { createThirdwebClient } from "https://cdn.jsdelivr.net/npm/thirdweb@5/+esm";
   import { CheckoutWidget } from "https://cdn.jsdelivr.net/npm/thirdweb@5/dist/widgets/checkout.js";
 
@@ -766,8 +765,7 @@
   });
 
   widget.on("complete", (order) => {
-    alert(`Mint ${order.quantity} PATRON to ${order.buyer}?`);  // Manual alert – approve in wallet
-    // Or console.log(order) for details
+    fetch('/api/mint-patron', { method: 'POST', body: JSON.stringify(order) });
   });
 
   document.getElementById("buyPatronBtn").onclick = () => widget.open();

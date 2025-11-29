@@ -1,4 +1,5 @@
-import { LoginButton, UserButton, usePrivy } from "@privy-io/react-auth";
+import { usePrivy } from "@privy-io/react-auth";
+import { LoginButton, UserButton } from "@privy-io/react-auth/ui";
 
 export default function App() {
   const { ready, authenticated } = usePrivy();

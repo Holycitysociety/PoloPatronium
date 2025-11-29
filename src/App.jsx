@@ -92,7 +92,7 @@ export default function App() {
             BUY PATRON
           </button>
 
-          {/* Thirdweb Checkout visible on the page */}
+          {/* Thirdweb Checkout visible on the page 
           <CheckoutWidget
             client={client}
             description={
@@ -105,7 +105,7 @@ export default function App() {
             tokenAddress={"0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"} // USDC on Base
             seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"} // your wallet
             buttonLabel={"ADD USD TO YOUR PATRON WALLET"}
-          />
+          /> */}
 
           <a className="btn btn-outline" href="#founding-patrons">
             FOUNDING PATRON INQUIRIES

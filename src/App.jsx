@@ -100,7 +100,7 @@ export default function App() {
     }
     name={"POLO PATRONIUM"}
     currency={"USD"}
-    chain={defineChain(8453)}          // Base
+    chain={defineChain(8453)}         
     amount={"1"}
     tokenAddress={"0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"} // USDC on Base
     seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}      // your wallet

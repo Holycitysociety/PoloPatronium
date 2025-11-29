@@ -6,10 +6,12 @@ import { PrivyProvider } from "@privy-io/react-auth";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <PrivyProvider
-      appId="YOUR_PRIVY_APP_ID_HERE"
+      appId="YOUR_PRIVY_APP_ID_HERE"   // paste your actual Privy appId string
       config={{
         loginMethods: ["email", "sms", "google"],
-        appearance: { theme: "dark" },
+        appearance: {
+          theme: "dark",
+        },
       }}
     >
       <App />

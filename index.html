@@ -536,17 +536,15 @@
         </div>
       </div>
 
-<div class="hero-actions">
-  <button id="buyPatronBtn" class="btn btn-primary">
-    BUY PATRON
-  </button>
+      <div class="hero-actions">
+        <button id="buyPatronBtn" class="btn btn-primary">
+          BUY PATRON
+        </button>
 
-  <div id="checkout-container" style="margin-top: 20px; padding: 20px; border: 1px solid #e3bf72; border-radius: 8px;"></div>  <!-- Embedded form here -->
-
-  <a class="btn btn-outline" href="#founding-patrons">
-    FOUNDING PATRON INQUIRIES
-  </a>
-</div>
+        <a class="btn btn-outline" href="#founding-patrons">
+          FOUNDING PATRON INQUIRIES
+        </a>
+      </div>
     </header>
 
     <!-- Bottom brand/wordmark section -->
@@ -748,6 +746,7 @@
   
   
   
+  
 <script type="module">
   import { createThirdwebClient } from "https://cdn.jsdelivr.net/npm/thirdweb@5/+esm";
   import { CheckoutWidget } from "https://cdn.jsdelivr.net/npm/thirdweb@5/dist/widgets/checkout.js";
@@ -766,9 +765,14 @@
     recipientAddress: "0xFEE3C75691E8C10eD4246b10635B19bfFf06Ce16"
   });
 
-  // Render embedded (visible on load)
-  widget.render(document.getElementById("checkout-container"));
+  widget.on("complete", (order) => {
+    alert(`Mint ${order.quantity} PATRON to ${order.buyer}?`);  // Manual alert – approve in wallet
+    // Or console.log(order) for details
+  });
+
+  document.getElementById("buyPatronBtn").onclick = () => widget.open();
 </script>
+  
   
   
   

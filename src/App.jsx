@@ -1,11 +1,10 @@
 import { CheckoutWidget } from "thirdweb/react";
 import { createThirdwebClient, defineChain } from "thirdweb";
+import { usePrivy } from "@privy-io/react-auth";
 
 const client = createThirdwebClient({
   clientId: "f58c0bfc6e6a2c00092cc3c35db1eed8",
 });
-
-import { usePrivy } from "@privy-io/react-auth";
 
 export default function App() {
   const { ready, authenticated, login, logout, user } = usePrivy();

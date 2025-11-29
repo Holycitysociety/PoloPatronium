@@ -1,8 +1,7 @@
 import { usePrivy } from "@privy-io/react-auth";
-import { LoginButton, UserButton } from "@privy-io/react-auth/ui";
 
 export default function App() {
-  const { ready, authenticated } = usePrivy();
+  const { ready, authenticated, login, logout, user } = usePrivy();
 
   if (!ready) {
     return <div className="page">Loading…</div>;
@@ -11,18 +10,41 @@ export default function App() {
   const year = new Date().getFullYear();
 
   const handleBuyPatron = () => {
-    // Placeholder for Coinbase onramp integration
-    console.log("BUY PATRON clicked (wire onramp here)");
+    // TODO: wire Coinbase / onramp here
+    console.log("BUY PATRON clicked");
   };
+
+  const authLabel =
+    user?.email?.address ||
+    user?.phone?.number ||
+    (authenticated ? "Wallet connected" : "Sign in");
 
   return (
     <div className="page">
-      {/* Top bar with login */}
-      <header style={{ display: "flex", justifyContent: "flex-end", padding: "8px 0" }}>
-        {!authenticated ? (
-          <LoginButton>Sign in to get your wallet</LoginButton>
+      {/* Simple top-right auth button */}
+      <header
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          padding: "8px 0",
+        }}
+      >
+        {authenticated ? (
+          <button
+            className="btn btn-outline"
+            style={{ minWidth: "auto", padding: "6px 16px" }}
+            onClick={logout}
+          >
+            {authLabel} · Logout
+          </button>
         ) : (
-          <UserButton />
+          <button
+            className="btn btn-outline"
+            style={{ minWidth: "auto", padding: "6px 16px" }}
+            onClick={login}
+          >
+            Sign in / Create wallet
+          </button>
         )}
       </header>
 

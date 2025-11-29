@@ -1,21 +1,23 @@
 import { LoginButton, UserButton, usePrivy } from "@privy-io/react-auth";
 
 export default function App() {
-  const { ready, authenticated, user } = usePrivy();
+  const { ready, authenticated } = usePrivy();
 
-  if (!ready) return <div>Loading…</div>;
-
-  const handleBuyPatron = () => {
-    // TODO: here we will integrate Coinbase Onramp + swap.
-    console.log("Buy PATRON clicked – wire Coinbase Onramp here.");
-  };
+  if (!ready) {
+    return <div className="page">Loading…</div>;
+  }
 
   const year = new Date().getFullYear();
+
+  const handleBuyPatron = () => {
+    // Placeholder for Coinbase onramp integration
+    console.log("BUY PATRON clicked (wire onramp here)");
+  };
 
   return (
     <div className="page">
       {/* Top bar with login */}
-      <header style={{ padding: "0 0 12px", textAlign: "right" }}>
+      <header style={{ display: "flex", justifyContent: "flex-end", padding: "8px 0" }}>
         {!authenticated ? (
           <LoginButton>Sign in to get your wallet</LoginButton>
         ) : (
@@ -298,15 +300,6 @@ export default function App() {
         </div>
         <div>BUILT ON BASE BY COINBASE</div>
       </footer>
-
-      {authenticated && (
-        <div style={{ marginTop: "24px", fontSize: "0.8rem", opacity: 0.8 }}>
-          Signed in as{" "}
-          {user?.email?.address ||
-            user?.wallet?.address?.slice(0, 6) + "..." ||
-            "Patron"}
-        </div>
-      )}
     </div>
   );
 }

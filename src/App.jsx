@@ -16,7 +16,7 @@ export default function App() {
   const year = new Date().getFullYear();
 
   const handleBuyPatron = () => {
-    // TODO: wire Coinbase / onramp here
+    // Placeholder for future direct buy logic
     console.log("BUY PATRON clicked");
   };
 
@@ -87,29 +87,25 @@ export default function App() {
         </div>
 
         <div className="hero-actions">
+          {/* Your original button (can later trigger something else) */}
           <button className="btn btn-primary" onClick={handleBuyPatron}>
             BUY PATRON
           </button>
 
-
-          {/* Thirdweb Checkout visible on the page 
-  <CheckoutWidget
-    client={client}
-    description={
-      "USPPA, COWBOY POLO CIRCUIT, CHARLESTON POLO's PATRONAGE UTILITY TOKEN"
-    }
-    name={"POLO PATRONIUM"}
-    currency={"USD"}
-    chain={defineChain(8453)}         
-    amount={"1"}
-    tokenAddress={"0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"} // USDC on Base
-    seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}      // your wallet
-    buttonLabel={"ADD USD TO YOUR PATRON WALLET"}
-  /> */}
-
-
-
-
+          {/* Thirdweb Checkout visible on the page */}
+          <CheckoutWidget
+            client={client}
+            description={
+              "USPPA, COWBOY POLO CIRCUIT, CHARLESTON POLO's PATRONAGE UTILITY TOKEN"
+            }
+            name={"POLO PATRONIUM"}
+            currency={"USD"}
+            chain={defineChain(8453)} // Base
+            amount={"1"}
+            tokenAddress={"0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"} // USDC on Base
+            seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"} // your wallet
+            buttonLabel={"ADD USD TO YOUR PATRON WALLET"}
+          />
 
           <a className="btn btn-outline" href="#founding-patrons">
             FOUNDING PATRON INQUIRIES

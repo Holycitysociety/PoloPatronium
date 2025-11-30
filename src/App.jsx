@@ -1,5 +1,4 @@
 import React from "react";
-import { usePrivy } from "@privy-io/react-auth";
 import { CheckoutWidget } from "thirdweb/react";
 import { createThirdwebClient, defineChain } from "thirdweb";
 
@@ -36,51 +35,15 @@ class CheckoutBoundary extends React.Component {
 }
 
 export default function App() {
-  const { ready, authenticated, login, logout, user } = usePrivy();
-
-  if (!ready) {
-    return <div className="page">Loading…</div>;
-  }
-
   const year = new Date().getFullYear();
 
   const handleBuyPatron = () => {
     console.log("BUY PATRON clicked");
   };
 
-  const authLabel =
-    user?.email?.address ||
-    user?.phone?.number ||
-    (authenticated ? "Wallet connected" : "Sign in");
-
   return (
     <div className="page">
-      {/* Simple top-right auth button */}
-      <header
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          padding: "8px 0",
-        }}
-      >
-        {authenticated ? (
-          <button
-            className="btn btn-outline"
-            style={{ minWidth: "auto", padding: "6px 16px" }}
-            onClick={logout}
-          >
-            {authLabel} · Logout
-          </button>
-        ) : (
-          <button
-            className="btn btn-outline"
-            style={{ minWidth: "auto", padding: "6px 16px" }}
-            onClick={login}
-          >
-            Sign in / Create wallet
-          </button>
-        )}
-      </header>
+      {/* (Top-right auth header removed now that Privy is gone) */}
 
       {/* Masthead */}
       <div className="masthead">
@@ -121,25 +84,23 @@ export default function App() {
 
           {/* Thirdweb Checkout visible on the page */}
           <CheckoutBoundary>
-            
             <CheckoutWidget
-  client={client}
-  description={
-    "USPPA, COWBOY POLO CIRCUIT, CHARLESTON POLO's PATRONAGE UTILITY TOKEN"
-  }
-  name={"POLO PATRONIUM"}
-  currency={"USD"}
-  chain={defineChain(8453)}
-  amount={"1"}
-  tokenAddress={"0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"}
-  seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
-  buttonLabel={"ADD USD TO YOUR PATRON WALLET"}
-  onError={(err) => {
-    console.error("Checkout error:", err);
-    alert(err?.message || String(err));
-  }}
-/>
-            
+              client={client}
+              description={
+                "USPPA, COWBOY POLO CIRCUIT, CHARLESTON POLO's PATRONAGE UTILITY TOKEN"
+              }
+              name={"POLO PATRONIUM"}
+              currency={"USD"}
+              chain={defineChain(8453)}
+              amount={"1"}
+              tokenAddress={"0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"}
+              seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
+              buttonLabel={"ADD USD TO YOUR PATRON WALLET"}
+              onError={(err) => {
+                console.error("Checkout error:", err);
+                alert(err?.message || String(err));
+              }}
+            />
           </CheckoutBoundary>
 
           <a className="btn btn-outline" href="#founding-patrons">

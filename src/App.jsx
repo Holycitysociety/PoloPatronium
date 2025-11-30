@@ -1,10 +1,39 @@
+import React from "react";
+import { usePrivy } from "@privy-io/react-auth";
 import { CheckoutWidget } from "thirdweb/react";
 import { createThirdwebClient, defineChain } from "thirdweb";
-import { usePrivy } from "@privy-io/react-auth";
 
+// Thirdweb client for Checkout
 const client = createThirdwebClient({
   clientId: "f58c0bfc6e6a2c00092cc3c35db1eed8",
 });
+
+// Simple error boundary so CheckoutWidget can't nuke the whole app
+class CheckoutBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, info) {
+    console.error("CheckoutWidget crashed:", error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <p style={{ color: "#e3bf72", marginTop: "12px" }}>
+          Checkout temporarily unavailable. Please try again later.
+        </p>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 export default function App() {
   const { ready, authenticated, login, logout, user } = usePrivy();
@@ -16,7 +45,6 @@ export default function App() {
   const year = new Date().getFullYear();
 
   const handleBuyPatron = () => {
-    // Placeholder for future direct buy logic
     console.log("BUY PATRON clicked");
   };
 
@@ -75,7 +103,7 @@ export default function App() {
 
         <div className="hero-symbol">
           <div className="hero-symbol-main">
-            ERC-777 &middot;TOKEN SYMBOL &quot;PATRON&quot;
+            ERC-777 &middot; TOKEN SYMBOL &quot;PATRON&quot;
           </div>
           <div className="hero-network">ON BASE NETWORK BY COINBASE</div>
           <div className="hero-contract">
@@ -87,25 +115,31 @@ export default function App() {
         </div>
 
         <div className="hero-actions">
-          {/* Your original button (can later trigger something else) */}
           <button className="btn btn-primary" onClick={handleBuyPatron}>
             BUY PATRON
           </button>
 
-          {/* Thirdweb Checkout visible on the page 
-          <CheckoutWidget
-            client={client}
-            description={
-              "USPPA, COWBOY POLO CIRCUIT, CHARLESTON POLO's PATRONAGE UTILITY TOKEN"
-            }
-            name={"POLO PATRONIUM"}
-            currency={"USD"}
-            chain={defineChain(8453)} // Base
-            amount={"1"}
-            tokenAddress={"0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"} // USDC on Base
-            seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"} // your wallet
-            buttonLabel={"ADD USD TO YOUR PATRON WALLET"}
-          /> */}
+          {/* Thirdweb Checkout visible on the page */}
+          <CheckoutBoundary>
+            <CheckoutWidget
+              client={client}
+              description={
+                "USPPA, COWBOY POLO CIRCUIT, CHARLESTON POLO's PATRONAGE UTILITY TOKEN"
+              }
+              name={"POLO PATRONIUM"}
+              currency={"USD"}
+              chain={defineChain(8453)} // Base
+              amount={"1"}
+              tokenAddress={
+                "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+              } // USDC on Base
+              seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"} // your wallet
+              buttonLabel={"ADD USD TO YOUR PATRON WALLET"}
+              onError={(err) => {
+                console.error("Checkout error:", err);
+              }}
+            />
+          </CheckoutBoundary>
 
           <a className="btn btn-outline" href="#founding-patrons">
             FOUNDING PATRON INQUIRIES

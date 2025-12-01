@@ -15,6 +15,8 @@ const wallets = [
       options: [
         "email",
         "google",
+        "coinbase",
+        "passkey",
         // you can add more later: "apple", "facebook", "x", "discord", "guest", etc.
       ],
     },

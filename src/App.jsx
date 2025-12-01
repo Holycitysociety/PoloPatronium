@@ -1,5 +1,5 @@
 import React from "react";
-import { CheckoutWidget, ConnectEmbed } from "thirdweb/react"; // ⬅️ changed here
+import { CheckoutWidget, ConnectEmbed } from "thirdweb/react";
 import { createThirdwebClient, defineChain } from "thirdweb";
 import { inAppWallet } from "thirdweb/wallets";
 
@@ -8,11 +8,16 @@ const client = createThirdwebClient({
   clientId: "f58c0bfc6e6a2c00092cc3c35db1eed8",
 });
 
-// Embedded user wallets (email login, etc)
+// Embedded user wallets (email login, etc.)
 const wallets = [
   inAppWallet({
     auth: {
-      options: ["email", "google"], // you can add more later
+      options: [
+        "email",
+        "coinbase",
+        "passkey",
+        // you can add more later: "apple", "facebook", "x", "discord", "guest", etc.
+      ],
     },
   }),
 ];
@@ -49,6 +54,7 @@ export default function App() {
 
   const handleBuyPatron = () => {
     console.log("BUY PATRON clicked");
+    // later: open a custom modal, prefill amount based on PATRON, etc.
   };
 
   return (
@@ -86,23 +92,15 @@ export default function App() {
         </div>
 
         <div className="hero-actions">
-          {/* 1️⃣ Connect / create embedded wallet with full mini-UI */}
-          <ConnectEmbed
-            client={client}
-            wallets={wallets}
-            theme="dark"
-            connectModal={{
-              title: "Patron Wallet",
-              showThirdwebBranding: false,
-            }}
-          />
+          {/* 1️⃣ Embedded Patron Wallet (in-app wallet) */}
+          <ConnectEmbed client={client} wallets={wallets} />
 
-          {/* 2️⃣ Your BUY button (for future mint logic) */}
+          {/* 2️⃣ Your BUY button (for future custom logic / flow) */}
           <button className="btn btn-primary" onClick={handleBuyPatron}>
             BUY PATRON
           </button>
 
-          {/* 3️⃣ Thirdweb Checkout */}
+          {/* 3️⃣ Thirdweb Checkout (fiat/crypto → USDC → into active wallet) */}
           <CheckoutBoundary>
             <CheckoutWidget
               client={client}

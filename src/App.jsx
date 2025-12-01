@@ -93,7 +93,15 @@ export default function App() {
 
         <div className="hero-actions">
           {/* 1️⃣ Embedded Patron Wallet (in-app wallet) */}
-          <ConnectEmbed client={client} wallets={wallets} />
+          
+          
+          
+          <ConnectEmbed
+  client={client}
+  wallets={wallets}
+  chain={defineChain(8453)}   // 👈 this is the “chain spot”
+/>
+          
 
           {/* 2️⃣ Your BUY button (for future custom logic / flow) */}
           <button className="btn btn-primary" onClick={handleBuyPatron}>

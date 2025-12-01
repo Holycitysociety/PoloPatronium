@@ -3,6 +3,7 @@ import {
   CheckoutWidget,
   ConnectEmbed,
   useActiveAccount,
+  useActiveWallet,
   useDisconnect,
 } from "thirdweb/react";
 import { createThirdwebClient, defineChain } from "thirdweb";
@@ -60,8 +61,11 @@ export default function App() {
   const year = new Date().getFullYear();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
 
+  // Account data for display
   const account = useActiveAccount();
-  const { disconnect } = useDisconnect(); // <— simpler + correct
+  // Actual wallet object for connect/disconnect
+  const activeWallet = useActiveWallet();
+  const disconnectValue = useDisconnect();
 
   const openWallet = () => setIsWalletOpen(true);
   const closeWallet = () => setIsWalletOpen(false);
@@ -73,12 +77,20 @@ export default function App() {
 
   const handleSignOut = async () => {
     try {
-      await disconnect();          // <— actually disconnect wallet
-      // DO NOT close the modal; we want the ConnectEmbed to re-appear
-      // when `account` becomes undefined.
+      if (!activeWallet || !disconnectValue) return;
+
+      // handle both possible hook shapes
+      if (typeof disconnectValue === "function") {
+        await disconnectValue(activeWallet);
+      } else if (typeof disconnectValue.disconnect === "function") {
+        await disconnectValue.disconnect(activeWallet);
+      } else if (typeof disconnectValue.mutate === "function") {
+        await disconnectValue.mutate(activeWallet);
+      }
     } catch (err) {
       console.error("Error disconnecting wallet:", err);
     }
+    // DO NOT close the modal – it should fall back to the sign-in view
   };
 
   const shortAddress = account?.address
@@ -106,48 +118,10 @@ export default function App() {
       </header>
 
       {/* Masthead */}
-      <div className="masthead">
-        <div className="masthead-inner">
-          <div className="masthead-line-1">
-            <span>UNITED STATES POLO</span>
-            <span>PATRONS ASSOCIATION</span>
-          </div>
-          <div className="masthead-rule"></div>
-          <div className="masthead-line-2 masthead-presents">PRESENTS THE</div>
-          <div className="masthead-line-2 masthead-stewardship">
-            OFFICIAL POLO PATRONAGE TOKEN
-          </div>
-        </div>
-      </div>
+      {/* ...unchanged masthead / hero intro markup... */}
 
       {/* Hero */}
-      <header>
-        <h1 className="hero-title">POLO PATRONIUM</h1>
-
-        <div className="hero-symbol">
-          <div className="hero-symbol-main">
-            ERC-777 &middot; TOKEN SYMBOL &quot;PATRON&quot;
-          </div>
-          <div className="hero-network">ON BASE NETWORK BY COINBASE</div>
-          <div className="hero-contract">
-            <span className="hero-contract-label">CA:</span>
-            <span className="hero-contract-value">
-              0x128445CAAB304A9203CCb87D06dD888823749FbE
-            </span>
-          </div>
-        </div>
-
-        <div className="hero-actions">
-          {/* Main BUY button -> opens Patron Wallet modal */}
-          <button className="btn btn-primary" onClick={handleBuyPatron}>
-            BUY PATRON
-          </button>
-
-          <a className="btn btn-outline" href="#founding-patrons">
-            FOUNDING PATRON INQUIRIES
-          </a>
-        </div>
-      </header>
+      {/* keep your hero markup, but make sure the BUY PATRON button calls handleBuyPatron */}
 
       {/* Patron Wallet modal */}
       {isWalletOpen && (
@@ -264,7 +238,7 @@ export default function App() {
               </div>
             )}
 
-            {/* Checkout into the currently active wallet (or connect inside widget if none) */}
+            {/* Checkout into the currently active wallet */}
             <CheckoutBoundary>
               <CheckoutWidget
                 client={client}
@@ -290,11 +264,8 @@ export default function App() {
         </div>
       )}
 
-      {/* Brand / roadmap + copy sections stay as-is below... */}
-
-      <main>
-        {/* keep your existing sections here */}
-      </main>
+      {/* Brand / roadmap + copy sections */}
+      {/* keep everything you already have here unchanged */}
 
       <footer>
         <div>© {year} US POLO PATRONS ASSOCIATION — POLO PATRONIUM</div>

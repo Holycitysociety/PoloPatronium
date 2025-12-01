@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import {
   CheckoutWidget,
   ConnectEmbed,
-  useActiveWallet,
+  useActiveAccount,
   useDisconnect,
 } from "thirdweb/react";
 import { createThirdwebClient, defineChain } from "thirdweb";
@@ -22,7 +22,8 @@ const wallets = [
         "email",
         "coinbase",
         "passkey",
-        // later: "apple", "facebook", "x", "discord", "guest", etc.
+        // add more later if you want:
+        // "apple", "facebook", "x", "discord", "guest", etc.
       ],
     },
   }),
@@ -57,49 +58,37 @@ class CheckoutBoundary extends React.Component {
 
 export default function App() {
   const year = new Date().getFullYear();
+
+  // wallet + modal state
   const [isWalletOpen, setIsWalletOpen] = useState(false);
-  const [showCheckoutInModal, setShowCheckoutInModal] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
 
-  // Thirdweb wallet state
-  const activeWallet = useActiveWallet();
+  // thirdweb hooks for current account + logout
+  const account = useActiveAccount();
   const { disconnect } = useDisconnect();
-
-  const account = activeWallet?.getAccount();
-  const address = account?.address;
-  const shortAddress = address
-    ? `${address.slice(0, 6)}…${address.slice(-4)}`
-    : null;
 
   const openWallet = () => {
     setIsWalletOpen(true);
-    setShowCheckoutInModal(false); // start with just wallet info
+    setShowCheckout(false); // start at "wallet view", not checkout
   };
 
-  const closeWallet = () => setIsWalletOpen(false);
+  const closeWallet = () => {
+    setIsWalletOpen(false);
+    setShowCheckout(false);
+  };
 
-  // Main hero BUY button – just opens the Patron Wallet
-  const handleHeroBuyPatron = () => {
+  const handleBuyPatron = () => {
+    // Hero button just opens the Patron Wallet modal
     openWallet();
   };
 
-  // Inside-modal BUY PATRON button – reveal/hide Checkout
-  const toggleModalCheckout = () => {
-    setShowCheckoutInModal((prev) => !prev);
-  };
-
-  const handleSignOut = async () => {
-    try {
-      if (activeWallet) {
-        await disconnect(activeWallet);
-      }
-    } catch (err) {
-      console.error("Error disconnecting wallet:", err);
-    }
-  };
+  const shortAddress = account?.address
+    ? `${account.address.slice(0, 6)}…${account.address.slice(-4)}`
+    : "";
 
   return (
     <div className="page">
-      {/* Top header: wallet status */}
+      {/* Top-right Patron Wallet button ONLY (no address / logout here) */}
       <header
         style={{
           display: "flex",
@@ -109,49 +98,13 @@ export default function App() {
           gap: "8px",
         }}
       >
-        {address && (
-          <span
-            style={{
-              fontSize: "11px",
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              opacity: 0.85,
-            }}
-          >
-            {shortAddress}
-          </span>
-        )}
-
-        {address ? (
-          <>
-            <button
-              className="btn btn-outline"
-              style={{ minWidth: "auto", padding: "4px 12px" }}
-              onClick={openWallet}
-            >
-              PATRON WALLET
-            </button>
-            <button
-              className="btn btn-outline"
-              style={{
-                minWidth: "auto",
-                padding: "4px 10px",
-                fontSize: "11px",
-              }}
-              onClick={handleSignOut}
-            >
-              Sign out
-            </button>
-          </>
-        ) : (
-          <button
-            className="btn btn-outline"
-            style={{ minWidth: "auto", padding: "6px 16px" }}
-            onClick={openWallet}
-          >
-            PATRON WALLET
-          </button>
-        )}
+        <button
+          className="btn btn-outline"
+          style={{ minWidth: "auto", padding: "6px 16px" }}
+          onClick={openWallet}
+        >
+          PATRON WALLET
+        </button>
       </header>
 
       {/* Masthead */}
@@ -187,8 +140,8 @@ export default function App() {
         </div>
 
         <div className="hero-actions">
-          {/* Main-page BUY PATRON just opens the wallet modal */}
-          <button className="btn btn-primary" onClick={handleHeroBuyPatron}>
+          {/* Hero BUY PATRON opens the Patron Wallet modal */}
+          <button className="btn btn-primary" onClick={handleBuyPatron}>
             BUY PATRON
           </button>
 
@@ -198,7 +151,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* Patron Wallet modal – ConnectEmbed + (optional) Checkout */}
+      {/* Patron Wallet modal (Connect / address / logout + optional Checkout) */}
       {isWalletOpen && (
         <div
           className="wallet-modal-backdrop"
@@ -220,12 +173,11 @@ export default function App() {
               padding: "20px",
               maxWidth: "420px",
               width: "100%",
-              maxHeight: "90vh",
-              overflowY: "auto",
               boxShadow: "0 18px 60px rgba(0,0,0,0.7)",
               border: "1px solid #3a2b16",
             }}
           >
+            {/* Modal header */}
             <div
               style={{
                 display: "flex",
@@ -259,30 +211,68 @@ export default function App() {
               </button>
             </div>
 
-            {/* Embedded in-app wallet (sign in, address, balances, logout, etc.) */}
-            <ConnectEmbed
-              client={client}
-              wallets={wallets}
-              chain={defineChain(8453)}
-              theme="dark"
-            />
+            {/* If not connected: show ConnectEmbed */}
+            {!account && (
+              <div style={{ marginBottom: "16px" }}>
+                <ConnectEmbed
+                  client={client}
+                  wallets={wallets}
+                  chain={defineChain(8453)}
+                  theme="dark"
+                />
+              </div>
+            )}
 
-            {/* Modal-level BUY PATRON button to reveal Checkout */}
-            <div style={{ marginTop: "16px" }}>
+            {/* If connected: show address + Sign out INSIDE the modal */}
+            {account && (
+              <div
+                style={{
+                  marginBottom: "16px",
+                  padding: "10px 12px",
+                  borderRadius: "8px",
+                  border: "1px solid #3a2b16",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "8px",
+                  fontSize: "13px",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                }}
+              >
+                <div style={{ opacity: 0.8 }}>Connected as</div>
+                <div style={{ fontFamily: "monospace" }}>{shortAddress}</div>
+                <button
+                  className="btn btn-outline"
+                  style={{
+                    minWidth: "auto",
+                    padding: "4px 14px",
+                    fontSize: "11px",
+                  }}
+                  onClick={() => {
+                    disconnect();
+                    setShowCheckout(false);
+                  }}
+                >
+                  SIGN OUT
+                </button>
+              </div>
+            )}
+
+            {/* Step 2: Checkout, only after clicking the gold button */}
+            {!showCheckout && (
               <button
                 className="btn btn-primary"
-                style={{ width: "100%" }}
-                onClick={toggleModalCheckout}
+                style={{ width: "100%", marginTop: account ? 4 : 0 }}
+                onClick={() => setShowCheckout(true)}
+                disabled={!account}
               >
-                {showCheckoutInModal
-                  ? "Hide Purchase Options"
-                  : "BUY PATRON (USDC on Base)"}
+                BUY PATRON (USDC on Base)
               </button>
-            </div>
+            )}
 
-            {/* Only show Checkout after the in-modal BUY is clicked */}
-            {showCheckoutInModal && (
-              <div style={{ marginTop: "12px" }}>
+            {showCheckout && (
+              <div style={{ marginTop: "16px" }}>
                 <CheckoutBoundary>
                   <CheckoutWidget
                     client={client}
@@ -296,10 +286,8 @@ export default function App() {
                     tokenAddress={
                       "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
                     } // USDC on Base
-                    seller={
-                      "0xfee3c75691e8c10ed4246b10635b19bfff06ce16"
-                    } // your treasury
-                    buttonLabel={"Confirm Purchase"}
+                    seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"} // your treasury
+                    buttonLabel={"Complete purchase"}
                     onError={(err) => {
                       console.error("Checkout error:", err);
                       alert(err?.message || String(err));
@@ -312,10 +300,85 @@ export default function App() {
         </div>
       )}
 
-      {/* Brand / roadmap and the rest of the page stays as you had it */}
+      {/* Brand / roadmap */}
       <main>
-        {/* ... your existing sections unchanged ... */}
-        {/* I’m not repeating them here, but keep everything below exactly as you had it. */}
+        {/* ... everything from your roadmap / copy sections unchanged ... */}
+        {/* I’m leaving all that as-is since it doesn’t affect the wallet flow */}
+        {/* --- BEGIN existing sections --- */}
+
+        <section className="brand-row" id="brands">
+          <h2 className="roadmap-title">INITIATIVE ROADMAP</h2>
+
+          <div className="brand-grid">
+            <div className="logo-block">
+              <div className="logo-usp-string-remuda">
+                <span className="usp">USPPA</span>
+                <div className="rule"></div>
+                <span className="string-line">
+                  <span className="string-word">STRING THREE</span>
+                  <span className="sevens">7̶7̶7̶</span>
+                  <span className="string-word">SEVENS REMUDA</span>
+                </span>
+              </div>
+              <p className="initiative-text">
+                Our managed herd of USPPA horses — consigned or owned by the
+                Association, assigned to operating patrons, trainers and local
+                players, and developed for play, exhibition and training across
+                our programmes.
+              </p>
+            </div>
+
+            <div className="logo-block">
+              <div className="logo-cowboy-polo-circuit">
+                <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
+              </div>
+              <p className="initiative-text">
+                An American endeavour to broaden Polo&apos;s reach, nurture
+                emerging talent, and encourage the next generation of American
+                players — where riders not only learn to play, but learn to make
+                the horses of the 7̶7̶7̶ (String Three Sevens) Remuda.
+              </p>
+            </div>
+
+            <div className="logo-block">
+              <div className="logo-the-polo-life">
+                <span className="top">THE</span>
+                <span className="main">POLO LIFE</span>
+              </div>
+              <p className="initiative-text">
+                A platform dedicated to presenting the elegance and traditions
+                of polo to new audiences in the digital age — following our
+                horses, patrons, and players across the Cowboy Polo Circuit.
+              </p>
+            </div>
+
+            <div className="logo-block">
+              <div className="logo-charleston-polo">
+                <span className="top">CHARLESTON</span>
+                <span className="main">POLO CLUB</span>
+              </div>
+              <p className="initiative-text">
+                The renewal of Charleston, South Carolina&apos;s polo tradition
+                — our flagship Chapter and living test model for the USPPA Polo
+                Incubator, where horses are gathered, pasture secured,
+                instruction established, and the public welcomed to learn and
+                play. Once an Incubator achieves steady operations, sound
+                horsemanship, and visible community benefit, it becomes a
+                standing Chapter of the Association.
+              </p>
+            </div>
+          </div>
+
+          <p className="roadmap-footnote">
+            All of these initiatives are coordinated and supported through Polo
+            Patronium, the living token of patronage within the United States
+            Polo Patrons Association, uniting patrons, players, and clubs in a
+            shared Polo Life ecosystem.
+          </p>
+        </section>
+
+        {/* (rest of copy sections unchanged) */}
+        {/* ... */}
       </main>
 
       <footer>

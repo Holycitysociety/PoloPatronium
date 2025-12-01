@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { CheckoutWidget, ConnectEmbed } from "thirdweb/react";
 import { createThirdwebClient, defineChain } from "thirdweb";
 import { inAppWallet } from "thirdweb/wallets";
@@ -51,14 +51,36 @@ class CheckoutBoundary extends React.Component {
 
 export default function App() {
   const year = new Date().getFullYear();
+  const [isWalletOpen, setIsWalletOpen] = useState(false);
+
+  const openWallet = () => setIsWalletOpen(true);
+  const closeWallet = () => setIsWalletOpen(false);
 
   const handleBuyPatron = () => {
-    console.log("BUY PATRON clicked");
-    // later: open a custom modal, prefill amount based on PATRON, etc.
+    // For now, just open the same Patron Wallet modal
+    openWallet();
   };
 
   return (
     <div className="page">
+      {/* Top-right Patron Wallet button */}
+      <header
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          padding: "8px 0",
+        }}
+      >
+        <button
+          className="btn btn-outline"
+          style={{ minWidth: "auto", padding: "6px 16px" }}
+          onClick={openWallet}
+        >
+          PATRON WALLET
+        </button>
+      </header>
+
       {/* Masthead */}
       <div className="masthead">
         <div className="masthead-inner">
@@ -92,48 +114,111 @@ export default function App() {
         </div>
 
         <div className="hero-actions">
-          {/* 1️⃣ Embedded Patron Wallet (in-app wallet) */}
-          
-          
-          
-          <ConnectEmbed
-  client={client}
-  wallets={wallets}
-  chain={defineChain(8453)}   // 👈 this is the “chain spot”
-/>
-          
-
-          {/* 2️⃣ Your BUY button (for future custom logic / flow) */}
+          {/* Big BUY PATRON button just opens the same Patron Wallet modal */}
           <button className="btn btn-primary" onClick={handleBuyPatron}>
             BUY PATRON
           </button>
-
-          {/* 3️⃣ Thirdweb Checkout (fiat/crypto → USDC → into active wallet) */}
-          <CheckoutBoundary>
-            <CheckoutWidget
-              client={client}
-              description={
-                "USPPA, COWBOY POLO CIRCUIT, CHARLESTON POLO's PATRONAGE UTILITY TOKEN"
-              }
-              name={"POLO PATRONIUM"}
-              currency={"USD"}
-              chain={defineChain(8453)}
-              amount={"1"}
-              tokenAddress={"0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"} // USDC on Base
-              seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"} // your treasury
-              buttonLabel={"ADD USD TO YOUR PATRON WALLET"}
-              onError={(err) => {
-                console.error("Checkout error:", err);
-                alert(err?.message || String(err));
-              }}
-            />
-          </CheckoutBoundary>
 
           <a className="btn btn-outline" href="#founding-patrons">
             FOUNDING PATRON INQUIRIES
           </a>
         </div>
       </header>
+
+      {/* Patron Wallet modal (ConnectEmbed + Checkout) */}
+      {isWalletOpen && (
+        <div
+          className="wallet-modal-backdrop"
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0, 0, 0, 0.65)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+          }}
+        >
+          <div
+            className="wallet-modal"
+            style={{
+              background: "#111",
+              borderRadius: "12px",
+              padding: "20px",
+              maxWidth: "420px",
+              width: "100%",
+              boxShadow: "0 18px 60px rgba(0,0,0,0.7)",
+              border: "1px solid #3a2b16",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "12px",
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: "18px",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                }}
+              >
+                Patron Wallet
+              </h2>
+              <button
+                onClick={closeWallet}
+                style={{
+                  border: "none",
+                  background: "transparent",
+                  color: "#e3bf72",
+                  fontSize: "20px",
+                  cursor: "pointer",
+                  lineHeight: 1,
+                }}
+                aria-label="Close wallet"
+              >
+                ×
+              </button>
+            </div>
+
+            {/* Embedded in-app wallet (sign in, address, balances, etc.) */}
+            <div style={{ marginBottom: "16px" }}>
+              <ConnectEmbed
+                client={client}
+                wallets={wallets}
+                chain={defineChain(8453)}
+                theme="dark"
+              />
+            </div>
+
+            {/* Checkout into the currently active wallet */}
+            <CheckoutBoundary>
+              <CheckoutWidget
+                client={client}
+                description={
+                  "USPPA, COWBOY POLO CIRCUIT, CHARLESTON POLO's PATRONAGE UTILITY TOKEN"
+                }
+                name={"POLO PATRONIUM"}
+                currency={"USD"}
+                chain={defineChain(8453)}
+                amount={"1"}
+                tokenAddress={
+                  "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+                } // USDC on Base
+                seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"} // your treasury
+                buttonLabel={"BUY PATRON (USDC on Base)"}
+                onError={(err) => {
+                  console.error("Checkout error:", err);
+                  alert(err?.message || String(err));
+                }}
+              />
+            </CheckoutBoundary>
+          </div>
+        </div>
+      )}
 
       {/* Brand / roadmap */}
       <main>

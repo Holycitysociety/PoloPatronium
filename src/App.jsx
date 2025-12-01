@@ -1,11 +1,21 @@
 import React from "react";
-import { CheckoutWidget } from "thirdweb/react";
+import { CheckoutWidget, ConnectButton } from "thirdweb/react";
 import { createThirdwebClient, defineChain } from "thirdweb";
+import { inAppWallet } from "thirdweb/wallets";
 
-// Thirdweb client for Checkout
+// Thirdweb client for Checkout + wallets
 const client = createThirdwebClient({
   clientId: "f58c0bfc6e6a2c00092cc3c35db1eed8",
 });
+
+// Embedded user wallets (email login, etc)
+const wallets = [
+  inAppWallet({
+    auth: {
+      options: ["email", "google"], // you can add "apple", "facebook", etc later
+    },
+  }),
+];
 
 // Simple error boundary so CheckoutWidget can't nuke the whole app
 class CheckoutBoundary extends React.Component {
@@ -43,8 +53,6 @@ export default function App() {
 
   return (
     <div className="page">
-      {/* (Top-right auth header removed now that Privy is gone) */}
-
       {/* Masthead */}
       <div className="masthead">
         <div className="masthead-inner">
@@ -78,11 +86,22 @@ export default function App() {
         </div>
 
         <div className="hero-actions">
+          {/* 1️⃣ Patron Wallet connect / create (embedded wallet) */}
+          <ConnectButton
+            client={client}
+            wallets={wallets}
+            connectModal={{
+              title: "Patron Wallet",
+              showThirdwebBranding: false,
+            }}
+          />
+
+          {/* 2️⃣ Your BUY button (for future custom logic) */}
           <button className="btn btn-primary" onClick={handleBuyPatron}>
             BUY PATRON
           </button>
 
-          {/* Thirdweb Checkout visible on the page */}
+          {/* 3️⃣ Thirdweb Checkout (fund with card/crypto into that wallet) */}
           <CheckoutBoundary>
             <CheckoutWidget
               client={client}
@@ -93,8 +112,8 @@ export default function App() {
               currency={"USD"}
               chain={defineChain(8453)}
               amount={"1"}
-              tokenAddress={"0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"}
-              seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
+              tokenAddress={"0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"} // USDC on Base
+              seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"} // your treasury
               buttonLabel={"ADD USD TO YOUR PATRON WALLET"}
               onError={(err) => {
                 console.error("Checkout error:", err);
@@ -108,6 +127,10 @@ export default function App() {
           </a>
         </div>
       </header>
+
+
+
+
 
       {/* Brand / roadmap */}
       <main>

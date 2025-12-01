@@ -1,3 +1,4 @@
+// App.jsx
 import React, { useState } from "react";
 import { CheckoutWidget, ConnectEmbed } from "thirdweb/react";
 import { createThirdwebClient, defineChain } from "thirdweb";
@@ -8,7 +9,7 @@ const client = createThirdwebClient({
   clientId: "f58c0bfc6e6a2c00092cc3c35db1eed8",
 });
 
-// Embedded user wallets (email login, etc.)
+// Embedded user wallets (email login, Coinbase, passkey, etc.)
 const wallets = [
   inAppWallet({
     auth: {
@@ -16,7 +17,7 @@ const wallets = [
         "email",
         "coinbase",
         "passkey",
-        // you can add more later: "apple", "facebook", "x", "discord", "guest", etc.
+        // later you can add: "apple", "facebook", "x", "discord", "guest", etc.
       ],
     },
   }),
@@ -57,7 +58,7 @@ export default function App() {
   const closeWallet = () => setIsWalletOpen(false);
 
   const handleBuyPatron = () => {
-    // For now, just open the same Patron Wallet modal
+    // For now: BUY PATRON just opens the Patron Wallet modal
     openWallet();
   };
 
@@ -114,7 +115,7 @@ export default function App() {
         </div>
 
         <div className="hero-actions">
-          {/* Big BUY PATRON button just opens the same Patron Wallet modal */}
+          {/* Big BUY PATRON button just opens the Patron Wallet modal */}
           <button className="btn btn-primary" onClick={handleBuyPatron}>
             BUY PATRON
           </button>
@@ -184,12 +185,12 @@ export default function App() {
               </button>
             </div>
 
-            {/* Embedded in-app wallet (sign in, address, balances, etc.) */}
+            {/* Embedded in-app wallet (sign in, address, balances, logout) */}
             <div style={{ marginBottom: "16px" }}>
               <ConnectEmbed
                 client={client}
                 wallets={wallets}
-                chain={defineChain(8453)}
+                chain={defineChain(8453)} // Base
                 theme="dark"
               />
             </div>

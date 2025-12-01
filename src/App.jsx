@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   CheckoutWidget,
   ConnectEmbed,
+  AccountBalance,
   useActiveAccount,
   useActiveWallet,
   useDisconnect,
@@ -9,14 +10,16 @@ import {
 import { createThirdwebClient, defineChain } from "thirdweb";
 import { inAppWallet } from "thirdweb/wallets";
 
-// Thirdweb client for Checkout + wallets
+// ---------------------------------------------
+// Thirdweb client + chain
+// ---------------------------------------------
 const client = createThirdwebClient({
   clientId: "f58c0bfc6e6a2c00092cc3c35db1eed8",
 });
 
 const BASE = defineChain(8453);
 
-// Embedded user wallets (email login, etc.)
+// Embedded user wallets (email / social / passkey)
 const wallets = [
   inAppWallet({
     auth: {
@@ -30,7 +33,9 @@ const wallets = [
   }),
 ];
 
-// Simple error boundary so CheckoutWidget can't nuke the whole app
+// ---------------------------------------------
+// Simple error boundary for CheckoutWidget
+// ---------------------------------------------
 class CheckoutBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -57,33 +62,33 @@ class CheckoutBoundary extends React.Component {
   }
 }
 
+// ---------------------------------------------
+// Main App
+// ---------------------------------------------
 export default function App() {
   const year = new Date().getFullYear();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
 
   const account = useActiveAccount();
   const activeWallet = useActiveWallet();
-  const { disconnect } = useDisconnect();
+  const disconnect = useDisconnect();
 
   const openWallet = () => setIsWalletOpen(true);
   const closeWallet = () => setIsWalletOpen(false);
 
   const handleBuyPatron = () => {
+    // Main BUY button just opens the Patron Wallet modal
     openWallet();
   };
 
-  // 🔴 FIXED: useDisconnect is a simple function and takes the wallet directly
+  // Disconnect the embedded wallet but keep the modal open
   const handleSignOut = () => {
-    if (activeWallet && disconnect) {
-      try {
-        console.log("Disconnecting wallet:", activeWallet);
-        disconnect(activeWallet);
-      } catch (err) {
-        console.error("Error disconnecting wallet:", err);
-      }
+    if (!activeWallet || !disconnect) return;
+    try {
+      disconnect(activeWallet);
+    } catch (err) {
+      console.error("Error disconnecting wallet:", err);
     }
-    // DO NOT close the modal – we want to see ConnectEmbed again
-    // closeWallet();
   };
 
   const shortAddress = account?.address
@@ -143,6 +148,7 @@ export default function App() {
         </div>
 
         <div className="hero-actions">
+          {/* Main BUY button -> opens Patron Wallet modal */}
           <button className="btn btn-primary" onClick={handleBuyPatron}>
             BUY PATRON
           </button>
@@ -252,6 +258,38 @@ export default function App() {
                 >
                   {shortAddress}
                 </div>
+
+                {/* Native gas balance */}
+                <div style={{ fontSize: "11px", marginBottom: "4px" }}>
+                  Gas balance (ETH on Base)
+                </div>
+                <AccountBalance
+                  client={client}
+                  address={account.address}
+                  chain={BASE}
+                  style={{
+                    fontSize: "13px",
+                    marginBottom: "8px",
+                  }}
+                />
+
+                {/* PATRON token balance */}
+                <div style={{ fontSize: "11px", marginTop: "6px" }}>
+                  PATRON balance
+                </div>
+                <AccountBalance
+                  client={client}
+                  address={account.address}
+                  chain={BASE}
+                  tokenAddress={
+                    "0x128445CAAB304A9203CCb87D06dD888823749FbE"
+                  }
+                  style={{
+                    fontSize: "13px",
+                    marginBottom: "12px",
+                  }}
+                />
+
                 <button
                   className="btn btn-outline"
                   style={{
@@ -268,7 +306,7 @@ export default function App() {
               </div>
             )}
 
-            {/* Checkout into the currently active wallet (or connect inside widget if none) */}
+            {/* Checkout into the currently active wallet */}
             <CheckoutBoundary>
               <CheckoutWidget
                 client={client}
@@ -282,7 +320,7 @@ export default function App() {
                 tokenAddress={
                   "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
                 } // USDC on Base
-                seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"} // your treasury
+                seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
                 buttonLabel={"BUY PATRON (USDC on Base)"}
                 onError={(err) => {
                   console.error("Checkout error:", err);
@@ -294,9 +332,81 @@ export default function App() {
         </div>
       )}
 
-      {/* Brand / roadmap + footer left as you had them */}
+      {/* Brand / roadmap + copy sections (unchanged from your version) */}
       <main>
-        {/* ... your sections ... */}
+        <section className="brand-row" id="brands">
+          <h2 className="roadmap-title">INITIATIVE ROADMAP</h2>
+
+          <div className="brand-grid">
+            <div className="logo-block">
+              <div className="logo-usp-string-remuda">
+                <span className="usp">USPPA</span>
+                <div className="rule"></div>
+                <span className="string-line">
+                  <span className="string-word">STRING THREE</span>
+                  <span className="sevens">7̶7̶7̶</span>
+                  <span className="string-word">SEVENS REMUDA</span>
+                </span>
+              </div>
+              <p className="initiative-text">
+                Our managed herd of USPPA horses — consigned or owned by
+                the Association, assigned to operating patrons, trainers and
+                local players, and developed for play, exhibition and training
+                across our programmes.
+              </p>
+            </div>
+
+            <div className="logo-block">
+              <div className="logo-cowboy-polo-circuit">
+                <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
+              </div>
+              <p className="initiative-text">
+                An American endeavour to broaden Polo&apos;s reach, nurture
+                emerging talent, and encourage the next generation of American
+                players — where riders not only learn to play, but learn to
+                make the horses of the 7̶7̶7̶ (String Three Sevens) Remuda.
+              </p>
+            </div>
+
+            <div className="logo-block">
+              <div className="logo-the-polo-life">
+                <span className="top">THE</span>
+                <span className="main">POLO LIFE</span>
+              </div>
+              <p className="initiative-text">
+                A platform dedicated to presenting the elegance and traditions
+                of polo to new audiences in the digital age — following our
+                horses, patrons, and players across the Cowboy Polo Circuit.
+              </p>
+            </div>
+
+            <div className="logo-block">
+              <div className="logo-charleston-polo">
+                <span className="top">CHARLESTON</span>
+                <span className="main">POLO CLUB</span>
+              </div>
+              <p className="initiative-text">
+                The renewal of Charleston, South Carolina&apos;s polo tradition
+                — our flagship Chapter and living test model for the USPPA Polo
+                Incubator, where horses are gathered, pasture secured,
+                instruction established, and the public welcomed to learn and
+                play. Once an Incubator achieves steady operations, sound
+                horsemanship, and visible community benefit, it becomes a
+                standing Chapter of the Association.
+              </p>
+            </div>
+          </div>
+
+          <p className="roadmap-footnote">
+            All of these initiatives are coordinated and supported through
+            Polo Patronium, the living token of patronage within the United
+            States Polo Patrons Association, uniting patrons, players, and
+            clubs in a shared Polo Life ecosystem.
+          </p>
+        </section>
+
+        {/* (Rest of your copy sections left exactly as before) */}
+        {/* ... Patronium framework, participation, invitation, etc ... */}
       </main>
 
       <footer>

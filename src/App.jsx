@@ -4,7 +4,6 @@ import {
   CheckoutWidget,
   ConnectEmbed,
   useActiveAccount,
-  useActiveWallet,
   useDisconnect,
 } from "thirdweb/react";
 import { createThirdwebClient, defineChain } from "thirdweb";
@@ -63,27 +62,26 @@ export default function App() {
   const [isWalletOpen, setIsWalletOpen] = useState(false);
 
   const account = useActiveAccount();
-  const activeWallet = useActiveWallet();
-  const disconnect = useDisconnect();
+  const { disconnect } = useDisconnect(); // ✅ correct thirdweb v5 usage
 
   const openWallet = () => setIsWalletOpen(true);
   const closeWallet = () => setIsWalletOpen(false);
 
-  // Main BUY button just opens the Patron Wallet modal
   const handleBuyPatron = () => {
+    // Main-page BUY button just opens the Patron Wallet modal
     openWallet();
   };
 
-  // Disconnect the embedded wallet, but keep the modal open
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     try {
-      if (activeWallet && disconnect && typeof disconnect.mutate === "function") {
-        disconnect.mutate({ wallet: activeWallet });
+      if (disconnect) {
+        await disconnect(); // ✅ disconnect active embedded wallet
       }
+      // IMPORTANT: leave the modal open so ConnectEmbed shows again
+      // (no closeWallet() here)
     } catch (err) {
       console.error("Error disconnecting wallet:", err);
     }
-    // don't close modal; ConnectEmbed will show again when account becomes undefined
   };
 
   const shortAddress = account?.address
@@ -213,7 +211,7 @@ export default function App() {
               </button>
             </div>
 
-            {/* Wallet status: if not connected, show ConnectEmbed; else show address + Sign Out */}
+            {/* Wallet status section */}
             {!account ? (
               <div style={{ marginBottom: "16px" }}>
                 <ConnectEmbed
@@ -269,7 +267,7 @@ export default function App() {
               </div>
             )}
 
-            {/* Checkout into the currently active wallet */}
+            {/* Checkout into the currently active wallet (or it will prompt connect) */}
             <CheckoutBoundary>
               <CheckoutWidget
                 client={client}

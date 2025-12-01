@@ -68,6 +68,7 @@ class CheckoutBoundary extends React.Component {
 export default function App() {
   const year = new Date().getFullYear();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
+  const [usdAmount, setUsdAmount] = useState("1"); // controls Checkout amount in USD
 
   const account = useActiveAccount();
   const activeWallet = useActiveWallet();
@@ -109,6 +110,10 @@ export default function App() {
   const shortAddress = account?.address
     ? `${account.address.slice(0, 6)}…${account.address.slice(-4)}`
     : "";
+
+  // Make sure Checkout always gets a sane positive string
+  const normalizedAmount =
+    usdAmount && Number(usdAmount) > 0 ? String(usdAmount) : "1";
 
   return (
     <div className="page">
@@ -197,7 +202,7 @@ export default function App() {
               maxWidth: "420px",
               width: "100%",
               boxShadow: "0 18px 60px rgba(0,0,0,0.7)",
-              border: "1px solid #3a2b16",
+              border: "1px solid "#3a2b16",
             }}
           >
             <div
@@ -324,6 +329,38 @@ export default function App() {
               </div>
             )}
 
+            {/* Amount selector for Checkout */}
+            <div style={{ marginBottom: "12px" }}>
+              <label
+                style={{
+                  display: "block",
+                  fontSize: "10px",
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase",
+                  color: "#c7b08a",
+                  marginBottom: "4px",
+                }}
+              >
+                Patronage Amount (USD)
+              </label>
+              <input
+                type="number"
+                min="1"
+                step="1"
+                value={usdAmount}
+                onChange={(e) => setUsdAmount(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "8px 10px",
+                  borderRadius: "6px",
+                  border: "1px solid #3a2b16",
+                  background: "#181210",
+                  color: "#f5eedc",
+                  fontSize: "14px",
+                }}
+              />
+            </div>
+
             {/* Checkout into the currently active wallet */}
             <CheckoutBoundary>
               <CheckoutWidget
@@ -334,7 +371,7 @@ export default function App() {
                 name={"POLO PATRONIUM"}
                 currency={"USD"}
                 chain={BASE}
-                amount={"1"}
+                amount={normalizedAmount}
                 tokenAddress={
                   "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
                 } // USDC on Base

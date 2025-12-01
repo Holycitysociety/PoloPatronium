@@ -61,9 +61,7 @@ export default function App() {
   const year = new Date().getFullYear();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
 
-  // account = address info (for display)
   const account = useActiveAccount();
-  // activeWallet = actual wallet object (for disconnect)
   const activeWallet = useActiveWallet();
   const { disconnect } = useDisconnect();
 
@@ -71,24 +69,20 @@ export default function App() {
   const closeWallet = () => setIsWalletOpen(false);
 
   const handleBuyPatron = () => {
-    // Main-page BUY button just opens the Patron Wallet modal
     openWallet();
   };
 
-  const handleSignOut = async () => {
-    try {
-      if (disconnect) {
-        // If API expects a wallet, pass it; if not, this will just ignore the arg
-        if (activeWallet) {
-          await disconnect({ wallet: activeWallet });
-        } else {
-          await disconnect();
-        }
+  // 🔴 FIXED: useDisconnect is a simple function and takes the wallet directly
+  const handleSignOut = () => {
+    if (activeWallet && disconnect) {
+      try {
+        console.log("Disconnecting wallet:", activeWallet);
+        disconnect(activeWallet);
+      } catch (err) {
+        console.error("Error disconnecting wallet:", err);
       }
-    } catch (err) {
-      console.error("Error disconnecting wallet:", err);
     }
-    // IMPORTANT: do NOT close the modal — we want ConnectEmbed to reappear
+    // DO NOT close the modal – we want to see ConnectEmbed again
     // closeWallet();
   };
 
@@ -149,7 +143,6 @@ export default function App() {
         </div>
 
         <div className="hero-actions">
-          {/* Main BUY button -> opens Patron Wallet modal */}
           <button className="btn btn-primary" onClick={handleBuyPatron}>
             BUY PATRON
           </button>
@@ -301,9 +294,9 @@ export default function App() {
         </div>
       )}
 
-      {/* Brand / roadmap */}
+      {/* Brand / roadmap + footer left as you had them */}
       <main>
-        {/* keep your existing roadmap + copy sections here unchanged */}
+        {/* ... your sections ... */}
       </main>
 
       <footer>

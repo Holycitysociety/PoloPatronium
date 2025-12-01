@@ -71,7 +71,7 @@ export default function App() {
 
   const account = useActiveAccount();
   const activeWallet = useActiveWallet();
-  const disconnect = useDisconnect();
+  const { disconnect } = useDisconnect();
 
   // Native ETH on Base
   const { data: baseBalance } = useWalletBalance({

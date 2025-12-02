@@ -440,11 +440,11 @@ export default function App() {
             {/* UPDATED 777 WORDMARK BLOCK */}
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
-                <div className="usp-top">US PPA</div>
+                <div className="usp-top">USPPA</div>
                 <div className="rule" />
                 <div className="string-middle">
                   <span className="string-side">THREE  </span>
-                  <span className="sevens">7̶7̶7̶</span>
+                  <span className="sevens">  7̶7̶7̶  </span>
                   <span className="string-side">  SEVENS</span>
                 </div>
                 <div className="remuda-bottom">REMUDA</div>

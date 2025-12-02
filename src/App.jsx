@@ -437,9 +437,11 @@ export default function App() {
           <h2 className="roadmap-title">INITIATIVE ROADMAP</h2>
 
           <div className="brand-grid">
+            {/* UPDATED 777 WORDMARK BLOCK */}
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
                 <div className="usp-top">US PPA</div>
+                <div className="rule" />
                 <div className="string-middle">
                   <span className="string-side">THREE</span>
                   <span className="sevens">7̶7̶7̶</span>

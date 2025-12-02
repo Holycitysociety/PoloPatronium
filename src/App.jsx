@@ -19,6 +19,9 @@ const client = createThirdwebClient({
 
 const BASE = defineChain(8453);
 
+// Your PATRON token address
+const PATRON_TOKEN_ADDRESS = "0x128445CAAB304A9203CCb87D06dD888823749FbE";
+
 // Embedded user wallets (email / social / passkey)
 const wallets = [
   inAppWallet({
@@ -81,7 +84,7 @@ export default function App() {
     client,
   });
 
-  // PATRON ERC-20
+  // PATRON ERC-20 — also pull refetch so we can update after mint
   const {
     data: patronBalance,
     refetch: refetchPatronBalance,
@@ -89,7 +92,7 @@ export default function App() {
     address: account?.address,
     chain: BASE,
     client,
-    tokenAddress: "0x128445CAAB304A9203CCb87D06dD888823749FbE",
+    tokenAddress: PATRON_TOKEN_ADDRESS,
   });
 
   const openWallet = () => setIsWalletOpen(true);
@@ -124,41 +127,44 @@ export default function App() {
 
     if (!account?.address) {
       alert(
-        "Payment completed, but we could not detect your wallet address.\n" +
-          "Please contact support with your receipt."
+        "We received your payment, but could not detect your Patron Wallet address.\n\nPlease contact support."
       );
       return;
     }
 
     try {
+      // 🔥 Call backend to mint PATRON to this address
       const res = await fetch("/api/mint-patron", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          buyerAddress: account.address,
+          buyer: account.address,
           usdAmount: normalizedAmount,
-          checkoutResult: result, // for server-side logging / verification
+          checkoutId: result?.id ?? null,
         }),
       });
 
       if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || "Mint API returned non-OK status");
+        const text = await res.text().catch(() => "");
+        throw new Error(
+          `Mint API error (${res.status})${text ? `: ${text}` : ""}`
+        );
       }
 
-      // Refresh PATRON balance in the UI
+      // Optionally update PATRON balance in the mini wallet
       if (refetchPatronBalance) {
         await refetchPatronBalance();
       }
 
-      alert("Thank you — PATRON has been credited to your wallet.");
-    } catch (err) {
-      console.error("Error minting PATRON after checkout:", err);
       alert(
-        "Your payment succeeded, but we could not mint PATRON automatically.\n" +
-          "Please contact support with your wallet address and we will resolve it."
+        `Thank you — your patronage payment of $${normalizedAmount} was received.\n\n` +
+          `PATRON has been (or will shortly be) credited to your Patron Wallet.`
+      );
+    } catch (err) {
+      console.error("Error in checkout -> mint flow:", err);
+      alert(
+        "Your payment succeeded, but we had an issue crediting PATRON.\n\n" +
+          "Please contact the USPPA steward with your transaction details."
       );
     }
   };
@@ -204,14 +210,12 @@ export default function App() {
 
         <div className="hero-symbol">
           <div className="hero-symbol-main">
-            ERC-777 &middot; TOKEN SYMBOL &quot;PATRON&quot;
+            ERC-777 · TOKEN SYMBOL "PATRON"
           </div>
           <div className="hero-network">ON BASE NETWORK BY COINBASE</div>
           <div className="hero-contract">
             <span className="hero-contract-label">CA:</span>
-            <span className="hero-contract-value">
-              0x128445CAAB304A9203CCb87D06dD888823749FbE
-            </span>
+            <span className="hero-contract-value">{PATRON_TOKEN_ADDRESS}</span>
           </div>
         </div>
 
@@ -400,4 +404,51 @@ export default function App() {
                 style={{
                   width: "100%",
                   padding: "8px 10px",
-                  borderRadius: "6
+                  borderRadius: "6px",
+                  border: "1px solid "#3a2b16",
+                  background: "#181210",
+                  color: "#f5eedc",
+                  fontSize: "14px",
+                }}
+              />
+            </div>
+
+            {/* Checkout into the currently active wallet */}
+            <CheckoutBoundary>
+              <CheckoutWidget
+                client={client}
+                description={
+                  "USPPA, COWBOY POLO CIRCUIT, CHARLESTON POLO's PATRONAGE UTILITY TOKEN"
+                }
+                name={"POLO PATRONIUM"}
+                currency={"USD"}
+                chain={BASE}
+                amount={normalizedAmount}
+                tokenAddress={
+                  "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+                } // USDC on Base
+                seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
+                buttonLabel={"BUY PATRON (USDC on Base)"}
+                onSuccess={handleCheckoutSuccess}
+                onError={(err) => {
+                  console.error("Checkout error:", err);
+                  alert(err?.message || String(err));
+                }}
+              />
+            </CheckoutBoundary>
+          </div>
+        </div>
+      )}
+
+      {/* Brand / roadmap */}
+      <main>
+        {/* ... your existing roadmap + copy sections unchanged ... */}
+      </main>
+
+      <footer>
+        <div>© {year} US POLO PATRONS ASSOCIATION — POLO PATRONIUM</div>
+        <div>BUILT ON BASE BY COINBASE</div>
+      </footer>
+    </div>
+  );
+}

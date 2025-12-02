@@ -443,9 +443,9 @@ export default function App() {
                 <div className="usp-top">US PPA</div>
                 <div className="rule" />
                 <div className="string-middle">
-                  <span className="string-side">THREE</span>
+                  <span className="string-side">THREE  </span>
                   <span className="sevens">7̶7̶7̶</span>
-                  <span className="string-side">SEVENS</span>
+                  <span className="string-side">  SEVENS</span>
                 </div>
                 <div className="remuda-bottom">REMUDA</div>
               </div>

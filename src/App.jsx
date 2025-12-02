@@ -445,7 +445,7 @@ export default function App() {
                 <div className="string-middle">
                   <span className="string-side">T H R E E   </span>
                   <span className="sevens">   7̶7̶7̶  </span>
-                  <span className="string-side">  SEVENS</span>
+                  <span className="string-side">  S E V E N S</span>
                 </div>
                 <div className="remuda-bottom">REMUDA</div>
               </div>

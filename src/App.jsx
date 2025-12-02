@@ -439,13 +439,13 @@ export default function App() {
           <div className="brand-grid">
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
-                <span className="usp">USPPA</span>
-                <div className="rule"></div>
-                <span className="string-line">
-                  <span className="string-word">STRING THREE</span>
+                <div className="usp-top">US PPA</div>
+                <div className="string-middle">
+                  <span className="string-side">THREE</span>
                   <span className="sevens">7̶7̶7̶</span>
-                  <span className="string-word">SEVENS REMUDA</span>
-                </span>
+                  <span className="string-side">SEVENS</span>
+                </div>
+                <div className="remuda-bottom">REMUDA</div>
               </div>
               <p className="initiative-text">
                 Our managed herd of USPPA horses — consigned or owned by the

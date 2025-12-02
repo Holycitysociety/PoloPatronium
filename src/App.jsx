@@ -442,10 +442,18 @@ export default function App() {
               <div className="logo-usp-string-remuda">
                 <div className="usp-top">USPPA</div>
                 <div className="rule" />
-                <div className="string-middle">
-                  <span className="string-side">T H R E E   </span>
-                  <span className="sevens">   7̶7̶7̶  </span>
-                  <span className="string-side">  S E V E N S</span>
+                <div
+                  className="string-middle"
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    justifyContent: "center",
+                    gap: "0.5em",
+                  }}
+                >
+                  <span className="string-side">THREE</span>
+                  <span className="sevens">7̶7̶7̶</span>
+                  <span className="string-side">SEVENS</span>
                 </div>
                 <div className="remuda-bottom">REMUDA</div>
               </div>

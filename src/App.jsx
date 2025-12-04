@@ -204,8 +204,13 @@ export default function App() {
           <div className="hero-network">ON BASE NETWORK BY COINBASE</div>
           <div className="hero-contract">
             <span className="hero-contract-label">CA:</span>
-            <span className="hero-contract-value">
-              0x128445CAAB304A9203CCb87D06dD888823749FbE
+        
+          <span className="hero-contract-value">
+  0xD766a771887fFB6c528434d5710B406313CAe03A
+</span>
+              
+              
+              
             </span>
           </div>
         </div>

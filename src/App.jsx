@@ -81,7 +81,7 @@ export default function App() {
     address: account?.address,
     chain: BASE,
     client,
-    tokenAddress: "0x128445CAAB304A9203CCb87D06dD888823749FbE",
+    tokenAddress: "0xD766a771887fFB6c528434d5710B406313CAe03A",
   });
 
   const openWallet = () => setIsWalletOpen(true);

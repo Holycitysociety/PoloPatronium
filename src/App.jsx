@@ -18,8 +18,6 @@ const client = createThirdwebClient({
 });
 
 const BASE = defineChain(8453);
-const USDC_ADDRESS = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
-const PATRON_ADDRESS = "0xD766a771887fFB6c528434d5710B406313CAe03A";
 
 // Embedded user wallets (email / social / passkey)
 const wallets = [
@@ -66,24 +64,25 @@ export default function App() {
   const year = new Date().getFullYear();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
   const [usdAmount, setUsdAmount] = useState("1"); // controls Checkout amount in USD
+  const [showUsdcHelp, setShowUsdcHelp] = useState(false);
 
   const account = useActiveAccount();
   const activeWallet = useActiveWallet();
   const { disconnect } = useDisconnect();
 
-  // Native ETH on Base
+  // Native ETH on Base (gas)
   const { data: baseBalance } = useWalletBalance({
     address: account?.address,
     chain: BASE,
     client,
   });
 
-  // USDC on Base
+  // USDC on Base (for display)
   const { data: usdcBalance } = useWalletBalance({
     address: account?.address,
     chain: BASE,
     client,
-    tokenAddress: USDC_ADDRESS,
+    tokenAddress: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", // USDC Base
   });
 
   // PATRON ERC-20 (REAL CONTRACT)
@@ -91,7 +90,7 @@ export default function App() {
     address: account?.address,
     chain: BASE,
     client,
-    tokenAddress: PATRON_ADDRESS,
+    tokenAddress: "0xD766a771887fFB6c528434d5710B406313CAe03A",
   });
 
   const openWallet = () => setIsWalletOpen(true);
@@ -109,6 +108,17 @@ export default function App() {
       disconnect(activeWallet);
     } catch (err) {
       console.error("Error disconnecting wallet:", err);
+    }
+  };
+
+  const handleCopyAddress = async () => {
+    if (!account?.address) return;
+    try {
+      await navigator.clipboard.writeText(account.address);
+      alert("Patron Wallet address copied to clipboard.");
+    } catch (err) {
+      console.error("Clipboard error:", err);
+      alert("Could not copy address. Please copy it manually.");
     }
   };
 
@@ -215,7 +225,7 @@ export default function App() {
           <div className="hero-contract">
             <span className="hero-contract-label">CA:</span>
             <span className="hero-contract-value">
-              {PATRON_ADDRESS}
+              0xD766a771887fFB6c528434d5710B406313CAe03A
             </span>
           </div>
         </div>
@@ -251,7 +261,7 @@ export default function App() {
             style={{
               background: "#111",
               borderRadius: "12px",
-              padding: "18px",
+              padding: "20px",
               maxWidth: "380px",
               width: "100%",
               boxShadow: "0 18px 60px rgba(0,0,0,0.7)",
@@ -263,13 +273,13 @@ export default function App() {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                marginBottom: "14px",
+                marginBottom: "16px",
               }}
             >
               <h2
                 style={{
-                  fontSize: "19px",
-                  letterSpacing: "0.1em",
+                  fontSize: "18px",
+                  letterSpacing: "0.08em",
                   textTransform: "uppercase",
                 }}
               >
@@ -281,7 +291,7 @@ export default function App() {
                   border: "none",
                   background: "transparent",
                   color: "#e3bf72",
-                  fontSize: "22px",
+                  fontSize: "20px",
                   cursor: "pointer",
                   lineHeight: 1,
                 }}
@@ -291,9 +301,21 @@ export default function App() {
               </button>
             </div>
 
-            {/* Wallet status section */}
+            {/* Wallet status / connect */}
             {!account ? (
               <div style={{ marginBottom: "16px" }}>
+                <div
+                  style={{
+                    fontSize: "11px",
+                    letterSpacing: "0.16em",
+                    textTransform: "uppercase",
+                    color: "#c7b08a",
+                    marginBottom: "6px",
+                    textAlign: "center",
+                  }}
+                >
+                  Sign in to your Patron Wallet
+                </div>
                 <ConnectEmbed
                   client={client}
                   wallets={wallets}
@@ -306,15 +328,15 @@ export default function App() {
                 style={{
                   borderRadius: "10px",
                   border: "1px solid #3a2b16",
-                  padding: "14px 14px 16px",
+                  padding: "16px 14px 18px",
                   marginBottom: "18px",
                   textAlign: "center",
                 }}
               >
                 <div
                   style={{
-                    fontSize: "12px",
-                    letterSpacing: "0.18em",
+                    fontSize: "11px",
+                    letterSpacing: "0.16em",
                     textTransform: "uppercase",
                     color: "#c7b08a",
                     marginBottom: "6px",
@@ -324,89 +346,105 @@ export default function App() {
                 </div>
                 <div
                   style={{
-                    fontFamily: "monospace",
-                    fontSize: "14px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "6px",
                     marginBottom: "12px",
                   }}
                 >
-                  {shortAddress}
+                  <div
+                    style={{
+                      fontFamily: "monospace",
+                      fontSize: "13px",
+                    }}
+                  >
+                    {shortAddress}
+                  </div>
+                  <button
+                    onClick={handleCopyAddress}
+                    style={{
+                      border: "none",
+                      background: "#1b1410",
+                      borderRadius: "50%",
+                      width: "22px",
+                      height: "22px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      fontSize: "12px",
+                      color: "#e3bf72",
+                    }}
+                    title="Copy Patron Wallet address"
+                  >
+                    📋
+                  </button>
                 </div>
 
-                {/* ETH + USDC side-by-side */}
+                {/* Gas + USDC row */}
                 <div
                   style={{
                     display: "flex",
-                    justifyContent: "center",
-                    gap: "22px",
+                    justifyContent: "space-between",
+                    gap: "10px",
                     marginBottom: "10px",
                   }}
                 >
-                  <div>
+                  <div style={{ flex: 1 }}>
                     <div
                       style={{
                         fontSize: "10px",
-                        letterSpacing: "0.18em",
+                        letterSpacing: "0.16em",
                         textTransform: "uppercase",
                         color: "#9f8a64",
                         marginBottom: "2px",
                       }}
                     >
-                      Base ETH
+                      Gas Balance
                     </div>
-                    <div style={{ fontSize: "14px" }}>
+                    <div style={{ fontSize: "13px" }}>
                       {baseBalance?.displayValue || "0"}{" "}
                       {baseBalance?.symbol || "ETH"}
                     </div>
                   </div>
 
-                  <div>
+                  <div style={{ flex: 1 }}>
                     <div
                       style={{
                         fontSize: "10px",
-                        letterSpacing: "0.18em",
+                        letterSpacing: "0.16em",
                         textTransform: "uppercase",
                         color: "#9f8a64",
                         marginBottom: "2px",
                       }}
                     >
-                      USDC (Base)
+                      USDC on Base
                     </div>
-                    <div style={{ fontSize: "14px" }}>
+                    <div style={{ fontSize: "13px" }}>
                       {usdcBalance?.displayValue || "0"}{" "}
                       {usdcBalance?.symbol || "USDC"}
                     </div>
                   </div>
                 </div>
 
-                {/* PATRON below, centered */}
-                <div
-                  style={{
-                    fontSize: "10px",
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                    color: "#9f8a64",
-                    marginBottom: "2px",
-                  }}
-                >
-                  PATRON Balance
-                </div>
-                <div style={{ fontSize: "14px", marginBottom: "10px" }}>
-                  {patronBalance?.displayValue || "0"}{" "}
-                  {patronBalance?.symbol || "PATRON"}
-                </div>
-
-                <div
-                  style={{
-                    fontSize: "11px",
-                    lineHeight: 1.4,
-                    color: "#c7b08a",
-                    maxWidth: "320px",
-                    margin: "0 auto 10px",
-                  }}
-                >
-                  Card / Coinbase checkout works even with 0 ETH. Advanced
-                  users can also send USDC on Base and a small amount of ETH
-                  for gas directly to this wallet.
+                {/* PATRON centered below */}
+                <div style={{ marginBottom: "10px" }}>
+                  <div
+                    style={{
+                      fontSize: "10px",
+                      letterSpacing: "0.16em",
+                      textTransform: "uppercase",
+                      color: "#9f8a64",
+                      marginBottom: "2px",
+                    }}
+                  >
+                    PATRON Balance
+                  </div>
+                  <div style={{ fontSize: "13px" }}>
+                    {patronBalance?.displayValue || "0"}{" "}
+                    {patronBalance?.symbol || "PATRON"}
+                  </div>
                 </div>
 
                 <button
@@ -426,12 +464,12 @@ export default function App() {
             )}
 
             {/* Amount selector for Checkout */}
-            <div style={{ marginBottom: "12px" }}>
+            <div style={{ marginBottom: "10px" }}>
               <label
                 style={{
                   display: "block",
-                  fontSize: "11px",
-                  letterSpacing: "0.18em",
+                  fontSize: "10px",
+                  letterSpacing: "0.16em",
                   textTransform: "uppercase",
                   color: "#c7b08a",
                   marginBottom: "4px",
@@ -457,6 +495,43 @@ export default function App() {
               />
             </div>
 
+            {/* USDC info mini pop-up */}
+            <div style={{ marginBottom: "10px", textAlign: "center" }}>
+              <button
+                type="button"
+                onClick={() => setShowUsdcHelp((v) => !v)}
+                style={{
+                  border: "none",
+                  background: "transparent",
+                  color: "#c7b08a",
+                  fontSize: "11px",
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                }}
+              >
+                Have USDC on Base network? ⓘ
+              </button>
+              {showUsdcHelp && (
+                <div
+                  style={{
+                    marginTop: "6px",
+                    fontSize: "11px",
+                    lineHeight: 1.4,
+                    background: "#1a1410",
+                    borderRadius: "6px",
+                    padding: "8px 10px",
+                    border: "1px solid #3a2b16",
+                    textAlign: "left",
+                  }}
+                >
+                  You can send USDC on Base directly to your Patron Wallet
+                  address above. Once it arrives, use this checkout to convert
+                  it into PATRON. A small amount of ETH on Base is needed for
+                  gas.
+                </div>
+              )}
+            </div>
+
             {/* Checkout into the currently active wallet */}
             <CheckoutBoundary>
               <CheckoutWidget
@@ -468,7 +543,9 @@ export default function App() {
                 currency={"USD"}
                 chain={BASE}
                 amount={normalizedAmount}
-                tokenAddress={USDC_ADDRESS} // USDC on Base
+                tokenAddress={
+                  "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+                } // USDC on Base
                 seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
                 buttonLabel={"BUY PATRON (USDC on Base)"}
                 onSuccess={handleCheckoutSuccess}

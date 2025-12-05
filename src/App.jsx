@@ -18,6 +18,8 @@ const client = createThirdwebClient({
 });
 
 const BASE = defineChain(8453);
+const USDC_ADDRESS = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
+const PATRON_ADDRESS = "0xD766a771887fFB6c528434d5710B406313CAe03A";
 
 // Embedded user wallets (email / social / passkey)
 const wallets = [
@@ -76,12 +78,20 @@ export default function App() {
     client,
   });
 
+  // USDC on Base
+  const { data: usdcBalance } = useWalletBalance({
+    address: account?.address,
+    chain: BASE,
+    client,
+    tokenAddress: USDC_ADDRESS,
+  });
+
   // PATRON ERC-20 (REAL CONTRACT)
   const { data: patronBalance } = useWalletBalance({
     address: account?.address,
     chain: BASE,
     client,
-    tokenAddress: "0xD766a771887fFB6c528434d5710B406313CAe03A",
+    tokenAddress: PATRON_ADDRESS,
   });
 
   const openWallet = () => setIsWalletOpen(true);
@@ -205,7 +215,7 @@ export default function App() {
           <div className="hero-contract">
             <span className="hero-contract-label">CA:</span>
             <span className="hero-contract-value">
-              0xD766a771887fFB6c528434d5710B406313CAe03A
+              {PATRON_ADDRESS}
             </span>
           </div>
         </div>
@@ -241,8 +251,8 @@ export default function App() {
             style={{
               background: "#111",
               borderRadius: "12px",
-              padding: "20px",
-              maxWidth: "420px",
+              padding: "18px",
+              maxWidth: "380px",
               width: "100%",
               boxShadow: "0 18px 60px rgba(0,0,0,0.7)",
               border: "1px solid #3a2b16",
@@ -253,13 +263,13 @@ export default function App() {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                marginBottom: "16px",
+                marginBottom: "14px",
               }}
             >
               <h2
                 style={{
-                  fontSize: "18px",
-                  letterSpacing: "0.08em",
+                  fontSize: "19px",
+                  letterSpacing: "0.1em",
                   textTransform: "uppercase",
                 }}
               >
@@ -271,7 +281,7 @@ export default function App() {
                   border: "none",
                   background: "transparent",
                   color: "#e3bf72",
-                  fontSize: "20px",
+                  fontSize: "22px",
                   cursor: "pointer",
                   lineHeight: 1,
                 }}
@@ -296,18 +306,18 @@ export default function App() {
                 style={{
                   borderRadius: "10px",
                   border: "1px solid #3a2b16",
-                  padding: "14px 16px 18px",
-                  marginBottom: "20px",
+                  padding: "14px 14px 16px",
+                  marginBottom: "18px",
                   textAlign: "center",
                 }}
               >
                 <div
                   style={{
-                    fontSize: "11px",
-                    letterSpacing: "0.16em",
+                    fontSize: "12px",
+                    letterSpacing: "0.18em",
                     textTransform: "uppercase",
                     color: "#c7b08a",
-                    marginBottom: "4px",
+                    marginBottom: "6px",
                   }}
                 >
                   Connected as
@@ -315,35 +325,64 @@ export default function App() {
                 <div
                   style={{
                     fontFamily: "monospace",
-                    fontSize: "13px",
-                    marginBottom: "10px",
+                    fontSize: "14px",
+                    marginBottom: "12px",
                   }}
                 >
                   {shortAddress}
                 </div>
 
-                {/* Native gas balance */}
+                {/* ETH + USDC side-by-side */}
                 <div
                   style={{
-                    fontSize: "10px",
-                    letterSpacing: "0.16em",
-                    textTransform: "uppercase",
-                    color: "#9f8a64",
-                    marginBottom: "2px",
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "22px",
+                    marginBottom: "10px",
                   }}
                 >
-                  Base Balance
-                </div>
-                <div style={{ fontSize: "13px", marginBottom: "8px" }}>
-                  {baseBalance?.displayValue || "0"}{" "}
-                  {baseBalance?.symbol || "ETH"}
+                  <div>
+                    <div
+                      style={{
+                        fontSize: "10px",
+                        letterSpacing: "0.18em",
+                        textTransform: "uppercase",
+                        color: "#9f8a64",
+                        marginBottom: "2px",
+                      }}
+                    >
+                      Base ETH
+                    </div>
+                    <div style={{ fontSize: "14px" }}>
+                      {baseBalance?.displayValue || "0"}{" "}
+                      {baseBalance?.symbol || "ETH"}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div
+                      style={{
+                        fontSize: "10px",
+                        letterSpacing: "0.18em",
+                        textTransform: "uppercase",
+                        color: "#9f8a64",
+                        marginBottom: "2px",
+                      }}
+                    >
+                      USDC (Base)
+                    </div>
+                    <div style={{ fontSize: "14px" }}>
+                      {usdcBalance?.displayValue || "0"}{" "}
+                      {usdcBalance?.symbol || "USDC"}
+                    </div>
+                  </div>
                 </div>
 
-                {/* PATRON token balance */}
+                {/* PATRON below, centered */}
                 <div
                   style={{
                     fontSize: "10px",
-                    letterSpacing: "0.16em",
+                    letterSpacing: "0.18em",
                     textTransform: "uppercase",
                     color: "#9f8a64",
                     marginBottom: "2px",
@@ -351,9 +390,23 @@ export default function App() {
                 >
                   PATRON Balance
                 </div>
-                <div style={{ fontSize: "13px", marginBottom: "10px" }}>
+                <div style={{ fontSize: "14px", marginBottom: "10px" }}>
                   {patronBalance?.displayValue || "0"}{" "}
                   {patronBalance?.symbol || "PATRON"}
+                </div>
+
+                <div
+                  style={{
+                    fontSize: "11px",
+                    lineHeight: 1.4,
+                    color: "#c7b08a",
+                    maxWidth: "320px",
+                    margin: "0 auto 10px",
+                  }}
+                >
+                  Card / Coinbase checkout works even with 0 ETH. Advanced
+                  users can also send USDC on Base and a small amount of ETH
+                  for gas directly to this wallet.
                 </div>
 
                 <button
@@ -377,8 +430,8 @@ export default function App() {
               <label
                 style={{
                   display: "block",
-                  fontSize: "10px",
-                  letterSpacing: "0.16em",
+                  fontSize: "11px",
+                  letterSpacing: "0.18em",
                   textTransform: "uppercase",
                   color: "#c7b08a",
                   marginBottom: "4px",
@@ -396,7 +449,7 @@ export default function App() {
                   width: "100%",
                   padding: "8px 10px",
                   borderRadius: "6px",
-                  border: "1px solid "#3a2b16",
+                  border: "1px solid #3a2b16",
                   background: "#181210",
                   color: "#f5eedc",
                   fontSize: "14px",
@@ -415,9 +468,7 @@ export default function App() {
                 currency={"USD"}
                 chain={BASE}
                 amount={normalizedAmount}
-                tokenAddress={
-                  "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
-                } // USDC on Base
+                tokenAddress={USDC_ADDRESS} // USDC on Base
                 seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
                 buttonLabel={"BUY PATRON (USDC on Base)"}
                 onSuccess={handleCheckoutSuccess}

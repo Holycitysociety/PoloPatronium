@@ -77,15 +77,15 @@ export default function App() {
     client,
   });
 
-  // USDC on Base (for display)
+  // USDC on Base (fiat on-ramp target)
   const { data: usdcBalance } = useWalletBalance({
     address: account?.address,
     chain: BASE,
     client,
-    tokenAddress: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", // USDC Base
+    tokenAddress: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
   });
 
-  // PATRON ERC-20 (REAL CONTRACT)
+  // PATRON ERC-20 (real contract)
   const { data: patronBalance } = useWalletBalance({
     address: account?.address,
     chain: BASE,
@@ -111,20 +111,19 @@ export default function App() {
     }
   };
 
+  const shortAddress = account?.address
+    ? `${account.address.slice(0, 6)}…${account.address.slice(-4)}`
+    : "";
+
   const handleCopyAddress = async () => {
     if (!account?.address) return;
     try {
       await navigator.clipboard.writeText(account.address);
-      alert("Patron Wallet address copied to clipboard.");
+      alert("Patron Wallet address copied.");
     } catch (err) {
       console.error("Clipboard error:", err);
-      alert("Could not copy address. Please copy it manually.");
     }
   };
-
-  const shortAddress = account?.address
-    ? `${account.address.slice(0, 6)}…${account.address.slice(-4)}`
-    : "";
 
   // Make sure Checkout always gets a sane positive string
   const normalizedAmount =
@@ -266,34 +265,42 @@ export default function App() {
               width: "100%",
               boxShadow: "0 18px 60px rgba(0,0,0,0.7)",
               border: "1px solid #3a2b16",
+              maxHeight: "90vh",
+              overflowY: "auto",
+              margin: "16px",
             }}
           >
+            {/* Modal header with centered wordmark and close button */}
             <div
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                position: "relative",
                 marginBottom: "16px",
+                textAlign: "center",
               }}
             >
-              <h2
+              <div
                 style={{
-                  fontSize: "18px",
-                  letterSpacing: "0.08em",
+                  fontSize: "13px",
+                  letterSpacing: "0.22em",
                   textTransform: "uppercase",
                 }}
               >
-                Patron Wallet
-              </h2>
+                PATRON WALLET
+              </div>
               <button
                 onClick={closeWallet}
                 style={{
+                  position: "absolute",
+                  right: 0,
+                  top: "50%",
+                  transform: "translateY(-50%)",
                   border: "none",
                   background: "transparent",
                   color: "#e3bf72",
                   fontSize: "20px",
                   cursor: "pointer",
                   lineHeight: 1,
+                  padding: 0,
                 }}
                 aria-label="Close wallet"
               >
@@ -301,20 +308,20 @@ export default function App() {
               </button>
             </div>
 
-            {/* Wallet status / connect */}
+            {/* Wallet status / connect section */}
             {!account ? (
               <div style={{ marginBottom: "16px" }}>
                 <div
                   style={{
-                    fontSize: "11px",
+                    fontSize: "10px",
                     letterSpacing: "0.16em",
                     textTransform: "uppercase",
                     color: "#c7b08a",
-                    marginBottom: "6px",
                     textAlign: "center",
+                    marginBottom: "6px",
                   }}
                 >
-                  Sign in to your Patron Wallet
+                  Sign into Patron Wallet
                 </div>
                 <ConnectEmbed
                   client={client}
@@ -328,8 +335,8 @@ export default function App() {
                 style={{
                   borderRadius: "10px",
                   border: "1px solid #3a2b16",
-                  padding: "16px 14px 18px",
-                  marginBottom: "18px",
+                  padding: "14px 16px 18px",
+                  marginBottom: "20px",
                   textAlign: "center",
                 }}
               >
@@ -339,18 +346,19 @@ export default function App() {
                     letterSpacing: "0.16em",
                     textTransform: "uppercase",
                     color: "#c7b08a",
-                    marginBottom: "6px",
+                    marginBottom: "4px",
                   }}
                 >
                   Connected as
                 </div>
+
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    gap: "6px",
-                    marginBottom: "12px",
+                    gap: 8,
+                    marginBottom: "10px",
                   }}
                 >
                   <div
@@ -362,36 +370,31 @@ export default function App() {
                     {shortAddress}
                   </div>
                   <button
+                    type="button"
                     onClick={handleCopyAddress}
                     style={{
                       border: "none",
-                      background: "#1b1410",
-                      borderRadius: "50%",
-                      width: "22px",
-                      height: "22px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
+                      background: "transparent",
+                      color: "#c7b08a",
                       cursor: "pointer",
-                      fontSize: "12px",
-                      color: "#e3bf72",
+                      fontSize: "14px",
                     }}
-                    title="Copy Patron Wallet address"
+                    aria-label="Copy Patron Wallet address"
                   >
                     📋
                   </button>
                 </div>
 
-                {/* Gas + USDC row */}
+                {/* Gas + USDC balances side-by-side */}
                 <div
                   style={{
                     display: "flex",
-                    justifyContent: "space-between",
-                    gap: "10px",
+                    justifyContent: "center",
+                    gap: "24px",
                     marginBottom: "10px",
                   }}
                 >
-                  <div style={{ flex: 1 }}>
+                  <div>
                     <div
                       style={{
                         fontSize: "10px",
@@ -401,15 +404,14 @@ export default function App() {
                         marginBottom: "2px",
                       }}
                     >
-                      Gas Balance
+                      Gas Balance (Base)
                     </div>
                     <div style={{ fontSize: "13px" }}>
                       {baseBalance?.displayValue || "0"}{" "}
                       {baseBalance?.symbol || "ETH"}
                     </div>
                   </div>
-
-                  <div style={{ flex: 1 }}>
+                  <div>
                     <div
                       style={{
                         fontSize: "10px",
@@ -419,7 +421,7 @@ export default function App() {
                         marginBottom: "2px",
                       }}
                     >
-                      USDC on Base
+                      USDC Balance
                     </div>
                     <div style={{ fontSize: "13px" }}>
                       {usdcBalance?.displayValue || "0"}{" "}
@@ -428,23 +430,21 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* PATRON centered below */}
-                <div style={{ marginBottom: "10px" }}>
-                  <div
-                    style={{
-                      fontSize: "10px",
-                      letterSpacing: "0.16em",
-                      textTransform: "uppercase",
-                      color: "#9f8a64",
-                      marginBottom: "2px",
-                    }}
-                  >
-                    PATRON Balance
-                  </div>
-                  <div style={{ fontSize: "13px" }}>
-                    {patronBalance?.displayValue || "0"}{" "}
-                    {patronBalance?.symbol || "PATRON"}
-                  </div>
+                {/* PATRON balance centered below */}
+                <div
+                  style={{
+                    fontSize: "10px",
+                    letterSpacing: "0.16em",
+                    textTransform: "uppercase",
+                    color: "#9f8a64",
+                    marginBottom: "2px",
+                  }}
+                >
+                  PATRON Balance
+                </div>
+                <div style={{ fontSize: "13px", marginBottom: "10px" }}>
+                  {patronBalance?.displayValue || "0"}{" "}
+                  {patronBalance?.symbol || "PATRON"}
                 </div>
 
                 <button
@@ -464,7 +464,7 @@ export default function App() {
             )}
 
             {/* Amount selector for Checkout */}
-            <div style={{ marginBottom: "10px" }}>
+            <div style={{ marginBottom: "12px" }}>
               <label
                 style={{
                   display: "block",
@@ -491,12 +491,11 @@ export default function App() {
                   background: "#181210",
                   color: "#f5eedc",
                   fontSize: "14px",
+                  marginBottom: "4px",
                 }}
               />
-            </div>
 
-            {/* USDC info mini pop-up */}
-            <div style={{ marginBottom: "10px", textAlign: "center" }}>
+              {/* Mini help link for USDC users */}
               <button
                 type="button"
                 onClick={() => setShowUsdcHelp((v) => !v)}
@@ -505,11 +504,15 @@ export default function App() {
                   background: "transparent",
                   color: "#c7b08a",
                   fontSize: "11px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                  marginTop: "4px",
                   cursor: "pointer",
-                  textDecoration: "underline",
                 }}
               >
-                Have USDC on Base network? ⓘ
+                <span>ℹ️</span>
+                <span>Have USDC on Base network?</span>
               </button>
               {showUsdcHelp && (
                 <div
@@ -517,17 +520,12 @@ export default function App() {
                     marginTop: "6px",
                     fontSize: "11px",
                     lineHeight: 1.4,
-                    background: "#1a1410",
-                    borderRadius: "6px",
-                    padding: "8px 10px",
-                    border: "1px solid #3a2b16",
-                    textAlign: "left",
+                    color: "#b29a74",
                   }}
                 >
-                  You can send USDC on Base directly to your Patron Wallet
-                  address above. Once it arrives, use this checkout to convert
-                  it into PATRON. A small amount of ETH on Base is needed for
-                  gas.
+                  You can also send USDC on Base to this Patron Wallet address
+                  first, then use the Checkout button below to complete your
+                  patronage in USDC.
                 </div>
               )}
             </div>
@@ -646,6 +644,8 @@ export default function App() {
         <section className="copy-section" id="patronium-framework">
           <div className="copy-section-title">THE PATRONIUM FRAMEWORK</div>
 
+          {/* (rest of your copy sections unchanged) */}
+
           <div className="copy-block">
             <h3>Patronium — Polo Patronage Perfected</h3>
             <p>
@@ -665,6 +665,8 @@ export default function App() {
               service to the field.
             </p>
           </div>
+
+          {/* ... keep the rest of your copy blocks exactly as before ... */}
 
           <div className="copy-block">
             <h3>Charleston Polo — The USPPA Chapter Test Model</h3>

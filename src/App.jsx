@@ -65,6 +65,7 @@ export default function App() {
   const [isWalletOpen, setIsWalletOpen] = useState(false);
   const [usdAmount, setUsdAmount] = useState("1"); // controls Checkout amount in USD
   const [showUsdcHelp, setShowUsdcHelp] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
 
   const account = useActiveAccount();
   const activeWallet = useActiveWallet();
@@ -93,11 +94,18 @@ export default function App() {
     tokenAddress: "0xD766a771887fFB6c528434d5710B406313CAe03A",
   });
 
-  const openWallet = () => setIsWalletOpen(true);
-  const closeWallet = () => setIsWalletOpen(false);
+  const openWallet = () => {
+    setIsWalletOpen(true);
+    setShowCheckout(false);
+  };
+
+  const closeWallet = () => {
+    setIsWalletOpen(false);
+    setShowCheckout(false);
+  };
 
   const handleBuyPatron = () => {
-    // Main BUY button just opens the Patron Wallet modal
+    // Main hero BUY button just opens the Patron Wallet modal
     openWallet();
   };
 
@@ -106,6 +114,7 @@ export default function App() {
     if (!activeWallet || !disconnect) return;
     try {
       disconnect(activeWallet);
+      setShowCheckout(false);
     } catch (err) {
       console.error("Error disconnecting wallet:", err);
     }
@@ -311,18 +320,7 @@ export default function App() {
             {/* Wallet status / connect section */}
             {!account ? (
               <div style={{ marginBottom: "16px" }}>
-                <div
-                  style={{
-                    fontSize: "10px",
-                    letterSpacing: "0.16em",
-                    textTransform: "uppercase",
-                    color: "#c7b08a",
-                    textAlign: "center",
-                    marginBottom: "6px",
-                  }}
-                >
-                  Sign into Patron Wallet
-                </div>
+                {/* Removed "Sign into Patron Wallet" label here per request */}
                 <ConnectEmbed
                   client={client}
                   wallets={wallets}
@@ -487,7 +485,7 @@ export default function App() {
                   width: "100%",
                   padding: "8px 10px",
                   borderRadius: "6px",
-                  border: "1px solid #3a2b16",
+                  border: "1px solid "#3a2b16",
                   background: "#181210",
                   color: "#f5eedc",
                   fontSize: "14px",
@@ -524,40 +522,67 @@ export default function App() {
                   }}
                 >
                   You can also send USDC on Base to this Patron Wallet address
-                  first, then use the Checkout button below to complete your
-                  patronage in USDC.
+                  first, then use the button below to complete your patronage
+                  in USDC.
                 </div>
               )}
             </div>
 
-            {/* Checkout into the currently active wallet */}
-            <CheckoutBoundary>
-              <CheckoutWidget
-                client={client}
-                description={
-                  "USPPA, COWBOY POLO CIRCUIT, CHARLESTON POLO's PATRONAGE UTILITY TOKEN"
-                }
-                name={"POLO PATRONIUM"}
-                currency={"USD"}
-                chain={BASE}
-                amount={normalizedAmount}
-                tokenAddress={
-                  "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
-                } // USDC on Base
-                seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
-                buttonLabel={"BUY PATRON (USDC on Base)"}
-                onSuccess={handleCheckoutSuccess}
-                onError={(err) => {
-                  console.error("Checkout error:", err);
-                  alert(err?.message || String(err));
+            {/* Button to reveal Checkout */}
+            <div style={{ marginTop: "8px", marginBottom: "8px" }}>
+              <button
+                className="btn btn-primary"
+                style={{
+                  width: "100%",
+                  padding: "8px 12px",
+                  fontSize: "12px",
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
                 }}
-              />
-            </CheckoutBoundary>
+                onClick={() => {
+                  if (!account) {
+                    alert(
+                      "Please connect your Patron Wallet above before continuing."
+                    );
+                    return;
+                  }
+                  setShowCheckout(true);
+                }}
+              >
+                BUY PATRON
+              </button>
+            </div>
+
+            {/* Checkout into the currently active wallet (hidden until button click) */}
+            {showCheckout && (
+              <CheckoutBoundary>
+                <CheckoutWidget
+                  client={client}
+                  description={
+                    "USPPA, COWBOY POLO CIRCUIT, CHARLESTON POLO's PATRONAGE UTILITY TOKEN"
+                  }
+                  name={"POLO PATRONIUM"}
+                  currency={"USD"}
+                  chain={BASE}
+                  amount={normalizedAmount}
+                  tokenAddress={
+                    "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+                  } // USDC on Base
+                  seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
+                  buttonLabel={"BUY PATRON (USDC on Base)"}
+                  onSuccess={handleCheckoutSuccess}
+                  onError={(err) => {
+                    console.error("Checkout error:", err);
+                    alert(err?.message || String(err));
+                  }}
+                />
+              </CheckoutBoundary>
+            )}
           </div>
         </div>
       )}
 
-      {/* Brand / roadmap + copy sections – your original content */}
+      {/* Brand / roadmap + copy sections – unchanged */}
       <main>
         <section className="brand-row" id="brands">
           <h2 className="roadmap-title">INITIATIVE ROADMAP</h2>
@@ -644,8 +669,6 @@ export default function App() {
         <section className="copy-section" id="patronium-framework">
           <div className="copy-section-title">THE PATRONIUM FRAMEWORK</div>
 
-          {/* (rest of your copy sections unchanged) */}
-
           <div className="copy-block">
             <h3>Patronium — Polo Patronage Perfected</h3>
             <p>
@@ -665,8 +688,6 @@ export default function App() {
               service to the field.
             </p>
           </div>
-
-          {/* ... keep the rest of your copy blocks exactly as before ... */}
 
           <div className="copy-block">
             <h3>Charleston Polo — The USPPA Chapter Test Model</h3>

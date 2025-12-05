@@ -76,7 +76,7 @@ export default function App() {
     client,
   });
 
-  // PATRON ERC-20
+  // PATRON ERC-20 (REAL CONTRACT)
   const { data: patronBalance } = useWalletBalance({
     address: account?.address,
     chain: BASE,
@@ -204,13 +204,8 @@ export default function App() {
           <div className="hero-network">ON BASE NETWORK BY COINBASE</div>
           <div className="hero-contract">
             <span className="hero-contract-label">CA:</span>
-        
-          <span className="hero-contract-value">
-  0xD766a771887fFB6c528434d5710B406313CAe03A
-</span>
-              
-              
-              
+            <span className="hero-contract-value">
+              0xD766a771887fFB6c528434d5710B406313CAe03A
             </span>
           </div>
         </div>
@@ -401,7 +396,7 @@ export default function App() {
                   width: "100%",
                   padding: "8px 10px",
                   borderRadius: "6px",
-                  border: "1px solid #3a2b16",
+                  border: "1px solid "#3a2b16",
                   background: "#181210",
                   color: "#f5eedc",
                   fontSize: "14px",

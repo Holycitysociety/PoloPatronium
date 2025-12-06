@@ -23,7 +23,7 @@ const BASE = defineChain(8453);
 const wallets = [
   inAppWallet({
     auth: {
-      options: ["email", "coinbase", "passkey"],
+      options: ["email"],
     },
   }),
 ];

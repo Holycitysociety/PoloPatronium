@@ -485,7 +485,7 @@ export default function App() {
                   width: "100%",
                   padding: "8px 10px",
                   borderRadius: "6px",
-                  border: "1px solid "#3a2b16",
+                  border: "1px solid #3a2b16",
                   background: "#181210",
                   color: "#f5eedc",
                   fontSize: "14px",

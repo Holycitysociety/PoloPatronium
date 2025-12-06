@@ -6,6 +6,7 @@ import {
   useActiveWallet,
   useDisconnect,
   useWalletBalance,
+  darkTheme,
 } from "thirdweb/react";
 import { createThirdwebClient, defineChain } from "thirdweb";
 import { inAppWallet } from "thirdweb/wallets";
@@ -27,6 +28,52 @@ const wallets = [
     },
   }),
 ];
+
+// ---------------------------------------------
+// Themed checkout to match main page
+// ---------------------------------------------
+const patronCheckoutTheme = darkTheme({
+  fontFamily:
+    '"Cinzel", "EB Garamond", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", serif',
+
+  colors: {
+    // General surfaces
+    modalBg: "#111111",
+    modalOverlayBg: "rgba(0,0,0,0.8)",
+    borderColor: "#3a2b16",
+    separatorLine: "#3a2b16",
+    mutedBg: "rgba(24,18,16,0.6)",
+    skeletonBg: "#181210",
+
+    // Text
+    primaryText: "#f5eedc",
+    secondaryText: "#c7b08a",
+    selectedTextColor: "#111111",
+    selectedTextBg: "#f5eedc",
+
+    // Buttons
+    primaryButtonBg: "#e3bf72",
+    primaryButtonText: "#181210",
+    secondaryButtonBg: "#181210",
+    secondaryButtonText: "#f5eedc",
+    secondaryButtonHoverBg: "#221713",
+    accentButtonBg: "#e3bf72",
+    accentButtonText: "#181210",
+    connectedButtonBg: "#111111",
+    connectedButtonHoverBg: "#181210",
+
+    // Icons / misc
+    secondaryIconColor: "#c7b08a",
+    secondaryIconHoverColor: "#f5eedc",
+    secondaryIconHoverBg: "#221713",
+    danger: "#f97373",
+    success: "#4ade80",
+    tooltipBg: "#181210",
+    tooltipText: "#f5eedc",
+    inputAutofillBg: "#181210",
+    scrollbarBg: "#181210",
+  },
+});
 
 // ---------------------------------------------
 // Simple error boundary for CheckoutWidget (plain JS)
@@ -275,7 +322,7 @@ export default function App() {
               overflowY: "auto",
               margin: "16px",
               fontFamily:
-                'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                '"Cinzel", "EB Garamond", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", serif',
               color: "#f9fafb",
               fontSize: "13px",
             }}
@@ -325,7 +372,7 @@ export default function App() {
                   client={client}
                   wallets={wallets}
                   chain={BASE}
-                  theme="dark"
+                  theme={patronCheckoutTheme}
                 />
               </div>
             ) : (
@@ -541,6 +588,7 @@ export default function App() {
                   } // USDC on Base
                   seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
                   buttonLabel={"BUY PATRON (USDC on Base)"}
+                  theme={patronCheckoutTheme}
                   onSuccess={handleCheckoutSuccess}
                   onError={(err) => {
                     console.error("Checkout error:", err);

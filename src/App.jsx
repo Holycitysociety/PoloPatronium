@@ -23,7 +23,7 @@ const BASE = defineChain(8453);
 const wallets = [
   inAppWallet({
     auth: {
-      options: ["email"],
+      options: ["email", "coinbase", "passkey"],
     },
   }),
 ];
@@ -64,12 +64,12 @@ export default function App() {
   const year = new Date().getFullYear();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
   const [usdAmount, setUsdAmount] = useState("1"); // controls Checkout amount in USD
-  const [showUsdcHelp, setShowUsdcHelp] = useState(false);
-  const [showCheckout, setShowCheckout] = useState(false);
 
   const account = useActiveAccount();
   const activeWallet = useActiveWallet();
   const { disconnect } = useDisconnect();
+
+  const isConnected = !!account;
 
   // Native ETH on Base (gas)
   const { data: baseBalance } = useWalletBalance({
@@ -96,12 +96,10 @@ export default function App() {
 
   const openWallet = () => {
     setIsWalletOpen(true);
-    setShowCheckout(false);
   };
 
   const closeWallet = () => {
     setIsWalletOpen(false);
-    setShowCheckout(false);
   };
 
   const handleBuyPatron = () => {
@@ -114,7 +112,6 @@ export default function App() {
     if (!activeWallet || !disconnect) return;
     try {
       disconnect(activeWallet);
-      setShowCheckout(false);
     } catch (err) {
       console.error("Error disconnecting wallet:", err);
     }
@@ -267,16 +264,20 @@ export default function App() {
           <div
             className="wallet-modal"
             style={{
-              background: "#111",
+              background: "#050816",
               borderRadius: "12px",
               padding: "20px",
               maxWidth: "380px",
               width: "100%",
               boxShadow: "0 18px 60px rgba(0,0,0,0.7)",
-              border: "1px solid #3a2b16",
+              border: "1px solid #262626",
               maxHeight: "90vh",
               overflowY: "auto",
               margin: "16px",
+              fontFamily:
+                'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+              color: "#f9fafb",
+              fontSize: "13px",
             }}
           >
             {/* Modal header with centered wordmark and close button */}
@@ -290,7 +291,7 @@ export default function App() {
               <div
                 style={{
                   fontSize: "13px",
-                  letterSpacing: "0.22em",
+                  letterSpacing: "0.16em",
                   textTransform: "uppercase",
                 }}
               >
@@ -305,7 +306,7 @@ export default function App() {
                   transform: "translateY(-50%)",
                   border: "none",
                   background: "transparent",
-                  color: "#e3bf72",
+                  color: "#9ca3af",
                   fontSize: "20px",
                   cursor: "pointer",
                   lineHeight: 1,
@@ -320,7 +321,6 @@ export default function App() {
             {/* Wallet status / connect section */}
             {!account ? (
               <div style={{ marginBottom: "16px" }}>
-                {/* Removed "Sign into Patron Wallet" label here per request */}
                 <ConnectEmbed
                   client={client}
                   wallets={wallets}
@@ -332,10 +332,11 @@ export default function App() {
               <div
                 style={{
                   borderRadius: "10px",
-                  border: "1px solid #3a2b16",
-                  padding: "14px 16px 18px",
-                  marginBottom: "20px",
+                  border: "1px solid #262626",
+                  padding: "12px 14px 14px",
+                  marginBottom: "16px",
                   textAlign: "center",
+                  background: "#020617",
                 }}
               >
                 <div
@@ -343,7 +344,7 @@ export default function App() {
                     fontSize: "11px",
                     letterSpacing: "0.16em",
                     textTransform: "uppercase",
-                    color: "#c7b08a",
+                    color: "#9ca3af",
                     marginBottom: "4px",
                   }}
                 >
@@ -356,7 +357,7 @@ export default function App() {
                     justifyContent: "center",
                     alignItems: "center",
                     gap: 8,
-                    marginBottom: "10px",
+                    marginBottom: "8px",
                   }}
                 >
                   <div
@@ -373,7 +374,7 @@ export default function App() {
                     style={{
                       border: "none",
                       background: "transparent",
-                      color: "#c7b08a",
+                      color: "#9ca3af",
                       cursor: "pointer",
                       fontSize: "14px",
                     }}
@@ -389,20 +390,20 @@ export default function App() {
                     display: "flex",
                     justifyContent: "center",
                     gap: "24px",
-                    marginBottom: "10px",
+                    marginBottom: "8px",
                   }}
                 >
                   <div>
                     <div
                       style={{
                         fontSize: "10px",
-                        letterSpacing: "0.16em",
+                        letterSpacing: "0.12em",
                         textTransform: "uppercase",
-                        color: "#9f8a64",
+                        color: "#6b7280",
                         marginBottom: "2px",
                       }}
                     >
-                      Gas Balance (Base)
+                      Gas (Base)
                     </div>
                     <div style={{ fontSize: "13px" }}>
                       {baseBalance?.displayValue || "0"}{" "}
@@ -413,13 +414,13 @@ export default function App() {
                     <div
                       style={{
                         fontSize: "10px",
-                        letterSpacing: "0.16em",
+                        letterSpacing: "0.12em",
                         textTransform: "uppercase",
-                        color: "#9f8a64",
+                        color: "#6b7280",
                         marginBottom: "2px",
                       }}
                     >
-                      USDC Balance
+                      USDC
                     </div>
                     <div style={{ fontSize: "13px" }}>
                       {usdcBalance?.displayValue || "0"}{" "}
@@ -432,15 +433,15 @@ export default function App() {
                 <div
                   style={{
                     fontSize: "10px",
-                    letterSpacing: "0.16em",
+                    letterSpacing: "0.12em",
                     textTransform: "uppercase",
-                    color: "#9f8a64",
+                    color: "#6b7280",
                     marginBottom: "2px",
                   }}
                 >
-                  PATRON Balance
+                  PATRON
                 </div>
-                <div style={{ fontSize: "13px", marginBottom: "10px" }}>
+                <div style={{ fontSize: "13px", marginBottom: "8px" }}>
                   {patronBalance?.displayValue || "0"}{" "}
                   {patronBalance?.symbol || "PATRON"}
                 </div>
@@ -451,7 +452,7 @@ export default function App() {
                     minWidth: "auto",
                     padding: "6px 18px",
                     fontSize: "11px",
-                    letterSpacing: "0.16em",
+                    letterSpacing: "0.12em",
                     textTransform: "uppercase",
                   }}
                   onClick={handleSignOut}
@@ -467,9 +468,9 @@ export default function App() {
                 style={{
                   display: "block",
                   fontSize: "10px",
-                  letterSpacing: "0.16em",
+                  letterSpacing: "0.12em",
                   textTransform: "uppercase",
-                  color: "#c7b08a",
+                  color: "#9ca3af",
                   marginBottom: "4px",
                 }}
               >
@@ -485,76 +486,46 @@ export default function App() {
                   width: "100%",
                   padding: "8px 10px",
                   borderRadius: "6px",
-                  border: "1px solid #3a2b16",
-                  background: "#181210",
-                  color: "#f5eedc",
+                  border: "1px solid #374151",
+                  background: "#020617",
+                  color: "#f9fafb",
                   fontSize: "14px",
                   marginBottom: "4px",
+                  outline: "none",
                 }}
               />
+            </div>
 
-              {/* Mini help link for USDC users */}
-              <button
-                type="button"
-                onClick={() => setShowUsdcHelp((v) => !v)}
-                style={{
-                  border: "none",
-                  background: "transparent",
-                  color: "#c7b08a",
-                  fontSize: "11px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 4,
-                  marginTop: "4px",
-                  cursor: "pointer",
-                }}
-              >
-                <span>ℹ️</span>
-                <span>Have USDC on Base network?</span>
-              </button>
-              {showUsdcHelp && (
+            {/* Checkout always visible, but blocked until connected */}
+            <div style={{ marginTop: "4px", position: "relative" }}>
+              {!isConnected && (
                 <div
                   style={{
-                    marginTop: "6px",
-                    fontSize: "11px",
-                    lineHeight: 1.4,
-                    color: "#b29a74",
+                    position: "absolute",
+                    inset: 0,
+                    background:
+                      "linear-gradient(to bottom, rgba(15,23,42,0.82), rgba(15,23,42,0.9))",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    zIndex: 10,
+                    textAlign: "center",
+                    padding: "12px",
+                    borderRadius: "8px",
+                    fontSize: "12px",
+                    color: "#e5e7eb",
                   }}
                 >
-                  You can also send USDC on Base to this Patron Wallet address
-                  first, then use the button below to complete your patronage
-                  in USDC.
+                  <div style={{ marginBottom: "4px", fontWeight: 500 }}>
+                    Connect your Patron Wallet above to continue
+                  </div>
+                  <div style={{ fontSize: "11px", color: "#9ca3af" }}>
+                    Sign in with email to unlock checkout.
+                  </div>
                 </div>
               )}
-            </div>
 
-            {/* Button to reveal Checkout */}
-            <div style={{ marginTop: "8px", marginBottom: "8px" }}>
-              <button
-                className="btn btn-primary"
-                style={{
-                  width: "100%",
-                  padding: "8px 12px",
-                  fontSize: "12px",
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                }}
-                onClick={() => {
-                  if (!account) {
-                    alert(
-                      "Please connect your Patron Wallet above before continuing."
-                    );
-                    return;
-                  }
-                  setShowCheckout(true);
-                }}
-              >
-                BUY PATRON
-              </button>
-            </div>
-
-            {/* Checkout into the currently active wallet (hidden until button click) */}
-            {showCheckout && (
               <CheckoutBoundary>
                 <CheckoutWidget
                   client={client}
@@ -577,7 +548,7 @@ export default function App() {
                   }}
                 />
               </CheckoutBoundary>
-            )}
+            </div>
           </div>
         </div>
       )}

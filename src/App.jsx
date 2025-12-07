@@ -562,8 +562,8 @@ export default function App() {
                   client={client}
                   name={"POLO PATRONIUM"}
                   description={`USPPA PATRONAGE UTILITY TOKEN
-STRING 777 REMUDA • COWBOY POLO CIRCUIT
-THE POLO LIFE • CHARLESTON POLO CLUB`}
+STRING 777 REMUDA\u2007\u2007\u2007COWBOY POLO CIRCUIT
+THE POLO LIFE\u2007\u2007\u2007\u2007\u2007CHARLESTON POLO CLUB`}
                   currency={"USD"}
                   chain={BASE}
                   amount={normalizedAmount}

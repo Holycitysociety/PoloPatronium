@@ -20,11 +20,11 @@ const client = createThirdwebClient({
 
 const BASE = defineChain(8453);
 
-// Embedded user wallets (email / social / passkey)
+// Embedded user wallets (EMAIL ONLY)
 const wallets = [
   inAppWallet({
     auth: {
-      options: ["email", "coinbase", "passkey"],
+      options: ["email"],
     },
   }),
 ];
@@ -37,13 +37,13 @@ const patronCheckoutTheme = darkTheme({
     '"Cinzel", "EB Garamond", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", serif',
 
   colors: {
-    // General surfaces
-    modalBg: "#111111",
-    modalOverlayBg: "rgba(0,0,0,0.8)",
+    // General surfaces - black dark mode
+    modalBg: "#050505",
+    modalOverlayBg: "rgba(0,0,0,0.85)",
     borderColor: "#3a2b16",
     separatorLine: "#3a2b16",
-    mutedBg: "rgba(24,18,16,0.6)",
-    skeletonBg: "#181210",
+    mutedBg: "#050505",
+    skeletonBg: "#111111",
 
     // Text
     primaryText: "#f5eedc",
@@ -51,27 +51,27 @@ const patronCheckoutTheme = darkTheme({
     selectedTextColor: "#111111",
     selectedTextBg: "#f5eedc",
 
-    // Buttons
+    // Buttons – gold accents
     primaryButtonBg: "#e3bf72",
     primaryButtonText: "#181210",
-    secondaryButtonBg: "#181210",
+    secondaryButtonBg: "#050505",
     secondaryButtonText: "#f5eedc",
-    secondaryButtonHoverBg: "#221713",
+    secondaryButtonHoverBg: "#111111",
     accentButtonBg: "#e3bf72",
     accentButtonText: "#181210",
-    connectedButtonBg: "#111111",
-    connectedButtonHoverBg: "#181210",
+    connectedButtonBg: "#050505",
+    connectedButtonHoverBg: "#111111",
 
     // Icons / misc
     secondaryIconColor: "#c7b08a",
     secondaryIconHoverColor: "#f5eedc",
-    secondaryIconHoverBg: "#221713",
+    secondaryIconHoverBg: "#111111",
     danger: "#f97373",
     success: "#4ade80",
-    tooltipBg: "#181210",
+    tooltipBg: "#050505",
     tooltipText: "#f5eedc",
-    inputAutofillBg: "#181210",
-    scrollbarBg: "#181210",
+    inputAutofillBg: "#050505",
+    scrollbarBg: "#050505",
   },
 });
 
@@ -311,19 +311,19 @@ export default function App() {
           <div
             className="wallet-modal"
             style={{
-              background: "#050816",
+              background: "#050505",
               borderRadius: "12px",
               padding: "20px",
               maxWidth: "380px",
               width: "100%",
-              boxShadow: "0 18px 60px rgba(0,0,0,0.7)",
-              border: "1px solid #262626",
+              boxShadow: "0 18px 60px rgba(0,0,0,0.9)",
+              border: "1px solid #3a2b16",
               maxHeight: "90vh",
               overflowY: "auto",
               margin: "16px",
               fontFamily:
                 '"Cinzel", "EB Garamond", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", serif',
-              color: "#f9fafb",
+              color: "#f5eedc",
               fontSize: "13px",
             }}
           >
@@ -353,7 +353,7 @@ export default function App() {
                   transform: "translateY(-50%)",
                   border: "none",
                   background: "transparent",
-                  color: "#9ca3af",
+                  color: "#e3bf72",
                   fontSize: "20px",
                   cursor: "pointer",
                   lineHeight: 1,
@@ -379,11 +379,11 @@ export default function App() {
               <div
                 style={{
                   borderRadius: "10px",
-                  border: "1px solid #262626",
+                  border: "1px solid #3a2b16",
                   padding: "12px 14px 14px",
                   marginBottom: "16px",
                   textAlign: "center",
-                  background: "#020617",
+                  background: "#050505",
                 }}
               >
                 <div
@@ -391,7 +391,7 @@ export default function App() {
                     fontSize: "11px",
                     letterSpacing: "0.16em",
                     textTransform: "uppercase",
-                    color: "#9ca3af",
+                    color: "#c7b08a",
                     marginBottom: "4px",
                   }}
                 >
@@ -421,7 +421,7 @@ export default function App() {
                     style={{
                       border: "none",
                       background: "transparent",
-                      color: "#9ca3af",
+                      color: "#e3bf72",
                       cursor: "pointer",
                       fontSize: "14px",
                     }}
@@ -446,7 +446,7 @@ export default function App() {
                         fontSize: "10px",
                         letterSpacing: "0.12em",
                         textTransform: "uppercase",
-                        color: "#6b7280",
+                        color: "#9f8a64",
                         marginBottom: "2px",
                       }}
                     >
@@ -463,7 +463,7 @@ export default function App() {
                         fontSize: "10px",
                         letterSpacing: "0.12em",
                         textTransform: "uppercase",
-                        color: "#6b7280",
+                        color: "#9f8a64",
                         marginBottom: "2px",
                       }}
                     >
@@ -482,7 +482,7 @@ export default function App() {
                     fontSize: "10px",
                     letterSpacing: "0.12em",
                     textTransform: "uppercase",
-                    color: "#6b7280",
+                    color: "#9f8a64",
                     marginBottom: "2px",
                   }}
                 >
@@ -517,11 +517,11 @@ export default function App() {
                   fontSize: "10px",
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
-                  color: "#9ca3af",
+                  color: "#c7b08a",
                   marginBottom: "4px",
                 }}
               >
-                Patronage Amount (USD)
+                Choose Your Patronage (USD)
               </label>
               <input
                 type="number"
@@ -533,9 +533,9 @@ export default function App() {
                   width: "100%",
                   padding: "8px 10px",
                   borderRadius: "6px",
-                  border: "1px solid #374151",
-                  background: "#020617",
-                  color: "#f9fafb",
+                  border: "1px solid #3a2b16",
+                  background: "#050505",
+                  color: "#f5eedc",
                   fontSize: "14px",
                   marginBottom: "4px",
                   outline: "none",
@@ -550,27 +550,11 @@ export default function App() {
                   style={{
                     position: "absolute",
                     inset: 0,
-                    background:
-                      "linear-gradient(to bottom, rgba(15,23,42,0.82), rgba(15,23,42,0.9))",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    background: "rgba(0,0,0,0.6)", // simple dark veil, no text
                     zIndex: 10,
-                    textAlign: "center",
-                    padding: "12px",
                     borderRadius: "8px",
-                    fontSize: "12px",
-                    color: "#e5e7eb",
                   }}
-                >
-                  <div style={{ marginBottom: "4px", fontWeight: 500 }}>
-                    Connect your Patron Wallet above to continue
-                  </div>
-                  <div style={{ fontSize: "11px", color: "#9ca3af" }}>
-                    Sign in with email to unlock checkout.
-                  </div>
-                </div>
+                />
               )}
 
               <CheckoutBoundary>

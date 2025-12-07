@@ -561,9 +561,9 @@ export default function App() {
                 <CheckoutWidget
                   client={client}
                   name={"POLO PATRONIUM"}
-                  description={`USPPA PATRONAGE UTILITY TOKEN
-STRING 777 REMUDA\u2007\u2007\u2007COWBOY POLO CIRCUIT
-THE POLO LIFE\u2007\u2007\u2007\u2007\u2007CHARLESTON POLO CLUB`}
+                  description={
+                    "USPPA PATRONAGE UTILITY TOKEN · STRING 777 REMUDA · COWBOY POLO CIRCUIT · THE POLO LIFE · CHARLESTON POLO CLUB"
+                  }
                   currency={"USD"}
                   chain={BASE}
                   amount={normalizedAmount}

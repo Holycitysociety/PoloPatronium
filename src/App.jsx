@@ -147,10 +147,8 @@ export default function App() {
   const openWallet = () => setIsWalletOpen(true);
   const closeWallet = () => setIsWalletOpen(false);
 
-  // Main hero BUY button just opens the Patron Wallet modal
   const handleBuyPatron = () => openWallet();
 
-  // Disconnect the embedded wallet but keep the modal open
   const handleSignOut = () => {
     if (!activeWallet || !disconnect) return;
     try {
@@ -174,11 +172,9 @@ export default function App() {
     }
   };
 
-  // Make sure Checkout always gets a sane positive string
   const normalizedAmount =
     usdAmount && Number(usdAmount) > 0 ? String(usdAmount) : "1";
 
-  // Fired after successful Checkout payment
   const handleCheckoutSuccess = async (result) => {
     try {
       if (!account?.address) {
@@ -229,17 +225,15 @@ export default function App() {
   // ---------------------------------------------
   // GATE BEHAVIOR:
   // 1) No page scroll until connected
-  // 2) Any scroll attempt or click opens sign-in modal
+  // 2) Any scroll attempt or click/tap anywhere opens sign-in modal
   // ---------------------------------------------
   useEffect(() => {
     if (!gateArmed) {
-      // Restore scroll when connected
       document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
       return;
     }
 
-    // Hard-disable scrolling while gated
     document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
 
@@ -247,9 +241,7 @@ export default function App() {
       if (!isWalletOpen) setIsWalletOpen(true);
     };
 
-    // Scroll attempt -> open modal
     const onWheel = (e) => {
-      // stop scroll + open wallet
       e.preventDefault();
       openIfClosed();
     };
@@ -259,11 +251,9 @@ export default function App() {
       openIfClosed();
     };
 
-    // Any click / tap anywhere -> open modal (unless already in modal)
     const onPointerDown = (e) => {
       if (isWalletOpen) return;
 
-      // If click is inside the modal, ignore
       const modal = modalRef.current;
       if (modal && modal.contains(e.target)) return;
 
@@ -279,8 +269,6 @@ export default function App() {
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("pointerdown", onPointerDown);
-
-      // keep scroll locked if still gated; otherwise cleanup will run above
       document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
     };
@@ -300,10 +288,7 @@ export default function App() {
         <button
           className="btn btn-outline"
           style={{ minWidth: "auto", padding: "6px 16px" }}
-          onClick={() => {
-            // if gated, this still just opens modal (fine)
-            openWallet();
-          }}
+          onClick={openWallet}
         >
           PATRON WALLET
         </button>
@@ -387,7 +372,6 @@ export default function App() {
               width: "100%",
               boxShadow: "0 18px 60px rgba(0,0,0,0.9)",
               border: "1px solid #3a2b16",
-              // Show only what screen shows: keep content compact; allow minimal internal scroll if needed
               maxHeight: "calc(100vh - 32px)",
               overflowY: "auto",
               fontFamily:
@@ -434,7 +418,7 @@ export default function App() {
               </button>
             </div>
 
-            {/* Connect section (always the focus when not connected) */}
+            {/* Connect section */}
             {!account ? (
               <div
                 style={{
@@ -579,17 +563,20 @@ export default function App() {
               </div>
             )}
 
-            {/* LOCKED SECTION: Patronage + Checkout (dimmed & blocked until sign-in) */}
+            {/* LOCKED SECTION (fixed so it doesn't blackout the widget) */}
             <div style={{ position: "relative" }}>
-              {/* Hard dim the entire area so sign-in pops */}
+              {/* Interaction shield (blocks clicks) */}
               {!isConnected && (
                 <div
                   style={{
                     position: "absolute",
                     inset: 0,
-                    background: "rgba(0,0,0,0.92)", // much darker overlay
+                    background: "rgba(0,0,0,0.55)", // not too dark
+                    backdropFilter: "blur(1.5px)",
+                    WebkitBackdropFilter: "blur(1.5px)",
                     borderRadius: "10px",
                     zIndex: 20,
+                    pointerEvents: "auto",
                   }}
                 />
               )}
@@ -599,9 +586,12 @@ export default function App() {
                   border: "1px solid #3a2b16",
                   borderRadius: "10px",
                   padding: "12px",
-                  opacity: !isConnected ? 0.18 : 1,
-                  filter: !isConnected ? "blur(0.2px)" : "none",
-                  transition: "opacity 160ms ease",
+                  opacity: !isConnected ? 0.75 : 1,
+                  filter: !isConnected
+                    ? "saturate(0.85) brightness(0.9)"
+                    : "none",
+                  transition: "opacity 160ms ease, filter 160ms ease",
+                  pointerEvents: isConnected ? "auto" : "none",
                 }}
               >
                 <div style={{ marginBottom: "10px" }}>
@@ -646,7 +636,9 @@ export default function App() {
                     currency={"USD"}
                     chain={BASE}
                     amount={normalizedAmount}
-                    tokenAddress={"0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"} // USDC on Base
+                    tokenAddress={
+                      "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+                    } // USDC on Base
                     seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
                     buttonLabel={"BUY PATRON (USDC on Base)"}
                     theme={patronCheckoutTheme}
@@ -772,10 +764,10 @@ export default function App() {
             <h3>Charleston Polo — The USPPA Chapter Test Model</h3>
             <p>
               Each USPPA Chapter is a fully integrated polo programme operating
-              under the Association&apos;s standards. A Chapter begins as a
-              Polo Incubator — a local startup where horses are gathered,
-              pasture secured, instruction established, and the public welcomed
-              to learn and play.
+              under the Association&apos;s standards. A Chapter begins as a Polo
+              Incubator — a local startup where horses are gathered, pasture
+              secured, instruction established, and the public welcomed to learn
+              and play.
             </p>
             <p>
               Once an Incubator achieves steady operations, sound horsemanship,
@@ -865,9 +857,7 @@ export default function App() {
               Incubator model together create a living, self-sustaining
               framework for the game&apos;s renewal across America.
             </p>
-            <p>
-              This is how the USPPA will grow the next American 10-Goal player.
-            </p>
+            <p>This is how the USPPA will grow the next American 10-Goal player.</p>
           </div>
 
           <div className="copy-block">

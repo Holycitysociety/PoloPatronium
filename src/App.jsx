@@ -122,8 +122,6 @@ export default function App() {
   // Optional: small gap so framework never "peeks"
   const GATE_PADDING_PX = 8;
 
-  const modalRef = useRef(null);
-
   // Native ETH on Base (gas)
   const { data: baseBalance } = useWalletBalance({
     address: account?.address,
@@ -245,12 +243,20 @@ export default function App() {
   }, [isWalletOpen]);
 
   // ---------------------------------------------
+  // Close modal on Escape (desktop)
+  // ---------------------------------------------
+  useEffect(() => {
+    if (!isWalletOpen) return;
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") closeWallet();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isWalletOpen]);
+
+  // ---------------------------------------------
   // Gate: allow scrolling initiatives, but do NOT allow
   // Patronium Framework section to enter viewport until connected.
-  //
-  // Condition for visibility:
-  // frameworkTopAbs < (scrollY + innerHeight)
-  // => clamp scrollY <= frameworkTopAbs - innerHeight - padding
   // ---------------------------------------------
   useEffect(() => {
     if (!gateArmed) return;
@@ -356,6 +362,7 @@ export default function App() {
       {isWalletOpen && (
         <div
           className="wallet-modal-backdrop"
+          onClick={closeWallet} // click outside closes (including over locked checkout overlay)
           style={{
             position: "fixed",
             inset: 0,
@@ -368,8 +375,8 @@ export default function App() {
           }}
         >
           <div
-            ref={modalRef}
             className="wallet-modal"
+            onClick={(e) => e.stopPropagation()} // prevent inside clicks from closing
             style={{
               background: "#050505",
               borderRadius: "12px",
@@ -404,22 +411,32 @@ export default function App() {
               >
                 PATRON WALLET
               </div>
+
+              {/* Bigger, easier close target */}
               <button
                 onClick={closeWallet}
                 style={{
                   position: "absolute",
-                  right: 0,
+                  right: -6,
                   top: "50%",
                   transform: "translateY(-50%)",
-                  border: "none",
-                  background: "transparent",
+                  border: "1px solid rgba(227,191,114,0.25)",
+                  background: "rgba(0,0,0,0.35)",
                   color: "#e3bf72",
-                  fontSize: "20px",
+                  fontSize: "26px",
                   cursor: "pointer",
                   lineHeight: 1,
+                  width: "44px",
+                  height: "44px",
+                  borderRadius: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                   padding: 0,
+                  WebkitTapHighlightColor: "transparent",
                 }}
                 aria-label="Close wallet"
+                title="Close"
               >
                 ×
               </button>
@@ -571,6 +588,8 @@ export default function App() {
 
             {/* Locked area: Amount + Checkout (visible but not clickable until connected) */}
             <div style={{ position: "relative" }}>
+              {/* NOTE: this overlay is inside the modal, so clicking it will NOT close.
+                  That's good: only clicking the BACKDROP (outside the modal) closes. */}
               {!isConnected && (
                 <div
                   style={{

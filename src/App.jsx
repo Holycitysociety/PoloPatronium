@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   CheckoutWidget,
   ConnectEmbed,
@@ -117,6 +117,9 @@ export default function App() {
   const { disconnect } = useDisconnect();
 
   const isConnected = !!account;
+  const gateArmed = !isConnected; // full-site gate until sign-in
+
+  const modalRef = useRef(null);
 
   // Native ETH on Base (gas)
   const { data: baseBalance } = useWalletBalance({
@@ -141,18 +144,11 @@ export default function App() {
     tokenAddress: "0xD766a771887fFB6c528434d5710B406313CAe03A",
   });
 
-  const openWallet = () => {
-    setIsWalletOpen(true);
-  };
+  const openWallet = () => setIsWalletOpen(true);
+  const closeWallet = () => setIsWalletOpen(false);
 
-  const closeWallet = () => {
-    setIsWalletOpen(false);
-  };
-
-  const handleBuyPatron = () => {
-    // Main hero BUY button just opens the Patron Wallet modal
-    openWallet();
-  };
+  // Main hero BUY button just opens the Patron Wallet modal
+  const handleBuyPatron = () => openWallet();
 
   // Disconnect the embedded wallet but keep the modal open
   const handleSignOut = () => {
@@ -230,6 +226,66 @@ export default function App() {
     }
   };
 
+  // ---------------------------------------------
+  // GATE BEHAVIOR:
+  // 1) No page scroll until connected
+  // 2) Any scroll attempt or click opens sign-in modal
+  // ---------------------------------------------
+  useEffect(() => {
+    if (!gateArmed) {
+      // Restore scroll when connected
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+      return;
+    }
+
+    // Hard-disable scrolling while gated
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+
+    const openIfClosed = () => {
+      if (!isWalletOpen) setIsWalletOpen(true);
+    };
+
+    // Scroll attempt -> open modal
+    const onWheel = (e) => {
+      // stop scroll + open wallet
+      e.preventDefault();
+      openIfClosed();
+    };
+
+    const onTouchMove = (e) => {
+      e.preventDefault();
+      openIfClosed();
+    };
+
+    // Any click / tap anywhere -> open modal (unless already in modal)
+    const onPointerDown = (e) => {
+      if (isWalletOpen) return;
+
+      // If click is inside the modal, ignore
+      const modal = modalRef.current;
+      if (modal && modal.contains(e.target)) return;
+
+      e.preventDefault();
+      openIfClosed();
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("pointerdown", onPointerDown, { passive: false });
+
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("pointerdown", onPointerDown);
+
+      // keep scroll locked if still gated; otherwise cleanup will run above
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+    };
+  }, [gateArmed, isWalletOpen]);
+
   return (
     <div className="page">
       {/* Top-right Patron Wallet button */}
@@ -244,7 +300,10 @@ export default function App() {
         <button
           className="btn btn-outline"
           style={{ minWidth: "auto", padding: "6px 16px" }}
-          onClick={openWallet}
+          onClick={() => {
+            // if gated, this still just opens modal (fine)
+            openWallet();
+          }}
         >
           PATRON WALLET
         </button>
@@ -283,12 +342,20 @@ export default function App() {
         </div>
 
         <div className="hero-actions">
-          {/* Main BUY button -> opens Patron Wallet modal */}
           <button className="btn btn-primary" onClick={handleBuyPatron}>
             BUY PATRON
           </button>
 
-          <a className="btn btn-outline" href="#founding-patrons">
+          <a
+            className="btn btn-outline"
+            href="#founding-patrons"
+            onClick={(e) => {
+              if (gateArmed) {
+                e.preventDefault();
+                openWallet();
+              }
+            }}
+          >
             FOUNDING PATRON INQUIRIES
           </a>
         </div>
@@ -301,44 +368,46 @@ export default function App() {
           style={{
             position: "fixed",
             inset: 0,
-            background: "rgba(0, 0, 0, 0.65)",
+            background: "rgba(0, 0, 0, 0.82)",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             zIndex: 9999,
+            padding: "16px",
           }}
         >
           <div
+            ref={modalRef}
             className="wallet-modal"
             style={{
               background: "#050505",
               borderRadius: "12px",
-              padding: "20px",
+              padding: "18px",
               maxWidth: "380px",
               width: "100%",
               boxShadow: "0 18px 60px rgba(0,0,0,0.9)",
               border: "1px solid #3a2b16",
-              maxHeight: "90vh",
+              // Show only what screen shows: keep content compact; allow minimal internal scroll if needed
+              maxHeight: "calc(100vh - 32px)",
               overflowY: "auto",
-              margin: "16px",
               fontFamily:
                 '"Cinzel", "EB Garamond", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", serif',
               color: "#f5eedc",
               fontSize: "13px",
             }}
           >
-            {/* Modal header with centered wordmark and close button */}
+            {/* Modal header */}
             <div
               style={{
                 position: "relative",
-                marginBottom: "16px",
+                marginBottom: "14px",
                 textAlign: "center",
               }}
             >
               <div
                 style={{
-                  fontSize: "13px",
-                  letterSpacing: "0.16em",
+                  fontSize: "12px",
+                  letterSpacing: "0.22em",
                   textTransform: "uppercase",
                 }}
               >
@@ -365,9 +434,17 @@ export default function App() {
               </button>
             </div>
 
-            {/* Wallet status / connect section */}
+            {/* Connect section (always the focus when not connected) */}
             {!account ? (
-              <div style={{ marginBottom: "16px" }}>
+              <div
+                style={{
+                  border: "1px solid #3a2b16",
+                  borderRadius: "12px",
+                  padding: "14px",
+                  boxShadow: "0 0 0 1px rgba(227,191,114,0.10)",
+                  marginBottom: "14px",
+                }}
+              >
                 <ConnectEmbed
                   client={client}
                   wallets={wallets}
@@ -381,7 +458,7 @@ export default function App() {
                   borderRadius: "10px",
                   border: "1px solid #3a2b16",
                   padding: "12px 14px 14px",
-                  marginBottom: "16px",
+                  marginBottom: "14px",
                   textAlign: "center",
                   background: "#050505",
                 }}
@@ -407,12 +484,7 @@ export default function App() {
                     marginBottom: "8px",
                   }}
                 >
-                  <div
-                    style={{
-                      fontFamily: "monospace",
-                      fontSize: "13px",
-                    }}
-                  >
+                  <div style={{ fontFamily: "monospace", fontSize: "13px" }}>
                     {shortAddress}
                   </div>
                   <button
@@ -431,7 +503,6 @@ export default function App() {
                   </button>
                 </div>
 
-                {/* Gas + USDC balances side-by-side */}
                 <div
                   style={{
                     display: "flex",
@@ -476,7 +547,6 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* PATRON balance centered below */}
                 <div
                   style={{
                     fontSize: "10px",
@@ -509,77 +579,85 @@ export default function App() {
               </div>
             )}
 
-            {/* Amount selector for Checkout */}
-            <div style={{ marginBottom: "12px" }}>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: "10px",
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  color: "#c7b08a",
-                  marginBottom: "4px",
-                }}
-              >
-                Choose Your Patronage (USD)
-              </label>
-              <input
-                type="number"
-                min="1"
-                step="1"
-                value={usdAmount}
-                onChange={(e) => setUsdAmount(e.target.value)}
-                style={{
-                  width: "100%",
-                  padding: "8px 10px",
-                  borderRadius: "6px",
-                  border: "1px solid #3a2b16",
-                  background: "#050505",
-                  color: "#f5eedc",
-                  fontSize: "14px",
-                  marginBottom: "4px",
-                  outline: "none",
-                }}
-              />
-            </div>
-
-            {/* Checkout always visible, but blocked until connected */}
-            <div style={{ marginTop: "4px", position: "relative" }}>
+            {/* LOCKED SECTION: Patronage + Checkout (dimmed & blocked until sign-in) */}
+            <div style={{ position: "relative" }}>
+              {/* Hard dim the entire area so sign-in pops */}
               {!isConnected && (
                 <div
                   style={{
                     position: "absolute",
                     inset: 0,
-                    background: "rgba(0,0,0,0.6)", // simple dark veil, no text
-                    zIndex: 10,
-                    borderRadius: "8px",
+                    background: "rgba(0,0,0,0.92)", // much darker overlay
+                    borderRadius: "10px",
+                    zIndex: 20,
                   }}
                 />
               )}
 
-              <CheckoutBoundary>
-                <CheckoutWidget
-                  client={client}
-                  name={"POLO PATRONIUM"}
-                  description={
-                    "USPPA PATRONAGE UTILITY TOKEN · THREE SEVENS 777 REMUDA · COWBOY POLO CIRCUIT · THE POLO LIFE · CHARLESTON POLO CLUB"
-                  }
-                  currency={"USD"}
-                  chain={BASE}
-                  amount={normalizedAmount}
-                  tokenAddress={
-                    "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
-                  } // USDC on Base
-                  seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
-                  buttonLabel={"BUY PATRON (USDC on Base)"}
-                  theme={patronCheckoutTheme}
-                  onSuccess={handleCheckoutSuccess}
-                  onError={(err) => {
-                    console.error("Checkout error:", err);
-                    alert(err?.message || String(err));
-                  }}
-                />
-              </CheckoutBoundary>
+              <div
+                style={{
+                  border: "1px solid #3a2b16",
+                  borderRadius: "10px",
+                  padding: "12px",
+                  opacity: !isConnected ? 0.18 : 1,
+                  filter: !isConnected ? "blur(0.2px)" : "none",
+                  transition: "opacity 160ms ease",
+                }}
+              >
+                <div style={{ marginBottom: "10px" }}>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: "10px",
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      color: "#c7b08a",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    Patronage Amount (USD)
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    step="1"
+                    value={usdAmount}
+                    onChange={(e) => setUsdAmount(e.target.value)}
+                    style={{
+                      width: "100%",
+                      padding: "9px 10px",
+                      borderRadius: "8px",
+                      border: "1px solid #3a2b16",
+                      background: "#050505",
+                      color: "#f5eedc",
+                      fontSize: "14px",
+                      outline: "none",
+                    }}
+                  />
+                </div>
+
+                <CheckoutBoundary>
+                  <CheckoutWidget
+                    client={client}
+                    name={"POLO PATRONIUM"}
+                    description={
+                      "USPPA PATRONAGE UTILITY TOKEN · THREE SEVENS 777 REMUDA · COWBOY POLO CIRCUIT · THE POLO LIFE · CHARLESTON POLO CLUB"
+                    }
+                    currency={"USD"}
+                    chain={BASE}
+                    amount={normalizedAmount}
+                    tokenAddress={"0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"} // USDC on Base
+                    seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
+                    buttonLabel={"BUY PATRON (USDC on Base)"}
+                    theme={patronCheckoutTheme}
+                    onSuccess={handleCheckoutSuccess}
+                    onError={(err) => {
+                      console.error("Checkout error:", err);
+                      alert(err?.message || String(err));
+                    }}
+                  />
+                </CheckoutBoundary>
+              </div>
             </div>
           </div>
         </div>
@@ -591,7 +669,6 @@ export default function App() {
           <h2 className="roadmap-title">INITIATIVE ROADMAP</h2>
 
           <div className="brand-grid">
-            {/* UPDATED 777 WORDMARK BLOCK */}
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
                 <div className="usp-top">USPPA</div>
@@ -668,7 +745,6 @@ export default function App() {
           </p>
         </section>
 
-        {/* Patronium framework copy section */}
         <section className="copy-section" id="patronium-framework">
           <div className="copy-section-title">THE PATRONIUM FRAMEWORK</div>
 

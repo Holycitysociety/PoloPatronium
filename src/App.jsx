@@ -117,7 +117,7 @@ export default function App() {
   const { disconnect } = useDisconnect();
 
   const isConnected = !!account;
-  const gateArmed = !isConnected; // full-site gate until sign-in
+  const gateArmed = !isConnected; // allow initiatives; block tokenomics until sign-in
 
   const modalRef = useRef(null);
 
@@ -149,6 +149,7 @@ export default function App() {
 
   const handleBuyPatron = () => openWallet();
 
+  // Disconnect the embedded wallet but keep the modal open
   const handleSignOut = () => {
     if (!activeWallet || !disconnect) return;
     try {
@@ -172,9 +173,11 @@ export default function App() {
     }
   };
 
+  // Make sure Checkout always gets a sane positive string
   const normalizedAmount =
     usdAmount && Number(usdAmount) > 0 ? String(usdAmount) : "1";
 
+  // Fired after successful Checkout payment
   const handleCheckoutSuccess = async (result) => {
     try {
       if (!account?.address) {
@@ -223,56 +226,66 @@ export default function App() {
   };
 
   // ---------------------------------------------
-  // GATE BEHAVIOR:
-  // 1) No page scroll until connected
-  // 2) Any scroll attempt or click/tap anywhere opens sign-in modal
+  // Modal open = lock background scroll (good UX on mobile)
   // ---------------------------------------------
   useEffect(() => {
-    if (!gateArmed) {
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-      return;
-    }
-
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-
-    const openIfClosed = () => {
-      if (!isWalletOpen) setIsWalletOpen(true);
-    };
-
-    const onWheel = (e) => {
-      e.preventDefault();
-      openIfClosed();
-    };
-
-    const onTouchMove = (e) => {
-      e.preventDefault();
-      openIfClosed();
-    };
-
-    const onPointerDown = (e) => {
-      if (isWalletOpen) return;
-
-      const modal = modalRef.current;
-      if (modal && modal.contains(e.target)) return;
-
-      e.preventDefault();
-      openIfClosed();
-    };
-
-    window.addEventListener("wheel", onWheel, { passive: false });
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
-    window.addEventListener("pointerdown", onPointerDown, { passive: false });
-
-    return () => {
-      window.removeEventListener("wheel", onWheel);
-      window.removeEventListener("touchmove", onTouchMove);
-      window.removeEventListener("pointerdown", onPointerDown);
+    if (isWalletOpen) {
       document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
+      return () => {
+        document.documentElement.style.overflow = "";
+        document.body.style.overflow = "";
+      };
+    }
+    document.documentElement.style.overflow = "";
+    document.body.style.overflow = "";
+  }, [isWalletOpen]);
+
+  // ---------------------------------------------
+  // Gate: allow scrolling through initiatives,
+  // but "tokenomics / framework" is locked until sign-in.
+  // When they hit it: snap back + pop wallet modal.
+  // ---------------------------------------------
+  useEffect(() => {
+    if (!gateArmed) return;
+
+    const clampBeforeTokenomics = () => {
+      const tokenomicsEl = document.getElementById("patronium-framework");
+      if (!tokenomicsEl) return;
+
+      const rect = tokenomicsEl.getBoundingClientRect();
+      const tokenTopAbs = window.scrollY + rect.top;
+
+      // Allow scrolling up to just before the tokenomics section starts
+      const maxScroll = Math.max(0, tokenTopAbs - 24);
+
+      if (window.scrollY > maxScroll) {
+        window.scrollTo({ top: maxScroll, behavior: "auto" });
+        if (!isWalletOpen) setIsWalletOpen(true);
+      }
+    };
+
+    const onScroll = () => clampBeforeTokenomics();
+    const onResize = () => clampBeforeTokenomics();
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
+
+    // Run once on mount (in case user lands deep-linked)
+    clampBeforeTokenomics();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
     };
   }, [gateArmed, isWalletOpen]);
+
+  // Also: clicking any link that would jump into tokenomics should open wallet instead
+  const blockTokenomicsJump = (e) => {
+    if (!gateArmed) return;
+    e.preventDefault();
+    openWallet();
+  };
 
   return (
     <div className="page">
@@ -565,13 +578,12 @@ export default function App() {
 
             {/* LOCKED SECTION (no blur) */}
             <div style={{ position: "relative" }}>
-              {/* Interaction shield (blocks clicks) */}
               {!isConnected && (
                 <div
                   style={{
                     position: "absolute",
                     inset: 0,
-                    background: "rgba(0,0,0,0.55)", // dark veil, no blur
+                    background: "rgba(0,0,0,0.55)",
                     borderRadius: "10px",
                     zIndex: 20,
                     pointerEvents: "auto",
@@ -653,7 +665,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Brand / roadmap + copy sections – unchanged */}
+      {/* Brand / roadmap + copy sections */}
       <main>
         <section className="brand-row" id="brands">
           <h2 className="roadmap-title">INITIATIVE ROADMAP</h2>
@@ -735,7 +747,12 @@ export default function App() {
           </p>
         </section>
 
-        <section className="copy-section" id="patronium-framework">
+        {/* Tokenomics / framework section (LOCKED by scroll clamp until connected) */}
+        <section
+          className="copy-section"
+          id="patronium-framework"
+          onClick={blockTokenomicsJump}
+        >
           <div className="copy-section-title">THE PATRONIUM FRAMEWORK</div>
 
           <div className="copy-block">
@@ -762,10 +779,10 @@ export default function App() {
             <h3>Charleston Polo — The USPPA Chapter Test Model</h3>
             <p>
               Each USPPA Chapter is a fully integrated polo programme operating
-              under the Association&apos;s standards. A Chapter begins as a Polo
-              Incubator — a local startup where horses are gathered, pasture
-              secured, instruction established, and the public welcomed to learn
-              and play.
+              under the Association&apos;s standards. A Chapter begins as a
+              Polo Incubator — a local startup where horses are gathered,
+              pasture secured, instruction established, and the public welcomed
+              to learn and play.
             </p>
             <p>
               Once an Incubator achieves steady operations, sound horsemanship,

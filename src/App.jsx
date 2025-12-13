@@ -563,7 +563,7 @@ export default function App() {
               </div>
             )}
 
-            {/* LOCKED SECTION (fixed so it doesn't blackout the widget) */}
+            {/* LOCKED SECTION (no blur) */}
             <div style={{ position: "relative" }}>
               {/* Interaction shield (blocks clicks) */}
               {!isConnected && (
@@ -571,9 +571,7 @@ export default function App() {
                   style={{
                     position: "absolute",
                     inset: 0,
-                    background: "rgba(0,0,0,0.55)", // not too dark
-                    backdropFilter: "blur(1.5px)",
-                    WebkitBackdropFilter: "blur(1.5px)",
+                    background: "rgba(0,0,0,0.55)", // dark veil, no blur
                     borderRadius: "10px",
                     zIndex: 20,
                     pointerEvents: "auto",

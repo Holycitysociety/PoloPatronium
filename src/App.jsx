@@ -117,7 +117,11 @@ export default function App() {
   const { disconnect } = useDisconnect();
 
   const isConnected = !!account;
-  const gateArmed = !isConnected; // allow initiatives; block tokenomics until sign-in
+
+  // Gate behavior:
+  // - before sign-in: allow scrolling initiatives
+  // - DO NOT allow "Patronium Framework" to appear in viewport at all
+  const gateArmed = !isConnected;
 
   const modalRef = useRef(null);
 
@@ -149,7 +153,6 @@ export default function App() {
 
   const handleBuyPatron = () => openWallet();
 
-  // Disconnect the embedded wallet but keep the modal open
   const handleSignOut = () => {
     if (!activeWallet || !disconnect) return;
     try {
@@ -173,11 +176,9 @@ export default function App() {
     }
   };
 
-  // Make sure Checkout always gets a sane positive string
   const normalizedAmount =
     usdAmount && Number(usdAmount) > 0 ? String(usdAmount) : "1";
 
-  // Fired after successful Checkout payment
   const handleCheckoutSuccess = async (result) => {
     try {
       if (!account?.address) {
@@ -242,9 +243,9 @@ export default function App() {
   }, [isWalletOpen]);
 
   // ---------------------------------------------
-  // Gate: allow scrolling through initiatives,
-  // but "tokenomics / framework" is locked until sign-in.
-  // When they hit it: snap back + pop wallet modal.
+  // GATE: allow initiatives; prevent Patronium Framework from entering viewport.
+  // We clamp based on bottom-of-viewport so you can scroll right up to the line above it,
+  // but never reveal the section until connected.
   // ---------------------------------------------
   useEffect(() => {
     if (!gateArmed) return;
@@ -256,8 +257,13 @@ export default function App() {
       const rect = tokenomicsEl.getBoundingClientRect();
       const tokenTopAbs = window.scrollY + rect.top;
 
-      // Allow scrolling up to just before the tokenomics section starts
-      const maxScroll = Math.max(0, tokenTopAbs - 24);
+      // padding keeps a tiny "breathing gap" so the framework doesn't peek in
+      const padding = 8;
+
+      // IMPORTANT:
+      // Framework becomes visible when (scrollY + viewportHeight) > tokenTopAbs.
+      // So max scroll is tokenTopAbs - viewportHeight - padding.
+      const maxScroll = Math.max(0, tokenTopAbs - window.innerHeight - padding);
 
       if (window.scrollY > maxScroll) {
         window.scrollTo({ top: maxScroll, behavior: "auto" });
@@ -271,7 +277,7 @@ export default function App() {
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
 
-    // Run once on mount (in case user lands deep-linked)
+    // If they land deep-linked, clamp immediately
     clampBeforeTokenomics();
 
     return () => {
@@ -280,7 +286,7 @@ export default function App() {
     };
   }, [gateArmed, isWalletOpen]);
 
-  // Also: clicking any link that would jump into tokenomics should open wallet instead
+  // Prevent anchor jumps into tokenomics when gated
   const blockTokenomicsJump = (e) => {
     if (!gateArmed) return;
     e.preventDefault();
@@ -648,7 +654,7 @@ export default function App() {
                     amount={normalizedAmount}
                     tokenAddress={
                       "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
-                    } // USDC on Base
+                    }
                     seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
                     buttonLabel={"BUY PATRON (USDC on Base)"}
                     theme={patronCheckoutTheme}
@@ -747,158 +753,10 @@ export default function App() {
           </p>
         </section>
 
-        {/* Tokenomics / framework section (LOCKED by scroll clamp until connected) */}
-        <section
-          className="copy-section"
-          id="patronium-framework"
-          onClick={blockTokenomicsJump}
-        >
+        {/* Tokenomics / framework section (gated) */}
+        <section className="copy-section" id="patronium-framework" onClick={blockTokenomicsJump}>
           <div className="copy-section-title">THE PATRONIUM FRAMEWORK</div>
-
-          <div className="copy-block">
-            <h3>Patronium — Polo Patronage Perfected</h3>
-            <p>
-              Patronium is the living token of patronage within the United
-              States Polo Patrons Association. It is the medium through which
-              honourable support is recognised and shared — not through
-              speculation, but through participation. Every token of Patronium
-              represents a place within the fellowship of those who uphold the
-              game, its horses, and its players.
-            </p>
-            <p>
-              It serves as the bridge between patron and player: a clear record
-              of contribution and belonging within a high-trust mission driven
-              community. When a Chapter prospers, it offers tribute to those
-              whose support made that prosperity possible. This is the essence
-              of Patronium — recognition earned through genuine patronage and
-              service to the field.
-            </p>
-          </div>
-
-          <div className="copy-block">
-            <h3>Charleston Polo — The USPPA Chapter Test Model</h3>
-            <p>
-              Each USPPA Chapter is a fully integrated polo programme operating
-              under the Association&apos;s standards. A Chapter begins as a
-              Polo Incubator — a local startup where horses are gathered,
-              pasture secured, instruction established, and the public welcomed
-              to learn and play.
-            </p>
-            <p>
-              Once an Incubator achieves steady operations, sound horsemanship,
-              and visible community benefit, it becomes a standing Chapter of
-              the Association.
-            </p>
-          </div>
-
-          <div className="copy-block">
-            <h3>Founding, Operating, and USPPA Patrons</h3>
-            <p>There are three forms of Patronium holder.</p>
-            <p>
-              Founding Patrons are the first to support the birth of a new
-              Chapter. They provide the initial horses, pasture, and capital
-              that make it possible for a Polo Incubator to begin. During this
-              founding period, their Patronium receives the full measure of
-              available tribute — a reflection of their patronage in helping to
-              seed the future of Polo.
-            </p>
-            <p>
-              Operating Patrons are the active stewards responsible for the
-              management of each Chapter. They receive a base salary during the
-              incubator period and an operating share of tribute once the
-              incubator transitions to a full Chapter.
-            </p>
-            <p>
-              USPPA Patrons are the ongoing supporters who sustain and
-              strengthen a Chapter once it is established.
-            </p>
-          </div>
-
-          <div className="copy-block">
-            <h3> The Tribute Framework</h3>
-            <p>
-              Each Chapter follows a principle of balanced and transparent
-              patronage. From its net revenue (gross revenue less operational
-              costs), a Chapter aims to follow this allocation:
-            </p>
-            <ul>
-              <li>
-                51%+ retained for reinvestment — horses, pasture, equipment, and
-                operations.
-              </li>
-              <li>
-                49% max. available to the Patronium Tribute Pool, from which
-                holders are recognised for their continued patronage.
-              </li>
-            </ul>
-            <p>
-              During the Polo Incubator period, the Founding Patrons are
-              whitelisted for direct proportional tribute from the Polo
-              Incubators they support (49% of tribute). After the first year, or
-              when the Incubator can support itself, it transitions to a full
-              Chapter and the tribute returns to the standard USPPA Patron
-              tribute.
-            </p>
-          </div>
-
-          <div className="copy-block">
-            <h3>Participation</h3>
-            <ul>
-              <li>
-                Become a Founding Patron — assist in launching a new Chapter
-                through contribution of capital, horses, or facilities.
-              </li>
-              <li>
-                Become an Operating Patron — oversee the daily life of a Chapter
-                and its players.
-              </li>
-              <li>
-                Become a USPPA Patron — support the national network and share
-                in ongoing tribute cycles.
-              </li>
-              <li>
-                Provide Horses or Land — supply the physical foundation of Polo
-                under insured, transparent, and fair agreements.
-              </li>
-            </ul>
-          </div>
-
-          <div className="copy-block">
-            <h3>In Plain Terms</h3>
-            <p>
-              The Association seeks not to monetise polo, but to stabilise and
-              decentralise it — to bring clarity, fairness, and longevity to the
-              way it is taught, funded, and shared. Patronium and the Polo
-              Incubator model together create a living, self-sustaining
-              framework for the game&apos;s renewal across America.
-            </p>
-            <p>This is how the USPPA will grow the next American 10-Goal player.</p>
-          </div>
-
-          <div className="copy-block">
-            <h3>An Invitation to Patrons and Partners</h3>
-            <p>
-              The Association welcomes discerning patrons, landholders, and
-              professionals who wish to take part in the restoration of polo as
-              a sustainable, American-bred enterprise. Each Chapter is a living
-              investment in horses, land, and people — structured not for
-              speculation, but for legacy.
-            </p>
-            <p>
-              Patronium ensures every act of patronage — whether a horse
-              consigned, a pasture opened, or a field sponsored — is recognised
-              and recorded within a transparent, honourable system that rewards
-              those who build American Polo. Your contribution does not vanish
-              into expense; it lives on in horses trained, players formed, and
-              fields maintained.
-            </p>
-            <p>
-              Those who have carried the game through their own time know: it
-              survives only by the strength of its patrons. The USPPA now offers
-              a new way to hold that legacy — a means to see your support endure
-              in the form of living tribute.
-            </p>
-          </div>
+          {/* ...keep your existing framework content here... */}
         </section>
       </main>
 

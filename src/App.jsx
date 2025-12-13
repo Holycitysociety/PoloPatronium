@@ -117,11 +117,10 @@ export default function App() {
   const { disconnect } = useDisconnect();
 
   const isConnected = !!account;
-
-  // Gate behavior:
-  // - before sign-in: allow scrolling initiatives
-  // - DO NOT allow "Patronium Framework" to appear in viewport at all
   const gateArmed = !isConnected;
+
+  // Optional: small gap so framework never "peeks"
+  const GATE_PADDING_PX = 8;
 
   const modalRef = useRef(null);
 
@@ -153,6 +152,7 @@ export default function App() {
 
   const handleBuyPatron = () => openWallet();
 
+  // Disconnect the embedded wallet but keep the modal open
   const handleSignOut = () => {
     if (!activeWallet || !disconnect) return;
     try {
@@ -176,9 +176,11 @@ export default function App() {
     }
   };
 
+  // Make sure Checkout always gets a sane positive string
   const normalizedAmount =
     usdAmount && Number(usdAmount) > 0 ? String(usdAmount) : "1";
 
+  // Fired after successful Checkout payment
   const handleCheckoutSuccess = async (result) => {
     try {
       if (!account?.address) {
@@ -227,7 +229,7 @@ export default function App() {
   };
 
   // ---------------------------------------------
-  // Modal open = lock background scroll (good UX on mobile)
+  // Modal open = lock background scroll
   // ---------------------------------------------
   useEffect(() => {
     if (isWalletOpen) {
@@ -243,55 +245,48 @@ export default function App() {
   }, [isWalletOpen]);
 
   // ---------------------------------------------
-  // GATE: allow initiatives; prevent Patronium Framework from entering viewport.
-  // We clamp based on bottom-of-viewport so you can scroll right up to the line above it,
-  // but never reveal the section until connected.
+  // Gate: allow scrolling initiatives, but do NOT allow
+  // Patronium Framework section to enter viewport until connected.
+  //
+  // Condition for visibility:
+  // frameworkTopAbs < (scrollY + innerHeight)
+  // => clamp scrollY <= frameworkTopAbs - innerHeight - padding
   // ---------------------------------------------
   useEffect(() => {
     if (!gateArmed) return;
 
-    const clampBeforeTokenomics = () => {
-      const tokenomicsEl = document.getElementById("patronium-framework");
-      if (!tokenomicsEl) return;
+    const clampBeforeFramework = () => {
+      const framework = document.getElementById("patronium-framework");
+      if (!framework) return;
 
-      const rect = tokenomicsEl.getBoundingClientRect();
-      const tokenTopAbs = window.scrollY + rect.top;
+      const rect = framework.getBoundingClientRect();
+      const frameworkTopAbs = window.scrollY + rect.top;
 
-      // padding keeps a tiny "breathing gap" so the framework doesn't peek in
-      const padding = 8;
+      const maxScrollY = Math.max(
+        0,
+        frameworkTopAbs - window.innerHeight - GATE_PADDING_PX
+      );
 
-      // IMPORTANT:
-      // Framework becomes visible when (scrollY + viewportHeight) > tokenTopAbs.
-      // So max scroll is tokenTopAbs - viewportHeight - padding.
-      const maxScroll = Math.max(0, tokenTopAbs - window.innerHeight - padding);
-
-      if (window.scrollY > maxScroll) {
-        window.scrollTo({ top: maxScroll, behavior: "auto" });
+      if (window.scrollY > maxScrollY) {
+        window.scrollTo({ top: maxScrollY, behavior: "auto" });
         if (!isWalletOpen) setIsWalletOpen(true);
       }
     };
 
-    const onScroll = () => clampBeforeTokenomics();
-    const onResize = () => clampBeforeTokenomics();
+    const onScroll = () => clampBeforeFramework();
+    const onResize = () => clampBeforeFramework();
 
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
 
-    // If they land deep-linked, clamp immediately
-    clampBeforeTokenomics();
+    // clamp on mount (for deep links)
+    clampBeforeFramework();
 
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
     };
   }, [gateArmed, isWalletOpen]);
-
-  // Prevent anchor jumps into tokenomics when gated
-  const blockTokenomicsJump = (e) => {
-    if (!gateArmed) return;
-    e.preventDefault();
-    openWallet();
-  };
 
   return (
     <div className="page">
@@ -346,20 +341,12 @@ export default function App() {
         </div>
 
         <div className="hero-actions">
+          {/* Main BUY button -> opens Patron Wallet modal */}
           <button className="btn btn-primary" onClick={handleBuyPatron}>
             BUY PATRON
           </button>
 
-          <a
-            className="btn btn-outline"
-            href="#founding-patrons"
-            onClick={(e) => {
-              if (gateArmed) {
-                e.preventDefault();
-                openWallet();
-              }
-            }}
-          >
+          <a className="btn btn-outline" href="#founding-patrons">
             FOUNDING PATRON INQUIRIES
           </a>
         </div>
@@ -386,31 +373,32 @@ export default function App() {
             style={{
               background: "#050505",
               borderRadius: "12px",
-              padding: "18px",
+              padding: "20px",
               maxWidth: "380px",
               width: "100%",
               boxShadow: "0 18px 60px rgba(0,0,0,0.9)",
               border: "1px solid #3a2b16",
-              maxHeight: "calc(100vh - 32px)",
+              maxHeight: "90vh",
               overflowY: "auto",
+              margin: "16px",
               fontFamily:
                 '"Cinzel", "EB Garamond", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", serif',
               color: "#f5eedc",
               fontSize: "13px",
             }}
           >
-            {/* Modal header */}
+            {/* Modal header with centered wordmark and close button */}
             <div
               style={{
                 position: "relative",
-                marginBottom: "14px",
+                marginBottom: "16px",
                 textAlign: "center",
               }}
             >
               <div
                 style={{
-                  fontSize: "12px",
-                  letterSpacing: "0.22em",
+                  fontSize: "13px",
+                  letterSpacing: "0.16em",
                   textTransform: "uppercase",
                 }}
               >
@@ -437,17 +425,9 @@ export default function App() {
               </button>
             </div>
 
-            {/* Connect section */}
+            {/* Wallet status / connect section */}
             {!account ? (
-              <div
-                style={{
-                  border: "1px solid #3a2b16",
-                  borderRadius: "12px",
-                  padding: "14px",
-                  boxShadow: "0 0 0 1px rgba(227,191,114,0.10)",
-                  marginBottom: "14px",
-                }}
-              >
+              <div style={{ marginBottom: "16px" }}>
                 <ConnectEmbed
                   client={client}
                   wallets={wallets}
@@ -461,7 +441,7 @@ export default function App() {
                   borderRadius: "10px",
                   border: "1px solid #3a2b16",
                   padding: "12px 14px 14px",
-                  marginBottom: "14px",
+                  marginBottom: "16px",
                   textAlign: "center",
                   background: "#050505",
                 }}
@@ -487,7 +467,12 @@ export default function App() {
                     marginBottom: "8px",
                   }}
                 >
-                  <div style={{ fontFamily: "monospace", fontSize: "13px" }}>
+                  <div
+                    style={{
+                      fontFamily: "monospace",
+                      fontSize: "13px",
+                    }}
+                  >
                     {shortAddress}
                   </div>
                   <button
@@ -506,6 +491,7 @@ export default function App() {
                   </button>
                 </div>
 
+                {/* Gas + USDC balances side-by-side */}
                 <div
                   style={{
                     display: "flex",
@@ -550,6 +536,7 @@ export default function App() {
                   </div>
                 </div>
 
+                {/* PATRON balance centered below */}
                 <div
                   style={{
                     fontSize: "10px",
@@ -582,16 +569,16 @@ export default function App() {
               </div>
             )}
 
-            {/* LOCKED SECTION (no blur) */}
+            {/* Locked area: Amount + Checkout (visible but not clickable until connected) */}
             <div style={{ position: "relative" }}>
               {!isConnected && (
                 <div
                   style={{
                     position: "absolute",
                     inset: 0,
-                    background: "rgba(0,0,0,0.55)",
+                    background: "rgba(0,0,0,0.65)",
+                    zIndex: 10,
                     borderRadius: "10px",
-                    zIndex: 20,
                     pointerEvents: "auto",
                   }}
                 />
@@ -602,15 +589,15 @@ export default function App() {
                   border: "1px solid #3a2b16",
                   borderRadius: "10px",
                   padding: "12px",
-                  opacity: !isConnected ? 0.75 : 1,
+                  opacity: !isConnected ? 0.78 : 1,
                   filter: !isConnected
-                    ? "saturate(0.85) brightness(0.9)"
+                    ? "saturate(0.9) brightness(0.92)"
                     : "none",
                   transition: "opacity 160ms ease, filter 160ms ease",
                   pointerEvents: isConnected ? "auto" : "none",
                 }}
               >
-                <div style={{ marginBottom: "10px" }}>
+                <div style={{ marginBottom: "12px" }}>
                   <label
                     style={{
                       display: "block",
@@ -621,7 +608,7 @@ export default function App() {
                       marginBottom: "4px",
                     }}
                   >
-                    Patronage Amount (USD)
+                    Choose Your Patronage (USD)
                   </label>
                   <input
                     type="number"
@@ -631,12 +618,13 @@ export default function App() {
                     onChange={(e) => setUsdAmount(e.target.value)}
                     style={{
                       width: "100%",
-                      padding: "9px 10px",
-                      borderRadius: "8px",
+                      padding: "8px 10px",
+                      borderRadius: "6px",
                       border: "1px solid #3a2b16",
                       background: "#050505",
                       color: "#f5eedc",
                       fontSize: "14px",
+                      marginBottom: "4px",
                       outline: "none",
                     }}
                   />
@@ -654,7 +642,7 @@ export default function App() {
                     amount={normalizedAmount}
                     tokenAddress={
                       "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
-                    }
+                    } // USDC on Base
                     seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
                     buttonLabel={"BUY PATRON (USDC on Base)"}
                     theme={patronCheckoutTheme}
@@ -671,12 +659,13 @@ export default function App() {
         </div>
       )}
 
-      {/* Brand / roadmap + copy sections */}
+      {/* Brand / roadmap + copy sections – unchanged */}
       <main>
         <section className="brand-row" id="brands">
           <h2 className="roadmap-title">INITIATIVE ROADMAP</h2>
 
           <div className="brand-grid">
+            {/* UPDATED 777 WORDMARK BLOCK */}
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
                 <div className="usp-top">USPPA</div>
@@ -753,10 +742,156 @@ export default function App() {
           </p>
         </section>
 
-        {/* Tokenomics / framework section (gated) */}
-        <section className="copy-section" id="patronium-framework" onClick={blockTokenomicsJump}>
+        {/* Patronium framework copy section */}
+        <section className="copy-section" id="patronium-framework">
           <div className="copy-section-title">THE PATRONIUM FRAMEWORK</div>
-          {/* ...keep your existing framework content here... */}
+
+          <div className="copy-block">
+            <h3>Patronium — Polo Patronage Perfected</h3>
+            <p>
+              Patronium is the living token of patronage within the United
+              States Polo Patrons Association. It is the medium through which
+              honourable support is recognised and shared — not through
+              speculation, but through participation. Every token of Patronium
+              represents a place within the fellowship of those who uphold the
+              game, its horses, and its players.
+            </p>
+            <p>
+              It serves as the bridge between patron and player: a clear record
+              of contribution and belonging within a high-trust mission driven
+              community. When a Chapter prospers, it offers tribute to those
+              whose support made that prosperity possible. This is the essence
+              of Patronium — recognition earned through genuine patronage and
+              service to the field.
+            </p>
+          </div>
+
+          <div className="copy-block">
+            <h3>Charleston Polo — The USPPA Chapter Test Model</h3>
+            <p>
+              Each USPPA Chapter is a fully integrated polo programme operating
+              under the Association&apos;s standards. A Chapter begins as a
+              Polo Incubator — a local startup where horses are gathered,
+              pasture secured, instruction established, and the public welcomed
+              to learn and play.
+            </p>
+            <p>
+              Once an Incubator achieves steady operations, sound horsemanship,
+              and visible community benefit, it becomes a standing Chapter of
+              the Association.
+            </p>
+          </div>
+
+          <div className="copy-block">
+            <h3>Founding, Operating, and USPPA Patrons</h3>
+            <p>There are three forms of Patronium holder.</p>
+            <p>
+              Founding Patrons are the first to support the birth of a new
+              Chapter. They provide the initial horses, pasture, and capital
+              that make it possible for a Polo Incubator to begin. During this
+              founding period, their Patronium receives the full measure of
+              available tribute — a reflection of their patronage in helping to
+              seed the future of Polo.
+            </p>
+            <p>
+              Operating Patrons are the active stewards responsible for the
+              management of each Chapter. They receive a base salary during the
+              incubator period and an operating share of tribute once the
+              incubator transitions to a full Chapter.
+            </p>
+            <p>
+              USPPA Patrons are the ongoing supporters who sustain and
+              strengthen a Chapter once it is established.
+            </p>
+          </div>
+
+          <div className="copy-block">
+            <h3> The Tribute Framework</h3>
+            <p>
+              Each Chapter follows a principle of balanced and transparent
+              patronage. From its net revenue (gross revenue less operational
+              costs), a Chapter aims to follow this allocation:
+            </p>
+            <ul>
+              <li>
+                51%+ retained for reinvestment — horses, pasture, equipment, and
+                operations.
+              </li>
+              <li>
+                49% max. available to the Patronium Tribute Pool, from which
+                holders are recognised for their continued patronage.
+              </li>
+            </ul>
+            <p>
+              During the Polo Incubator period, the Founding Patrons are
+              whitelisted for direct proportional tribute from the Polo
+              Incubators they support (49% of tribute). After the first year, or
+              when the Incubator can support itself, it transitions to a full
+              Chapter and the tribute returns to the standard USPPA Patron
+              tribute.
+            </p>
+          </div>
+
+          <div className="copy-block">
+            <h3>Participation</h3>
+            <ul>
+              <li>
+                Become a Founding Patron — assist in launching a new Chapter
+                through contribution of capital, horses, or facilities.
+              </li>
+              <li>
+                Become an Operating Patron — oversee the daily life of a Chapter
+                and its players.
+              </li>
+              <li>
+                Become a USPPA Patron — support the national network and share
+                in ongoing tribute cycles.
+              </li>
+              <li>
+                Provide Horses or Land — supply the physical foundation of Polo
+                under insured, transparent, and fair agreements.
+              </li>
+            </ul>
+          </div>
+
+          <div className="copy-block">
+            <h3>In Plain Terms</h3>
+            <p>
+              The Association seeks not to monetise polo, but to stabilise and
+              decentralise it — to bring clarity, fairness, and longevity to the
+              way it is taught, funded, and shared. Patronium and the Polo
+              Incubator model together create a living, self-sustaining
+              framework for the game&apos;s renewal across America.
+            </p>
+            <p>
+              This is how the USPPA will grow the next American 10-Goal player.
+            </p>
+          </div>
+
+          <div className="copy-block">
+            <h3>An Invitation to Patrons and Partners</h3>
+            <p>
+              The Association welcomes discerning patrons, landholders, and
+              professionals who wish to take part in the restoration of polo as
+              a sustainable, American-bred enterprise. Each Chapter is a living
+              investment in horses, land, and people — structured not for
+              speculation, but for legacy.
+            </p>
+            <p>
+              Patronium ensures every act of patronage — whether a horse
+              consigned, a pasture opened, or a field sponsored — is recognised
+              and recorded within a transparent, honourable system that rewards
+              those who build American Polo. Your contribution does not vanish
+              into expense; it lives on in horses trained, players formed, and
+              fields maintained.
+            </p>
+            <p>
+              Those who have carried the game through their own time know: it
+              survives only by the strength of its patrons. The USPPA now offers
+              a new way to hold that legacy — a means to see your support endure
+              in the form of living tribute.
+            </p>
+          </div>
         </section>
       </main>
 

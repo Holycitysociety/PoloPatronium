@@ -642,26 +642,23 @@ export default function App() {
           <div className="brand-grid">
             {/* 777 WORDMARK BLOCK */}
             <div className="logo-block">
-              <div
-                className="logo-usp-string-remuda"
-                style={{ textAlign: "center" }}
-              >
-                {/* Central band: THREE · 7̶7̶7̶ · SEVENS */}
+              <div className="logo-usp-string-remuda">
+                {/* Central bar: THREE · 7̶7̶7̶ · SEVENS */}
                 <div
                   style={{
                     display: "inline-flex",
                     alignItems: "baseline",
                     justifyContent: "center",
-                    gap: "0.55em",
-                    padding: "6px 14px 4px",
+                    gap: "0.6em",
+                    padding: "8px 14px 6px",
                     borderTop: "1px solid #c7b08a",
                     borderBottom: "1px solid #c7b08a",
                   }}
                 >
                   <span
                     style={{
-                      fontSize: "11px",
-                      letterSpacing: "0.18em",
+                      fontSize: "10px",
+                      letterSpacing: "0.2em",
                       textTransform: "uppercase",
                       color: "#c7b08a",
                     }}
@@ -670,7 +667,7 @@ export default function App() {
                   </span>
                   <span
                     style={{
-                      fontSize: "32px",
+                      fontSize: "30px",
                       letterSpacing: "0.22em",
                       color: "#f5eedc",
                     }}
@@ -679,8 +676,8 @@ export default function App() {
                   </span>
                   <span
                     style={{
-                      fontSize: "11px",
-                      letterSpacing: "0.18em",
+                      fontSize: "10px",
+                      letterSpacing: "0.2em",
                       textTransform: "uppercase",
                       color: "#c7b08a",
                     }}
@@ -689,17 +686,17 @@ export default function App() {
                   </span>
                 </div>
 
-                {/* REMUDA (bottom label) */}
+                {/* Base caption: STRING REMUDA */}
                 <div
                   style={{
-                    fontSize: "11px",
-                    letterSpacing: "0.24em",
+                    marginTop: "6px",
+                    fontSize: "10px",
+                    letterSpacing: "0.28em",
                     textTransform: "uppercase",
                     color: "#c7b08a",
-                    marginTop: "6px",
                   }}
                 >
-                  REMUDA
+                  STRING REMUDA
                 </div>
               </div>
 

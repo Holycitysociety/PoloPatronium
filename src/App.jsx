@@ -109,15 +109,13 @@ export default function App() {
   const { disconnect } = useDisconnect();
   const isConnected = !!account;
 
-  const walletScrollRef = useRef(null);
+  const walletScrollRef = useRef<HTMLDivElement | null>(null);
 
-  // ✅ Gate target (start of Patronium Framework section)
-  const patroniumGateRef = useRef(null);
+  // Gate: watch bottom of roadmap, snap to Patronium Framework title
+  const roadmapRef = useRef<HTMLElement | null>(null);
+  const patroniumGateRef = useRef<HTMLElement | null>(null);
 
-  // ✅ did we already trip the gate?
   const [gateTriggered, setGateTriggered] = useState(false);
-
-  // ✅ when gate is triggered and not signed in, modal MUST stay open
   const mustSignIn = gateTriggered && !isConnected;
 
   // Native ETH on Base (gas)
@@ -147,7 +145,7 @@ export default function App() {
 
   const closeWallet = () => {
     if (mustSignIn) {
-      // hard lock: cannot close while gate is active and not connected
+      // hard lock during gate
       setIsWalletOpen(true);
       return;
     }
@@ -182,7 +180,7 @@ export default function App() {
   const normalizedAmount =
     usdAmount && Number(usdAmount) > 0 ? String(usdAmount) : "1";
 
-  const handleCheckoutSuccess = async (result) => {
+  const handleCheckoutSuccess = async (result: any) => {
     try {
       if (!account?.address) return;
 
@@ -246,42 +244,46 @@ export default function App() {
   // Escape closes modal (but NOT during hard gate)
   useEffect(() => {
     if (!isWalletOpen) return;
-    const onKeyDown = (e) => {
+    const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && !mustSignIn) closeWallet();
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [isWalletOpen, mustSignIn]);
 
-  // ✅ When user connects, release the gate and let modal behave normally
+  // When user connects, release the gate
   useEffect(() => {
     if (isConnected) {
       setGateTriggered(false);
     }
   }, [isConnected]);
 
-  // ✅ Gate: when user scrolls into the Patronium Framework section the first time,
-  // trigger sign-in and "lock" until they finish.
+  // Gate logic: fire when bottom of roadmap reaches near top of viewport
   useEffect(() => {
-    if (isConnected) return; // no gate if already connected
+    if (isConnected) return;
 
     const onScroll = () => {
       if (gateTriggered) return;
 
-      const el = patroniumGateRef.current;
-      if (!el) return;
+      const road = roadmapRef.current;
+      const frame = patroniumGateRef.current;
+      if (!road || !frame) return;
 
-      const rect = el.getBoundingClientRect();
-      const topAbs = rect.top + window.scrollY;
+      const roadRect = road.getBoundingClientRect();
+      const roadBottomAbs = roadRect.bottom + window.scrollY;
 
-      // trigger when bottom of viewport crosses ~80px above the section title
-      const triggerY = Math.max(0, topAbs - 80);
-      const bottomOfViewport = window.scrollY + window.innerHeight;
+      // trigger when roadmap bottom is ~80px from top
+      const triggerScrollY = Math.max(0, roadBottomAbs - 80);
 
-      if (bottomOfViewport >= triggerY) {
+      if (window.scrollY >= triggerScrollY) {
         setGateTriggered(true);
-        // pull them back up slightly so the title is bottom-most visible line
-        window.scrollTo(0, triggerY);
+
+        // snap so Patronium Framework title sits nicely
+        const frameRect = frame.getBoundingClientRect();
+        const frameTopAbs = frameRect.top + window.scrollY;
+        const snapY = Math.max(0, frameTopAbs - 80);
+
+        window.scrollTo(0, snapY);
         setIsWalletOpen(true);
       }
     };
@@ -290,7 +292,7 @@ export default function App() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [isConnected, gateTriggered]);
 
-  // ✅ If gate is active, always keep wallet open
+  // If gate is active, keep wallet open
   useEffect(() => {
     if (mustSignIn) {
       setIsWalletOpen(true);
@@ -354,7 +356,7 @@ export default function App() {
             BUY PATRON
           </button>
 
-        <a className="btn btn-outline" href="#founding-patrons">
+          <a className="btn btn-outline" href="#founding-patrons">
             FOUNDING PATRON INQUIRIES
           </a>
         </div>
@@ -364,7 +366,7 @@ export default function App() {
       {isWalletOpen && (
         <div
           className="wallet-modal-backdrop"
-          onClick={mustSignIn ? undefined : closeWallet} // ❗ no backdrop close if gate locked
+          onClick={mustSignIn ? undefined : closeWallet}
           style={{
             position: "fixed",
             inset: 0,
@@ -379,7 +381,7 @@ export default function App() {
           <div style={{ width: "100%", maxWidth: "380px" }}>
             <div
               ref={walletScrollRef}
-              onClick={(e) => e.stopPropagation()} // clicks inside don't close
+              onClick={(e) => e.stopPropagation()}
               style={{
                 width: "100%",
                 maxHeight: "90vh",
@@ -420,7 +422,6 @@ export default function App() {
                   PATRON WALLET
                 </div>
 
-                {/* hide X while gate is active */}
                 {!mustSignIn && (
                   <button
                     onClick={closeWallet}
@@ -504,7 +505,7 @@ export default function App() {
                     </button>
                   </div>
 
-                  {/* Gas + USDC (smaller) */}
+                  {/* Gas + USDC */}
                   <div
                     style={{
                       display: "flex",
@@ -551,7 +552,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Patron balance (bigger, own line) */}
+                  {/* Patron balance */}
                   <div style={{ marginBottom: "12px" }}>
                     <div
                       style={{
@@ -679,11 +680,11 @@ export default function App() {
 
       {/* Brand / roadmap + copy sections */}
       <main>
-        <section className="brand-row" id="brands">
+        <section className="brand-row" id="brands" ref={roadmapRef}>
           <h2 className="roadmap-title">INITIATIVE ROADMAP</h2>
 
           <div className="brand-grid">
-            {/* 777 WORDMARK BLOCK (unchanged) */}
+            {/* 777 WORDMARK BLOCK */}
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
                 <div className="usp-top">USPPA</div>
@@ -760,7 +761,7 @@ export default function App() {
           </p>
         </section>
 
-        {/* "TOKEN ECONOMICS" / FRAMEWORK SECTION — gated */}
+        {/* Patronium Framework — gated */}
         <section
           className="copy-section"
           id="patronium-framework"
@@ -768,7 +769,7 @@ export default function App() {
         >
           <div className="copy-section-title">THE PATRONIUM FRAMEWORK</div>
 
-          {/* ✅ Black overlay over whole body until connected */}
+          {/* Gate overlay: high-opacity + blur, click opens wallet */}
           <div style={{ position: "relative" }}>
             {!isConnected && (
               <div
@@ -777,7 +778,9 @@ export default function App() {
                   position: "absolute",
                   inset: 0,
                   zIndex: 50,
-                  background: "#000",
+                  background: "rgba(0,0,0,0.82)", // mostly opaque but not solid
+                  backdropFilter: "blur(8px)",
+                  WebkitBackdropFilter: "blur(8px)",
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
@@ -794,7 +797,7 @@ export default function App() {
                     border: "1px solid #3a2b16",
                     borderRadius: "14px",
                     padding: "18px 16px",
-                    background: "rgba(5,5,5,0.92)",
+                    background: "rgba(5,5,5,0.94)",
                     boxShadow: "0 18px 60px rgba(0,0,0,0.85)",
                     fontFamily:
                       '"Cinzel", "EB Garamond", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", serif',
@@ -835,7 +838,7 @@ export default function App() {
               </div>
             )}
 
-            {/* Original framework content */}
+            {/* Framework content */}
             <div className="copy-block">
               <h3>Patronium — Polo Patronage Perfected</h3>
               <p>
@@ -953,7 +956,10 @@ export default function App() {
                 Incubator model together create a living, self-sustaining
                 framework for the game&apos;s renewal across America.
               </p>
-              <p>This is how the USPPA will grow the next American 10-Goal player.</p>
+              <p>
+                This is how the USPPA will grow the next American 10-Goal
+                player.
+              </p>
             </div>
 
             <div className="copy-block">

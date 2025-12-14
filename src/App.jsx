@@ -306,7 +306,7 @@ export default function App() {
 
         <div className="hero-symbol">
           <div className="hero-symbol-main">
-            ERC-20 &middot; TOKEN SYMBOL &quot;PATRON&quot;
+            ERC-777 &middot; TOKEN SYMBOL &quot;PATRON&quot;
           </div>
           <div className="hero-network">ON BASE NETWORK BY COINBASE</div>
           <div className="hero-contract">
@@ -352,7 +352,7 @@ export default function App() {
                 width: "100%",
                 maxHeight: "90vh",
                 overflowY: "auto",
-                border: "1px solid #3a2b16",
+                border: "1px solid "#3a2b16",
                 borderRadius: "14px",
                 padding: "16px",
                 paddingTop: "26px",
@@ -755,7 +755,7 @@ export default function App() {
                     color: "#9f8a64",
                   }}
                 >
-                  REMUDA
+                  STRING REMUDA
                 </div>
               </div>
 
@@ -782,7 +782,7 @@ export default function App() {
                 An American endeavour to broaden Polo&apos;s reach, nurture
                 emerging talent, and encourage the next generation of American
                 players — where riders not only learn to play, but learn to make
-                the horses of the 7̶7̶7̶ (Three Sevens) Remuda.
+                the horses of the 7̶7̶7̶ (String Three Sevens) Remuda.
               </p>
             </div>
 

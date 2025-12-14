@@ -767,18 +767,12 @@ export default function App() {
               </p>
             </div>
 
-            {/* COWBOY POLO CIRCUIT with gold frame */}
+            {/* COWBOY POLO CIRCUIT with gold frame accents */}
             <div className="logo-block">
               <div
                 className="logo-cowboy-polo-circuit"
                 style={{
-                  display: "inline-block",
-                  padding: "8px 18px 7px",
-                  border: "1px solid #c7b08a",
-                  borderRadius: "999px",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.18em",
-                  fontSize: "10px",
+                  borderColor: "#c7b08a",
                   color: "#f5eedc",
                 }}
               >
@@ -792,18 +786,13 @@ export default function App() {
               </p>
             </div>
 
-            {/* THE POLO LIFE with gold "THE" accent */}
+            {/* THE POLO LIFE with gold "THE" */}
             <div className="logo-block">
               <div className="logo-the-polo-life">
                 <span
                   className="top"
                   style={{
-                    display: "block",
-                    fontSize: "9px",
-                    letterSpacing: "0.26em",
-                    textTransform: "uppercase",
-                    color: "#e3bf72",
-                    marginBottom: "2px",
+                    color: "#c7b08a",
                   }}
                 >
                   THE
@@ -817,20 +806,18 @@ export default function App() {
               </p>
             </div>
 
-            {/* CHARLESTON POLO with gold Charleston + line */}
+            {/* CHARLESTON POLO with gold "CHARLESTON" + line */}
             <div className="logo-block">
-              <div className="logo-charleston-polo">
+              <div
+                className="logo-charleston-polo"
+                style={{
+                  borderColor: "#c7b08a", // assumes existing line uses border
+                }}
+              >
                 <span
                   className="top"
                   style={{
-                    display: "inline-block",
-                    fontSize: "11px",
-                    letterSpacing: "0.22em",
-                    textTransform: "uppercase",
-                    color: "#e3bf72",
-                    paddingBottom: "3px",
-                    borderBottom: "1px solid #e3bf72",
-                    marginBottom: "4px",
+                    color: "#c7b08a",
                   }}
                 >
                   CHARLESTON

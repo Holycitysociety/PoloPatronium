@@ -73,18 +73,15 @@ const patronCheckoutTheme = darkTheme({
 // ---------------------------------------------
 // Simple error boundary for CheckoutWidget (plain JS)
 // ---------------------------------------------
-class CheckoutBoundary extends React.Component<
-  { children: React.ReactNode },
-  { hasError: boolean }
-> {
-  constructor(props: any) {
+class CheckoutBoundary extends React.Component {
+  constructor(props) {
     super(props);
     this.state = { hasError: false };
   }
   static getDerivedStateFromError() {
     return { hasError: true };
   }
-  componentDidCatch(error: any, info: any) {
+  componentDidCatch(error, info) {
     console.error("CheckoutWidget crashed:", error, info);
   }
   render() {
@@ -113,8 +110,8 @@ export default function App() {
   const { disconnect } = useDisconnect();
   const isConnected = !!account;
 
-  const walletScrollRef = useRef<HTMLDivElement | null>(null);
-  const brandsRef = useRef<HTMLElement | null>(null);
+  const walletScrollRef = useRef(null);
+  const brandsRef = useRef(null);
 
   // Native ETH on Base (gas)
   const { data: baseBalance } = useWalletBalance({
@@ -170,7 +167,7 @@ export default function App() {
   const normalizedAmount =
     usdAmount && Number(usdAmount) > 0 ? String(usdAmount) : "1";
 
-  const handleCheckoutSuccess = async (result: any) => {
+  const handleCheckoutSuccess = async (result) => {
     try {
       if (!account?.address) return;
 
@@ -234,7 +231,7 @@ export default function App() {
   // Escape closes modal
   useEffect(() => {
     if (!isWalletOpen) return;
-    const onKeyDown = (e: KeyboardEvent) => {
+    const onKeyDown = (e) => {
       if (e.key === "Escape") closeWallet();
     };
     window.addEventListener("keydown", onKeyDown);
@@ -262,7 +259,7 @@ export default function App() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    // in case they load already scrolled down
+    // handle initial position as well
     handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
@@ -596,7 +593,7 @@ export default function App() {
                         width: "100%",
                         padding: "10px 12px",
                         borderRadius: "10px",
-                        border: "1px solid #3a2b16",
+                        border: "1px solid "#3a2b16",
                         background: "#050505",
                         color: "#f5eedc",
                         fontSize: "16px",
@@ -623,7 +620,7 @@ export default function App() {
                       buttonLabel={"BUY PATRON (USDC on Base)"}
                       theme={patronCheckoutTheme}
                       onSuccess={handleCheckoutSuccess}
-                      onError={(err: any) => {
+                      onError={(err) => {
                         console.error("Checkout error:", err);
                         alert(err?.message || String(err));
                       }}
@@ -642,7 +639,7 @@ export default function App() {
           <h2 className="roadmap-title">INITIATIVE ROADMAP</h2>
 
           <div className="brand-grid">
-            {/* 777 WORDMARK BLOCK (current layout) */}
+            {/* 777 WORDMARK BLOCK */}
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
                 <div className="usp-top">USPPA</div>

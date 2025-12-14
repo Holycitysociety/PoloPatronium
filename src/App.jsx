@@ -109,10 +109,10 @@ export default function App() {
   const { disconnect } = useDisconnect();
   const isConnected = !!account;
 
-  const walletScrollRef = useRef<HTMLDivElement | null>(null);
+  const walletScrollRef = useRef(null);
 
   // Roadmap section – used as scroll trigger
-  const roadmapGateRef = useRef<HTMLElement | null>(null);
+  const roadmapGateRef = useRef(null);
   const [hasTriggeredGate, setHasTriggeredGate] = useState(false);
 
   // Native ETH on Base (gas)
@@ -169,7 +169,7 @@ export default function App() {
   const normalizedAmount =
     usdAmount && Number(usdAmount) > 0 ? String(usdAmount) : "1";
 
-  const handleCheckoutSuccess = async (result: any) => {
+  const handleCheckoutSuccess = async (result) => {
     try {
       if (!account?.address) return;
 
@@ -233,7 +233,7 @@ export default function App() {
   // Escape closes modal
   useEffect(() => {
     if (!isWalletOpen) return;
-    const onKeyDown = (e: KeyboardEvent) => {
+    const onKeyDown = (e) => {
       if (e.key === "Escape") closeWallet();
     };
     window.addEventListener("keydown", onKeyDown);
@@ -642,28 +642,18 @@ export default function App() {
           <div className="brand-grid">
             {/* 777 WORDMARK BLOCK */}
             <div className="logo-block">
-              <div className="logo-usp-string-remuda">
-                {/* STRING (top label) */}
-                <div
-                  style={{
-                    fontSize: "10px",
-                    letterSpacing: "0.22em",
-                    textTransform: "uppercase",
-                    color: "#c7b08a",
-                    marginBottom: "6px",
-                  }}
-                >
-                  STRING
-                </div>
-
-                {/* Central mark: THREE · 777 · SEVENS */}
+              <div
+                className="logo-usp-string-remuda"
+                style={{ textAlign: "center" }}
+              >
+                {/* Central band: THREE · 7̶7̶7̶ · SEVENS */}
                 <div
                   style={{
                     display: "inline-flex",
                     alignItems: "baseline",
                     justifyContent: "center",
-                    gap: "0.5em",
-                    padding: "6px 12px 4px",
+                    gap: "0.55em",
+                    padding: "6px 14px 4px",
                     borderTop: "1px solid #c7b08a",
                     borderBottom: "1px solid #c7b08a",
                   }}
@@ -680,15 +670,12 @@ export default function App() {
                   </span>
                   <span
                     style={{
-                      fontSize: "30px",
-                      letterSpacing: "0.18em",
+                      fontSize: "32px",
+                      letterSpacing: "0.22em",
                       color: "#f5eedc",
-                      textDecoration: "line-through",
-                      textDecorationThickness: "2px",
-                      textDecorationColor: "#e3bf72",
                     }}
                   >
-                    777
+                    7̶7̶7̶
                   </span>
                   <span
                     style={{
@@ -702,7 +689,7 @@ export default function App() {
                   </span>
                 </div>
 
-                {/* REMUDA (bottom) */}
+                {/* REMUDA (bottom label) */}
                 <div
                   style={{
                     fontSize: "11px",
@@ -934,7 +921,7 @@ export default function App() {
                   </li>
                   <li>
                     Provide Horses or Land — supply the physical foundation of
-                      Polo under insured, transparent, and fair agreements.
+                    Polo under insured, transparent, and fair agreements.
                   </li>
                 </ul>
               </div>

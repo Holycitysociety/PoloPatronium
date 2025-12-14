@@ -111,14 +111,14 @@ export default function App() {
 
   const walletScrollRef = useRef(null);
 
-  // ✅ Gate TITLE ref (wordmark)
-  const patroniumGateTitleRef = useRef(null);
+  // ✅ Gate target (start of Patronium Framework section)
+  const patroniumGateRef = useRef(null);
 
-  // ✅ Gate max scrollY (computed)
-  const gateMaxYRef = useRef(null);
+  // ✅ did we already trip the gate?
+  const [gateTriggered, setGateTriggered] = useState(false);
 
-  // ✅ Gate sticks until connected
-  const [gateActive, setGateActive] = useState(false);
+  // ✅ when gate is triggered and not signed in, modal MUST stay open
+  const mustSignIn = gateTriggered && !isConnected;
 
   // Native ETH on Base (gas)
   const { data: baseBalance } = useWalletBalance({
@@ -145,12 +145,9 @@ export default function App() {
 
   const openWallet = () => setIsWalletOpen(true);
 
-  // ✅ “true lock” when gate is active and not connected
-  const mustSignIn = gateActive && !isConnected;
-
   const closeWallet = () => {
     if (mustSignIn) {
-      // cannot close during gate lock
+      // hard lock: cannot close while gate is active and not connected
       setIsWalletOpen(true);
       return;
     }
@@ -246,7 +243,7 @@ export default function App() {
     document.body.style.overflow = "";
   }, [isWalletOpen]);
 
-  // Escape closes modal (but NOT during gate lock)
+  // Escape closes modal (but NOT during hard gate)
   useEffect(() => {
     if (!isWalletOpen) return;
     const onKeyDown = (e) => {
@@ -256,63 +253,49 @@ export default function App() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [isWalletOpen, mustSignIn]);
 
-  // ✅ Compute gate clamp so wordmark is last visible line
-  const computeGateMaxY = () => {
-    const titleEl = patroniumGateTitleRef.current;
-    if (!titleEl) return;
-
-    const rect = titleEl.getBoundingClientRect();
-    const titleTopAbs = rect.top + window.scrollY;
-    const titleHeight = rect.height || 1;
-
-    // Make the title sit near the bottom edge when clamped
-    const bottomPadding = 18; // tweak to taste
-    const clampY = Math.max(
-      0,
-      Math.floor(titleTopAbs - (window.innerHeight - titleHeight - bottomPadding))
-    );
-
-    gateMaxYRef.current = clampY;
-  };
-
-  // Compute gate on load + resize/orientation changes
-  useEffect(() => {
-    computeGateMaxY();
-    window.addEventListener("resize", computeGateMaxY);
-    window.addEventListener("orientationchange", computeGateMaxY);
-    return () => {
-      window.removeEventListener("resize", computeGateMaxY);
-      window.removeEventListener("orientationchange", computeGateMaxY);
-    };
-  }, []);
-
-  // ✅ Gate behavior: clamp + force wallet open; persists until connected
+  // ✅ When user connects, release the gate and let modal behave normally
   useEffect(() => {
     if (isConnected) {
-      setGateActive(false);
-      return;
+      setGateTriggered(false);
     }
+  }, [isConnected]);
+
+  // ✅ Gate: when user scrolls into the Patronium Framework section the first time,
+  // trigger sign-in and "lock" until they finish.
+  useEffect(() => {
+    if (isConnected) return; // no gate if already connected
 
     const onScroll = () => {
-      computeGateMaxY();
-      const maxY = gateMaxYRef.current;
-      if (typeof maxY !== "number") return;
+      if (gateTriggered) return;
 
-      if (window.scrollY > maxY) {
-        window.scrollTo(0, maxY);
+      const el = patroniumGateRef.current;
+      if (!el) return;
 
-        if (!gateActive) {
-          setGateActive(true);
-        }
-        if (!isWalletOpen) {
-          setIsWalletOpen(true);
-        }
+      const rect = el.getBoundingClientRect();
+      const topAbs = rect.top + window.scrollY;
+
+      // trigger when bottom of viewport crosses ~80px above the section title
+      const triggerY = Math.max(0, topAbs - 80);
+      const bottomOfViewport = window.scrollY + window.innerHeight;
+
+      if (bottomOfViewport >= triggerY) {
+        setGateTriggered(true);
+        // pull them back up slightly so the title is bottom-most visible line
+        window.scrollTo(0, triggerY);
+        setIsWalletOpen(true);
       }
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [isConnected, gateActive, isWalletOpen]);
+  }, [isConnected, gateTriggered]);
+
+  // ✅ If gate is active, always keep wallet open
+  useEffect(() => {
+    if (mustSignIn) {
+      setIsWalletOpen(true);
+    }
+  }, [mustSignIn]);
 
   return (
     <div className="page">
@@ -371,7 +354,7 @@ export default function App() {
             BUY PATRON
           </button>
 
-          <a className="btn btn-outline" href="#founding-patrons">
+        <a className="btn btn-outline" href="#founding-patrons">
             FOUNDING PATRON INQUIRIES
           </a>
         </div>
@@ -381,7 +364,7 @@ export default function App() {
       {isWalletOpen && (
         <div
           className="wallet-modal-backdrop"
-          onClick={mustSignIn ? undefined : closeWallet} // ✅ disable backdrop close during lock
+          onClick={mustSignIn ? undefined : closeWallet} // ❗ no backdrop close if gate locked
           style={{
             position: "fixed",
             inset: 0,
@@ -396,7 +379,7 @@ export default function App() {
           <div style={{ width: "100%", maxWidth: "380px" }}>
             <div
               ref={walletScrollRef}
-              onClick={(e) => e.stopPropagation()} // clicks inside don’t close
+              onClick={(e) => e.stopPropagation()} // clicks inside don't close
               style={{
                 width: "100%",
                 maxHeight: "90vh",
@@ -437,7 +420,7 @@ export default function App() {
                   PATRON WALLET
                 </div>
 
-                {/* ✅ Remove close button during gate lock */}
+                {/* hide X while gate is active */}
                 {!mustSignIn && (
                   <button
                     onClick={closeWallet}
@@ -485,7 +468,7 @@ export default function App() {
                         textTransform: "uppercase",
                       }}
                     >
-                      Sign in to access Patronium Framework
+                      Sign in to view the Patronium Framework
                     </div>
                   )}
                 </div>
@@ -777,22 +760,15 @@ export default function App() {
           </p>
         </section>
 
-        {/* FULL "TOKEN ECONOMICS" / FRAMEWORK SECTION — title is the gate wordmark */}
-        <section className="copy-section" id="patronium-framework">
-          {/* ✅ Gate wordmark (this is what we clamp to) */}
-          <div
-            className="copy-section-title"
-            ref={patroniumGateTitleRef}
-            style={{
-              // optional: make it feel more "wordmark" without changing your CSS files
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-            }}
-          >
-            THE PATRONIUM FRAMEWORK
-          </div>
+        {/* "TOKEN ECONOMICS" / FRAMEWORK SECTION — gated */}
+        <section
+          className="copy-section"
+          id="patronium-framework"
+          ref={patroniumGateRef}
+        >
+          <div className="copy-section-title">THE PATRONIUM FRAMEWORK</div>
 
-          {/* ✅ Black overlay over ALL body content until sign-in */}
+          {/* ✅ Black overlay over whole body until connected */}
           <div style={{ position: "relative" }}>
             {!isConnected && (
               <div
@@ -803,7 +779,6 @@ export default function App() {
                   zIndex: 50,
                   background: "#000",
                   cursor: "pointer",
-                  // subtle “this is gated” hint, not blur
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -838,7 +813,8 @@ export default function App() {
                     Sign in required
                   </div>
                   <div style={{ fontSize: "14px", lineHeight: 1.5 }}>
-                    Continue to view the Patronium Framework (Token Economics).
+                    Continue with Patron Wallet to view the Patronium Framework
+                    (Token Economics).
                   </div>
                   <div
                     style={{
@@ -859,7 +835,7 @@ export default function App() {
               </div>
             )}
 
-            {/* --- Your original framework content unchanged below --- */}
+            {/* Original framework content */}
             <div className="copy-block">
               <h3>Patronium — Polo Patronage Perfected</h3>
               <p>
@@ -871,28 +847,28 @@ export default function App() {
                 game, its horses, and its players.
               </p>
               <p>
-                It serves as the bridge between patron and player: a clear record
-                of contribution and belonging within a high-trust mission driven
-                community. When a Chapter prospers, it offers tribute to those
-                whose support made that prosperity possible. This is the essence
-                of Patronium — recognition earned through genuine patronage and
-                service to the field.
+                It serves as the bridge between patron and player: a clear
+                record of contribution and belonging within a high-trust mission
+                driven community. When a Chapter prospers, it offers tribute to
+                those whose support made that prosperity possible. This is the
+                essence of Patronium — recognition earned through genuine
+                patronage and service to the field.
               </p>
             </div>
 
             <div className="copy-block">
               <h3>Charleston Polo — The USPPA Chapter Test Model</h3>
               <p>
-                Each USPPA Chapter is a fully integrated polo programme operating
-                under the Association&apos;s standards. A Chapter begins as a
-                Polo Incubator — a local startup where horses are gathered,
-                pasture secured, instruction established, and the public welcomed
-                to learn and play.
+                Each USPPA Chapter is a fully integrated polo programme
+                operating under the Association&apos;s standards. A Chapter
+                begins as a Polo Incubator — a local startup where horses are
+                gathered, pasture secured, instruction established, and the
+                public welcomed to learn and play.
               </p>
               <p>
-                Once an Incubator achieves steady operations, sound horsemanship,
-                and visible community benefit, it becomes a standing Chapter of
-                the Association.
+                Once an Incubator achieves steady operations, sound
+                horsemanship, and visible community benefit, it becomes a
+                standing Chapter of the Association.
               </p>
             </div>
 
@@ -904,13 +880,13 @@ export default function App() {
                 Chapter. They provide the initial horses, pasture, and capital
                 that make it possible for a Polo Incubator to begin. During this
                 founding period, their Patronium receives the full measure of
-                available tribute — a reflection of their patronage in helping to
-                seed the future of Polo.
+                available tribute — a reflection of their patronage in helping
+                to seed the future of Polo.
               </p>
               <p>
                 Operating Patrons are the active stewards responsible for the
-                management of each Chapter. They receive a base salary during the
-                incubator period and an operating share of tribute once the
+                management of each Chapter. They receive a base salary during
+                the incubator period and an operating share of tribute once the
                 incubator transitions to a full Chapter.
               </p>
               <p>
@@ -928,8 +904,8 @@ export default function App() {
               </p>
               <ul>
                 <li>
-                  51%+ retained for reinvestment — horses, pasture, equipment, and
-                  operations.
+                  51%+ retained for reinvestment — horses, pasture, equipment,
+                  and operations.
                 </li>
                 <li>
                   49% max. available to the Patronium Tribute Pool, from which
@@ -939,10 +915,10 @@ export default function App() {
               <p>
                 During the Polo Incubator period, the Founding Patrons are
                 whitelisted for direct proportional tribute from the Polo
-                Incubators they support (49% of tribute). After the first year, or
-                when the Incubator can support itself, it transitions to a full
-                Chapter and the tribute returns to the standard USPPA Patron
-                tribute.
+                Incubators they support (49% of tribute). After the first year,
+                or when the Incubator can support itself, it transitions to a
+                full Chapter and the tribute returns to the standard USPPA
+                Patron tribute.
               </p>
             </div>
 
@@ -954,16 +930,16 @@ export default function App() {
                   through contribution of capital, horses, or facilities.
                 </li>
                 <li>
-                  Become an Operating Patron — oversee the daily life of a Chapter
-                  and its players.
+                  Become an Operating Patron — oversee the daily life of a
+                  Chapter and its players.
                 </li>
                 <li>
                   Become a USPPA Patron — support the national network and share
                   in ongoing tribute cycles.
                 </li>
                 <li>
-                  Provide Horses or Land — supply the physical foundation of Polo
-                  under insured, transparent, and fair agreements.
+                  Provide Horses or Land — supply the physical foundation of
+                  Polo under insured, transparent, and fair agreements.
                 </li>
               </ul>
             </div>
@@ -972,8 +948,8 @@ export default function App() {
               <h3>In Plain Terms</h3>
               <p>
                 The Association seeks not to monetise polo, but to stabilise and
-                decentralise it — to bring clarity, fairness, and longevity to the
-                way it is taught, funded, and shared. Patronium and the Polo
+                decentralise it — to bring clarity, fairness, and longevity to
+                the way it is taught, funded, and shared. Patronium and the Polo
                 Incubator model together create a living, self-sustaining
                 framework for the game&apos;s renewal across America.
               </p>
@@ -984,24 +960,24 @@ export default function App() {
               <h3>An Invitation to Patrons and Partners</h3>
               <p>
                 The Association welcomes discerning patrons, landholders, and
-                professionals who wish to take part in the restoration of polo as
-                a sustainable, American-bred enterprise. Each Chapter is a living
-                investment in horses, land, and people — structured not for
-                speculation, but for legacy.
+                professionals who wish to take part in the restoration of polo
+                as a sustainable, American-bred enterprise. Each Chapter is a
+                living investment in horses, land, and people — structured not
+                for speculation, but for legacy.
               </p>
               <p>
                 Patronium ensures every act of patronage — whether a horse
-                consigned, a pasture opened, or a field sponsored — is recognised
-                and recorded within a transparent, honourable system that rewards
-                those who build American Polo. Your contribution does not vanish
-                into expense; it lives on in horses trained, players formed, and
-                fields maintained.
+                consigned, a pasture opened, or a field sponsored — is
+                recognised and recorded within a transparent, honourable system
+                that rewards those who build American Polo. Your contribution
+                does not vanish into expense; it lives on in horses trained,
+                players formed, and fields maintained.
               </p>
               <p>
                 Those who have carried the game through their own time know: it
-                survives only by the strength of its patrons. The USPPA now offers
-                a new way to hold that legacy — a means to see your support endure
-                in the form of living tribute.
+                survives only by the strength of its patrons. The USPPA now
+                offers a new way to hold that legacy — a means to see your
+                support endure in the form of living tribute.
               </p>
             </div>
           </div>

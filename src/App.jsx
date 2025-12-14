@@ -322,7 +322,7 @@ export default function App() {
             BUY PATRON
           </button>
 
-          <a className="btn btn-outline" href="#founding-patrons">
+        <a className="btn btn-outline" href="#founding-patrons">
             FOUNDING PATRON INQUIRIES
           </a>
         </div>
@@ -593,7 +593,7 @@ export default function App() {
                         width: "100%",
                         padding: "10px 12px",
                         borderRadius: "10px",
-                        border: "1px solid "#3a2b16",
+                        border: "1px solid #3a2b16", // ✅ FIXED QUOTING HERE
                         background: "#050505",
                         color: "#f5eedc",
                         fontSize: "16px",

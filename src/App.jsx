@@ -73,15 +73,18 @@ const patronCheckoutTheme = darkTheme({
 // ---------------------------------------------
 // Simple error boundary for CheckoutWidget (plain JS)
 // ---------------------------------------------
-class CheckoutBoundary extends React.Component {
-  constructor(props) {
+class CheckoutBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: any) {
     super(props);
     this.state = { hasError: false };
   }
   static getDerivedStateFromError() {
     return { hasError: true };
   }
-  componentDidCatch(error, info) {
+  componentDidCatch(error: any, info: any) {
     console.error("CheckoutWidget crashed:", error, info);
   }
   render() {
@@ -109,10 +112,10 @@ export default function App() {
   const { disconnect } = useDisconnect();
   const isConnected = !!account;
 
-  const walletScrollRef = useRef(null);
+  const walletScrollRef = useRef<HTMLDivElement | null>(null);
 
-  // ✅ Gate target (Token Economics section)
-  const patroniumGateRef = useRef(null);
+  // Gate target (Token Economics section)
+  const patroniumGateRef = useRef<HTMLElement | null>(null);
   const [promptedGate, setPromptedGate] = useState(false);
 
   // Native ETH on Base (gas)
@@ -169,7 +172,7 @@ export default function App() {
   const normalizedAmount =
     usdAmount && Number(usdAmount) > 0 ? String(usdAmount) : "1";
 
-  const handleCheckoutSuccess = async (result) => {
+  const handleCheckoutSuccess = async (result: any) => {
     try {
       if (!account?.address) return;
 
@@ -233,14 +236,15 @@ export default function App() {
   // Escape closes modal
   useEffect(() => {
     if (!isWalletOpen) return;
-    const onKeyDown = (e) => {
+    const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeWallet();
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [isWalletOpen]);
 
-  // ✅ Gate Token Economics (Patronium Framework) behind sign-in
+  // Scroll gate: when Patronium Framework scrolls into view (and not connected),
+  // auto-open the Patron Wallet once.
   useEffect(() => {
     if (isConnected) {
       if (promptedGate) setPromptedGate(false);
@@ -249,18 +253,18 @@ export default function App() {
 
     const onScroll = () => {
       const el = patroniumGateRef.current;
-      if (!el) return;
+      if (!el || promptedGate) return;
 
-      const gateTop = el.getBoundingClientRect().top + window.scrollY;
-      const maxY = Math.max(0, gateTop - 12);
+      const rect = el.getBoundingClientRect();
+      const viewportHeight =
+        window.innerHeight || document.documentElement.clientHeight;
 
-      if (window.scrollY > maxY) {
-        window.scrollTo(0, maxY);
+      // Trigger when top of section reaches ~60% of viewport height
+      const threshold = viewportHeight * 0.6;
 
-        if (!promptedGate) {
-          setPromptedGate(true);
-          setIsWalletOpen(true);
-        }
+      if (rect.top < threshold) {
+        setPromptedGate(true);
+        setIsWalletOpen(true);
       }
     };
 
@@ -335,7 +339,7 @@ export default function App() {
       {isWalletOpen && (
         <div
           className="wallet-modal-backdrop"
-          onClick={closeWallet} // ✅ click outside closes
+          onClick={closeWallet} // click outside closes
           style={{
             position: "fixed",
             inset: 0,
@@ -347,11 +351,10 @@ export default function App() {
             padding: "14px",
           }}
         >
-          {/* ✅ IMPORTANT: no stopPropagation here (restores edge-click close on mobile) */}
           <div style={{ width: "100%", maxWidth: "380px" }}>
             <div
               ref={walletScrollRef}
-              onClick={(e) => e.stopPropagation()} // ✅ clicks inside modal don't close
+              onClick={(e) => e.stopPropagation()} // clicks inside modal don't close
               style={{
                 width: "100%",
                 maxHeight: "90vh",
@@ -506,7 +509,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Patron balance (bigger, own line) */}
+                  {/* Patronium balance (bigger, own line) */}
                   <div style={{ marginBottom: "12px" }}>
                     <div
                       style={{
@@ -552,7 +555,7 @@ export default function App() {
                 {!isConnected && (
                   <button
                     type="button"
-                    onClick={closeWallet} // ✅ tapping locked overlay closes too
+                    onClick={closeWallet} // tapping locked overlay closes too
                     aria-label="Close Patron Wallet"
                     style={{
                       position: "absolute",
@@ -643,7 +646,7 @@ export default function App() {
           <h2 className="roadmap-title">INITIATIVE ROADMAP</h2>
 
           <div className="brand-grid">
-            {/* 777 WORDMARK BLOCK (unchanged here) */}
+            {/* 777 WORDMARK BLOCK (current version) */}
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
                 <div className="usp-top">USPPA</div>
@@ -720,12 +723,67 @@ export default function App() {
           </p>
         </section>
 
-        {/* FULL "TOKEN ECONOMICS" / FRAMEWORK SECTION RESTORED + ✅ GATED */}
+        {/* Patronium Framework section: FULL content + hard gate overlay when !isConnected */}
         <section
           className="copy-section"
           id="patronium-framework"
           ref={patroniumGateRef}
+          style={{ position: "relative" }}
         >
+          {/* Hard gate overlay for token economics */}
+          {!isConnected && (
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "rgba(5,5,5,0.96)",
+                zIndex: 5,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "24px 16px",
+                textAlign: "center",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "11px",
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: "#c7b08a",
+                  marginBottom: "10px",
+                }}
+              >
+                Patronium Framework
+              </div>
+              <p
+                style={{
+                  maxWidth: "420px",
+                  fontSize: "13px",
+                  color: "#f5eedc",
+                  marginBottom: "16px",
+                }}
+              >
+                Sign in to your Patron Wallet to view the full Patronium
+                economics, tribute structure, and participation framework.
+              </p>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={openWallet}
+                style={{
+                  fontSize: "11px",
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase",
+                  padding: "8px 20px",
+                }}
+              >
+                SIGN IN TO VIEW
+              </button>
+            </div>
+          )}
+
           <div className="copy-section-title">THE PATRONIUM FRAMEWORK</div>
 
           <div className="copy-block">

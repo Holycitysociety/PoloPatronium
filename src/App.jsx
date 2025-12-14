@@ -111,6 +111,10 @@ export default function App() {
 
   const walletScrollRef = useRef(null);
 
+  // ✅ Gate target (Token Economics section)
+  const patroniumGateRef = useRef(null);
+  const [promptedGate, setPromptedGate] = useState(false);
+
   // Native ETH on Base (gas)
   const { data: baseBalance } = useWalletBalance({
     address: account?.address,
@@ -236,6 +240,34 @@ export default function App() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [isWalletOpen]);
 
+  // ✅ Gate Token Economics (Patronium Framework) behind sign-in
+  useEffect(() => {
+    if (isConnected) {
+      if (promptedGate) setPromptedGate(false);
+      return;
+    }
+
+    const onScroll = () => {
+      const el = patroniumGateRef.current;
+      if (!el) return;
+
+      const gateTop = el.getBoundingClientRect().top + window.scrollY;
+      const maxY = Math.max(0, gateTop - 12);
+
+      if (window.scrollY > maxY) {
+        window.scrollTo(0, maxY);
+
+        if (!promptedGate) {
+          setPromptedGate(true);
+          setIsWalletOpen(true);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isConnected, promptedGate]);
+
   return (
     <div className="page">
       {/* Top-right Patron Wallet button */}
@@ -315,12 +347,11 @@ export default function App() {
             padding: "14px",
           }}
         >
-          <div
-            onClick={(e) => e.stopPropagation()} // ✅ prevent inner clicks from closing
-            style={{ width: "100%", maxWidth: "380px" }}
-          >
+          {/* ✅ IMPORTANT: no stopPropagation here (restores edge-click close on mobile) */}
+          <div style={{ width: "100%", maxWidth: "380px" }}>
             <div
               ref={walletScrollRef}
+              onClick={(e) => e.stopPropagation()} // ✅ clicks inside modal don't close
               style={{
                 width: "100%",
                 maxHeight: "90vh",
@@ -346,7 +377,7 @@ export default function App() {
                   justifyContent: "center",
                   marginBottom: "10px",
                   position: "relative",
-                  paddingTop: "4px", // ✅ tiny spacer so title is always visible
+                  paddingTop: "4px",
                 }}
               >
                 <div
@@ -370,12 +401,12 @@ export default function App() {
                     right: 0,
                     top: "50%",
                     transform: "translateY(-50%)",
-                    width: "56px", // ✅ bigger tap target
+                    width: "56px",
                     height: "56px",
                     border: "none",
                     background: "transparent",
                     color: "#e3bf72",
-                    fontSize: "38px", // ✅ bigger X
+                    fontSize: "38px",
                     lineHeight: 1,
                     cursor: "pointer",
                     padding: 0,
@@ -521,7 +552,7 @@ export default function App() {
                 {!isConnected && (
                   <button
                     type="button"
-                    onClick={closeWallet} // ✅ tapping the locked overlay closes too
+                    onClick={closeWallet} // ✅ tapping locked overlay closes too
                     aria-label="Close Patron Wallet"
                     style={{
                       position: "absolute",
@@ -689,8 +720,12 @@ export default function App() {
           </p>
         </section>
 
-        {/* FULL "TOKEN ECONOMICS" / FRAMEWORK SECTION RESTORED */}
-        <section className="copy-section" id="patronium-framework">
+        {/* FULL "TOKEN ECONOMICS" / FRAMEWORK SECTION RESTORED + ✅ GATED */}
+        <section
+          className="copy-section"
+          id="patronium-framework"
+          ref={patroniumGateRef}
+        >
           <div className="copy-section-title">THE PATRONIUM FRAMEWORK</div>
 
           <div className="copy-block">
@@ -810,7 +845,9 @@ export default function App() {
               Incubator model together create a living, self-sustaining
               framework for the game&apos;s renewal across America.
             </p>
-            <p>This is how the USPPA will grow the next American 10-Goal player.</p>
+            <p>
+              This is how the USPPA will grow the next American 10-Goal player.
+            </p>
           </div>
 
           <div className="copy-block">

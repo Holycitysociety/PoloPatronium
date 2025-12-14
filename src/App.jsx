@@ -111,14 +111,14 @@ export default function App() {
 
   const walletScrollRef = useRef(null);
 
-  // ✅ Wordmark gate target (this becomes the "last visible thing")
+  // ✅ Gate TITLE ref (wordmark)
   const patroniumGateTitleRef = useRef(null);
 
-  // ✅ Gate max scroll Y (absolute document Y)
-  const gateMaxYRef = useRef(0);
+  // ✅ Gate max scrollY (computed)
+  const gateMaxYRef = useRef(null);
 
-  // ✅ throttle so we don't spam openWallet every single event tick
-  const lastPromptRef = useRef(0);
+  // ✅ Gate sticks until connected
+  const [gateActive, setGateActive] = useState(false);
 
   // Native ETH on Base (gas)
   const { data: baseBalance } = useWalletBalance({
@@ -145,16 +145,16 @@ export default function App() {
 
   const openWallet = () => setIsWalletOpen(true);
 
-  const closeWallet = () => {
-    setIsWalletOpen(false);
+  // ✅ “true lock” when gate is active and not connected
+  const mustSignIn = gateActive && !isConnected;
 
-    // ✅ closing does NOT bypass the gate
-    if (!isConnected) {
-      requestAnimationFrame(() => {
-        const maxY = gateMaxYRef.current || 0;
-        if (window.scrollY > maxY) window.scrollTo(0, maxY);
-      });
+  const closeWallet = () => {
+    if (mustSignIn) {
+      // cannot close during gate lock
+      setIsWalletOpen(true);
+      return;
     }
+    setIsWalletOpen(false);
   };
 
   const handleBuyPatron = () => openWallet();
@@ -227,121 +227,6 @@ export default function App() {
     }
   };
 
-  // -------------------------------------------------------
-  // Compute the hard gate maxY so the WORDMARK sits at bottom
-  // -------------------------------------------------------
-  const computeGateMaxY = () => {
-    const titleEl = patroniumGateTitleRef.current;
-    if (!titleEl) return;
-
-    const rect = titleEl.getBoundingClientRect();
-    const titleTop = rect.top + window.scrollY;
-    const titleHeight = rect.height;
-
-    const viewportH = window.innerHeight || 0;
-
-    // ✅ gate line: wordmark should be the last thing visible at bottom.
-    // So clamp scroll so that title's bottom is near viewport bottom.
-    // maxY = titleTop - (viewportH - titleHeight) - padding
-    const padding = 10; // adjust this if you want a bit more/less breathing room
-    const maxY = Math.max(0, titleTop - (viewportH - titleHeight) - padding);
-
-    gateMaxYRef.current = maxY;
-  };
-
-  useEffect(() => {
-    computeGateMaxY();
-
-    const onResize = () => computeGateMaxY();
-    window.addEventListener("resize", onResize);
-
-    // layout may shift after fonts/images
-    const t1 = setTimeout(computeGateMaxY, 200);
-    const t2 = setTimeout(computeGateMaxY, 800);
-
-    return () => {
-      window.removeEventListener("resize", onResize);
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
-  }, []);
-
-  // -------------------------------------------------------
-  // TRUE HARD GATE (scroll / wheel / touch / keys)
-  // -------------------------------------------------------
-  useEffect(() => {
-    if (isConnected) return;
-
-    let rafId = null;
-
-    const maybePrompt = () => {
-      const now = Date.now();
-      if (now - lastPromptRef.current < 700) return;
-      lastPromptRef.current = now;
-      setIsWalletOpen(true);
-    };
-
-    const clampScroll = () => {
-      const maxY = gateMaxYRef.current || 0;
-      if (window.scrollY > maxY) {
-        window.scrollTo(0, maxY);
-        maybePrompt();
-      }
-      rafId = requestAnimationFrame(clampScroll);
-    };
-
-    rafId = requestAnimationFrame(clampScroll);
-
-    const onWheel = (e) => {
-      const maxY = gateMaxYRef.current || 0;
-      if (window.scrollY >= maxY - 1 && e.deltaY > 0) {
-        e.preventDefault();
-        maybePrompt();
-      }
-    };
-
-    const onKeyDown = (e) => {
-      const maxY = gateMaxYRef.current || 0;
-      const blockKeys = ["ArrowDown", "PageDown", "End", " ", "Spacebar"];
-      if (blockKeys.includes(e.key) && window.scrollY >= maxY - 1) {
-        e.preventDefault();
-        maybePrompt();
-      }
-    };
-
-    let touchStartY = 0;
-    const onTouchStart = (e) => {
-      if (!e.touches || !e.touches.length) return;
-      touchStartY = e.touches[0].clientY;
-    };
-
-    const onTouchMove = (e) => {
-      const maxY = gateMaxYRef.current || 0;
-      if (!e.touches || !e.touches.length) return;
-
-      const currentY = e.touches[0].clientY;
-      const tryingToScrollDown = currentY < touchStartY - 2;
-
-      if (tryingToScrollDown && window.scrollY >= maxY - 1) {
-        e.preventDefault();
-        maybePrompt();
-      }
-    };
-
-    window.addEventListener("wheel", onWheel, { passive: false });
-    window.addEventListener("keydown", onKeyDown, { passive: false });
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
-
-    return () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      window.removeEventListener("wheel", onWheel);
-      window.removeEventListener("keydown", onKeyDown);
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchmove", onTouchMove);
-    };
-  }, [isConnected]);
-
   // Lock background scroll when modal open
   useEffect(() => {
     if (isWalletOpen) {
@@ -361,15 +246,73 @@ export default function App() {
     document.body.style.overflow = "";
   }, [isWalletOpen]);
 
-  // Escape closes modal (gate stays locked)
+  // Escape closes modal (but NOT during gate lock)
   useEffect(() => {
     if (!isWalletOpen) return;
     const onKeyDown = (e) => {
-      if (e.key === "Escape") closeWallet();
+      if (e.key === "Escape" && !mustSignIn) closeWallet();
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [isWalletOpen, isConnected]);
+  }, [isWalletOpen, mustSignIn]);
+
+  // ✅ Compute gate clamp so wordmark is last visible line
+  const computeGateMaxY = () => {
+    const titleEl = patroniumGateTitleRef.current;
+    if (!titleEl) return;
+
+    const rect = titleEl.getBoundingClientRect();
+    const titleTopAbs = rect.top + window.scrollY;
+    const titleHeight = rect.height || 1;
+
+    // Make the title sit near the bottom edge when clamped
+    const bottomPadding = 18; // tweak to taste
+    const clampY = Math.max(
+      0,
+      Math.floor(titleTopAbs - (window.innerHeight - titleHeight - bottomPadding))
+    );
+
+    gateMaxYRef.current = clampY;
+  };
+
+  // Compute gate on load + resize/orientation changes
+  useEffect(() => {
+    computeGateMaxY();
+    window.addEventListener("resize", computeGateMaxY);
+    window.addEventListener("orientationchange", computeGateMaxY);
+    return () => {
+      window.removeEventListener("resize", computeGateMaxY);
+      window.removeEventListener("orientationchange", computeGateMaxY);
+    };
+  }, []);
+
+  // ✅ Gate behavior: clamp + force wallet open; persists until connected
+  useEffect(() => {
+    if (isConnected) {
+      setGateActive(false);
+      return;
+    }
+
+    const onScroll = () => {
+      computeGateMaxY();
+      const maxY = gateMaxYRef.current;
+      if (typeof maxY !== "number") return;
+
+      if (window.scrollY > maxY) {
+        window.scrollTo(0, maxY);
+
+        if (!gateActive) {
+          setGateActive(true);
+        }
+        if (!isWalletOpen) {
+          setIsWalletOpen(true);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isConnected, gateActive, isWalletOpen]);
 
   return (
     <div className="page">
@@ -438,7 +381,7 @@ export default function App() {
       {isWalletOpen && (
         <div
           className="wallet-modal-backdrop"
-          onClick={closeWallet}
+          onClick={mustSignIn ? undefined : closeWallet} // ✅ disable backdrop close during lock
           style={{
             position: "fixed",
             inset: 0,
@@ -453,7 +396,7 @@ export default function App() {
           <div style={{ width: "100%", maxWidth: "380px" }}>
             <div
               ref={walletScrollRef}
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()} // clicks inside don’t close
               style={{
                 width: "100%",
                 maxHeight: "90vh",
@@ -494,31 +437,35 @@ export default function App() {
                   PATRON WALLET
                 </div>
 
-                <button
-                  onClick={closeWallet}
-                  aria-label="Close wallet"
-                  title="Close"
-                  style={{
-                    position: "absolute",
-                    right: 0,
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    width: "56px",
-                    height: "56px",
-                    border: "none",
-                    background: "transparent",
-                    color: "#e3bf72",
-                    fontSize: "38px",
-                    lineHeight: 1,
-                    cursor: "pointer",
-                    padding: 0,
-                    WebkitTapHighlightColor: "transparent",
-                  }}
-                >
-                  ×
-                </button>
+                {/* ✅ Remove close button during gate lock */}
+                {!mustSignIn && (
+                  <button
+                    onClick={closeWallet}
+                    aria-label="Close wallet"
+                    title="Close"
+                    style={{
+                      position: "absolute",
+                      right: 0,
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      width: "56px",
+                      height: "56px",
+                      border: "none",
+                      background: "transparent",
+                      color: "#e3bf72",
+                      fontSize: "38px",
+                      lineHeight: 1,
+                      cursor: "pointer",
+                      padding: 0,
+                      WebkitTapHighlightColor: "transparent",
+                    }}
+                  >
+                    ×
+                  </button>
+                )}
               </div>
 
+              {/* Connect / Account */}
               {!account ? (
                 <div style={{ marginBottom: "14px" }}>
                   <ConnectEmbed
@@ -527,9 +474,24 @@ export default function App() {
                     chain={BASE}
                     theme={patronCheckoutTheme}
                   />
+                  {mustSignIn && (
+                    <div
+                      style={{
+                        marginTop: "10px",
+                        textAlign: "center",
+                        color: "#c7b08a",
+                        fontSize: "11px",
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      Sign in to access Patronium Framework
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div style={{ marginBottom: "14px", textAlign: "center" }}>
+                  {/* Address + copy */}
                   <div
                     style={{
                       display: "flex",
@@ -559,6 +521,7 @@ export default function App() {
                     </button>
                   </div>
 
+                  {/* Gas + USDC (smaller) */}
                   <div
                     style={{
                       display: "flex",
@@ -605,6 +568,7 @@ export default function App() {
                     </div>
                   </div>
 
+                  {/* Patron balance (bigger, own line) */}
                   <div style={{ marginBottom: "12px" }}>
                     <div
                       style={{
@@ -645,21 +609,17 @@ export default function App() {
                 </div>
               )}
 
+              {/* Amount + Checkout */}
               <div style={{ position: "relative" }}>
                 {!isConnected && (
-                  <button
-                    type="button"
-                    onClick={closeWallet}
-                    aria-label="Close Patron Wallet"
+                  <div
                     style={{
                       position: "absolute",
                       inset: 0,
                       background: "rgba(0,0,0,0.68)",
                       zIndex: 10,
                       borderRadius: "12px",
-                      border: "none",
-                      padding: 0,
-                      cursor: "pointer",
+                      pointerEvents: "auto",
                     }}
                   />
                 )}
@@ -739,80 +699,312 @@ export default function App() {
         <section className="brand-row" id="brands">
           <h2 className="roadmap-title">INITIATIVE ROADMAP</h2>
 
-          {/* ... your roadmap content unchanged ... */}
+          <div className="brand-grid">
+            {/* 777 WORDMARK BLOCK (unchanged) */}
+            <div className="logo-block">
+              <div className="logo-usp-string-remuda">
+                <div className="usp-top">USPPA</div>
+                <div className="rule" />
+                <div
+                  className="string-middle"
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    justifyContent: "center",
+                    gap: "0.5em",
+                  }}
+                >
+                  <span className="string-side">THREE</span>
+                  <span className="sevens">7̶7̶7̶</span>
+                  <span className="string-side">SEVENS</span>
+                </div>
+                <div className="remuda-bottom">REMUDA</div>
+              </div>
+              <p className="initiative-text">
+                Our managed herd of USPPA horses — consigned or owned by the
+                Association, assigned to operating patrons, trainers and local
+                players, and developed for play, exhibition and training across
+                our programmes.
+              </p>
+            </div>
+
+            <div className="logo-block">
+              <div className="logo-cowboy-polo-circuit">
+                <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
+              </div>
+              <p className="initiative-text">
+                An American endeavour to broaden Polo&apos;s reach, nurture
+                emerging talent, and encourage the next generation of American
+                players — where riders not only learn to play, but learn to make
+                the horses of the 7̶7̶7̶ (String Three Sevens) Remuda.
+              </p>
+            </div>
+
+            <div className="logo-block">
+              <div className="logo-the-polo-life">
+                <span className="top">THE</span>
+                <span className="main">POLO LIFE</span>
+              </div>
+              <p className="initiative-text">
+                A platform dedicated to presenting the elegance and traditions
+                of polo to new audiences in the digital age — following our
+                horses, patrons, and players across the Cowboy Polo Circuit.
+              </p>
+            </div>
+
+            <div className="logo-block">
+              <div className="logo-charleston-polo">
+                <span className="top">CHARLESTON</span>
+                <span className="main">POLO CLUB</span>
+              </div>
+              <p className="initiative-text">
+                The renewal of Charleston, South Carolina&apos;s polo tradition
+                — our flagship Chapter and living test model for the USPPA Polo
+                Incubator, where horses are gathered, pasture secured,
+                instruction established, and the public welcomed to learn and
+                play. Once an Incubator achieves steady operations, sound
+                horsemanship, and visible community benefit, it becomes a
+                standing Chapter of the Association.
+              </p>
+            </div>
+          </div>
+
+          <p className="roadmap-footnote">
+            All of these initiatives are coordinated and supported through Polo
+            Patronium, the living token of patronage within the United States
+            Polo Patrons Association, uniting patrons, players, and clubs in a
+            shared Polo Life ecosystem.
+          </p>
         </section>
 
-        {/* ✅ TOKEN ECONOMICS / FRAMEWORK SECTION */}
+        {/* FULL "TOKEN ECONOMICS" / FRAMEWORK SECTION — title is the gate wordmark */}
         <section className="copy-section" id="patronium-framework">
-          {/* ✅ Wordmark title — this is the gating target */}
+          {/* ✅ Gate wordmark (this is what we clamp to) */}
           <div
+            className="copy-section-title"
             ref={patroniumGateTitleRef}
             style={{
-              marginTop: "12px",
-              marginBottom: "18px",
-              textAlign: "center",
+              // optional: make it feel more "wordmark" without changing your CSS files
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
             }}
           >
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-                color: "#9f8a64",
-                marginBottom: "10px",
-              }}
-            >
-              TOKEN ECONOMICS
-            </div>
+            THE PATRONIUM FRAMEWORK
+          </div>
 
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "14px",
-                marginBottom: "10px",
-              }}
-            >
-              <div style={{ height: 1, width: 54, background: "#3a2b16" }} />
+          {/* ✅ Black overlay over ALL body content until sign-in */}
+          <div style={{ position: "relative" }}>
+            {!isConnected && (
               <div
+                onClick={openWallet}
                 style={{
-                  fontFamily:
-                    '"Cinzel", "EB Garamond", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", serif',
-                  fontSize: "16px",
-                  letterSpacing: "0.18em",
-                  textTransform: "uppercase",
-                  color: "#f5eedc",
-                  lineHeight: 1.1,
+                  position: "absolute",
+                  inset: 0,
+                  zIndex: 50,
+                  background: "#000",
+                  cursor: "pointer",
+                  // subtle “this is gated” hint, not blur
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "22px",
+                  textAlign: "center",
                 }}
+                aria-label="Sign in required to view Patronium Framework"
+                role="button"
               >
-                THE PATRONIUM FRAMEWORK
+                <div
+                  style={{
+                    maxWidth: "520px",
+                    border: "1px solid #3a2b16",
+                    borderRadius: "14px",
+                    padding: "18px 16px",
+                    background: "rgba(5,5,5,0.92)",
+                    boxShadow: "0 18px 60px rgba(0,0,0,0.85)",
+                    fontFamily:
+                      '"Cinzel", "EB Garamond", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", serif',
+                    color: "#f5eedc",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "11px",
+                      letterSpacing: "0.18em",
+                      textTransform: "uppercase",
+                      color: "#c7b08a",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    Sign in required
+                  </div>
+                  <div style={{ fontSize: "14px", lineHeight: 1.5 }}>
+                    Continue to view the Patronium Framework (Token Economics).
+                  </div>
+                  <div
+                    style={{
+                      marginTop: "12px",
+                      display: "inline-block",
+                      padding: "10px 14px",
+                      borderRadius: "12px",
+                      background: "#e3bf72",
+                      color: "#181210",
+                      fontSize: "12px",
+                      letterSpacing: "0.10em",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    Open Patron Wallet
+                  </div>
+                </div>
               </div>
-              <div style={{ height: 1, width: 54, background: "#3a2b16" }} />
+            )}
+
+            {/* --- Your original framework content unchanged below --- */}
+            <div className="copy-block">
+              <h3>Patronium — Polo Patronage Perfected</h3>
+              <p>
+                Patronium is the living token of patronage within the United
+                States Polo Patrons Association. It is the medium through which
+                honourable support is recognised and shared — not through
+                speculation, but through participation. Every token of Patronium
+                represents a place within the fellowship of those who uphold the
+                game, its horses, and its players.
+              </p>
+              <p>
+                It serves as the bridge between patron and player: a clear record
+                of contribution and belonging within a high-trust mission driven
+                community. When a Chapter prospers, it offers tribute to those
+                whose support made that prosperity possible. This is the essence
+                of Patronium — recognition earned through genuine patronage and
+                service to the field.
+              </p>
             </div>
 
-            <div
-              style={{
-                fontSize: "11px",
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                color: "#c7b08a",
-              }}
-            >
-              Patronage • Tribute • Chapters
+            <div className="copy-block">
+              <h3>Charleston Polo — The USPPA Chapter Test Model</h3>
+              <p>
+                Each USPPA Chapter is a fully integrated polo programme operating
+                under the Association&apos;s standards. A Chapter begins as a
+                Polo Incubator — a local startup where horses are gathered,
+                pasture secured, instruction established, and the public welcomed
+                to learn and play.
+              </p>
+              <p>
+                Once an Incubator achieves steady operations, sound horsemanship,
+                and visible community benefit, it becomes a standing Chapter of
+                the Association.
+              </p>
+            </div>
+
+            <div className="copy-block">
+              <h3>Founding, Operating, and USPPA Patrons</h3>
+              <p>There are three forms of Patronium holder.</p>
+              <p>
+                Founding Patrons are the first to support the birth of a new
+                Chapter. They provide the initial horses, pasture, and capital
+                that make it possible for a Polo Incubator to begin. During this
+                founding period, their Patronium receives the full measure of
+                available tribute — a reflection of their patronage in helping to
+                seed the future of Polo.
+              </p>
+              <p>
+                Operating Patrons are the active stewards responsible for the
+                management of each Chapter. They receive a base salary during the
+                incubator period and an operating share of tribute once the
+                incubator transitions to a full Chapter.
+              </p>
+              <p>
+                USPPA Patrons are the ongoing supporters who sustain and
+                strengthen a Chapter once it is established.
+              </p>
+            </div>
+
+            <div className="copy-block">
+              <h3> The Tribute Framework</h3>
+              <p>
+                Each Chapter follows a principle of balanced and transparent
+                patronage. From its net revenue (gross revenue less operational
+                costs), a Chapter aims to follow this allocation:
+              </p>
+              <ul>
+                <li>
+                  51%+ retained for reinvestment — horses, pasture, equipment, and
+                  operations.
+                </li>
+                <li>
+                  49% max. available to the Patronium Tribute Pool, from which
+                  holders are recognised for their continued patronage.
+                </li>
+              </ul>
+              <p>
+                During the Polo Incubator period, the Founding Patrons are
+                whitelisted for direct proportional tribute from the Polo
+                Incubators they support (49% of tribute). After the first year, or
+                when the Incubator can support itself, it transitions to a full
+                Chapter and the tribute returns to the standard USPPA Patron
+                tribute.
+              </p>
+            </div>
+
+            <div className="copy-block">
+              <h3>Participation</h3>
+              <ul>
+                <li>
+                  Become a Founding Patron — assist in launching a new Chapter
+                  through contribution of capital, horses, or facilities.
+                </li>
+                <li>
+                  Become an Operating Patron — oversee the daily life of a Chapter
+                  and its players.
+                </li>
+                <li>
+                  Become a USPPA Patron — support the national network and share
+                  in ongoing tribute cycles.
+                </li>
+                <li>
+                  Provide Horses or Land — supply the physical foundation of Polo
+                  under insured, transparent, and fair agreements.
+                </li>
+              </ul>
+            </div>
+
+            <div className="copy-block">
+              <h3>In Plain Terms</h3>
+              <p>
+                The Association seeks not to monetise polo, but to stabilise and
+                decentralise it — to bring clarity, fairness, and longevity to the
+                way it is taught, funded, and shared. Patronium and the Polo
+                Incubator model together create a living, self-sustaining
+                framework for the game&apos;s renewal across America.
+              </p>
+              <p>This is how the USPPA will grow the next American 10-Goal player.</p>
+            </div>
+
+            <div className="copy-block">
+              <h3>An Invitation to Patrons and Partners</h3>
+              <p>
+                The Association welcomes discerning patrons, landholders, and
+                professionals who wish to take part in the restoration of polo as
+                a sustainable, American-bred enterprise. Each Chapter is a living
+                investment in horses, land, and people — structured not for
+                speculation, but for legacy.
+              </p>
+              <p>
+                Patronium ensures every act of patronage — whether a horse
+                consigned, a pasture opened, or a field sponsored — is recognised
+                and recorded within a transparent, honourable system that rewards
+                those who build American Polo. Your contribution does not vanish
+                into expense; it lives on in horses trained, players formed, and
+                fields maintained.
+              </p>
+              <p>
+                Those who have carried the game through their own time know: it
+                survives only by the strength of its patrons. The USPPA now offers
+                a new way to hold that legacy — a means to see your support endure
+                in the form of living tribute.
+              </p>
             </div>
           </div>
-
-          {/* BELOW THIS stays locked until sign-in */}
-          <div className="copy-block">
-            <h3>Patronium — Polo Patronage Perfected</h3>
-            <p>
-              Patronium is the living token of patronage within the United
-              States Polo Patrons Association...
-            </p>
-          </div>
-
-          {/* ...rest of your token economics blocks unchanged... */}
         </section>
       </main>
 

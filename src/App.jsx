@@ -109,10 +109,10 @@ export default function App() {
   const { disconnect } = useDisconnect();
   const isConnected = !!account;
 
-  const walletScrollRef = useRef(null);
+  const walletScrollRef = useRef<HTMLDivElement | null>(null);
 
   // Roadmap section – used as scroll trigger
-  const roadmapGateRef = useRef(null);
+  const roadmapGateRef = useRef<HTMLElement | null>(null);
   const [hasTriggeredGate, setHasTriggeredGate] = useState(false);
 
   // Native ETH on Base (gas)
@@ -169,7 +169,7 @@ export default function App() {
   const normalizedAmount =
     usdAmount && Number(usdAmount) > 0 ? String(usdAmount) : "1";
 
-  const handleCheckoutSuccess = async (result) => {
+  const handleCheckoutSuccess = async (result: any) => {
     try {
       if (!account?.address) return;
 
@@ -233,7 +233,7 @@ export default function App() {
   // Escape closes modal
   useEffect(() => {
     if (!isWalletOpen) return;
-    const onKeyDown = (e) => {
+    const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeWallet();
     };
     window.addEventListener("keydown", onKeyDown);
@@ -643,23 +643,79 @@ export default function App() {
             {/* 777 WORDMARK BLOCK */}
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
-                <div className="usp-top">USPPA</div>
-                <div className="rule" />
+                {/* STRING (top label) */}
                 <div
-                  className="string-middle"
                   style={{
-                    display: "flex",
+                    fontSize: "10px",
+                    letterSpacing: "0.22em",
+                    textTransform: "uppercase",
+                    color: "#c7b08a",
+                    marginBottom: "6px",
+                  }}
+                >
+                  STRING
+                </div>
+
+                {/* Central mark: THREE · 777 · SEVENS */}
+                <div
+                  style={{
+                    display: "inline-flex",
                     alignItems: "baseline",
                     justifyContent: "center",
                     gap: "0.5em",
+                    padding: "6px 12px 4px",
+                    borderTop: "1px solid #c7b08a",
+                    borderBottom: "1px solid #c7b08a",
                   }}
                 >
-                  <span className="string-side">THREE</span>
-                  <span className="sevens">7̶7̶7̶</span>
-                  <span className="string-side">SEVENS</span>
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      letterSpacing: "0.18em",
+                      textTransform: "uppercase",
+                      color: "#c7b08a",
+                    }}
+                  >
+                    THREE
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "30px",
+                      letterSpacing: "0.18em",
+                      color: "#f5eedc",
+                      textDecoration: "line-through",
+                      textDecorationThickness: "2px",
+                      textDecorationColor: "#e3bf72",
+                    }}
+                  >
+                    777
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      letterSpacing: "0.18em",
+                      textTransform: "uppercase",
+                      color: "#c7b08a",
+                    }}
+                  >
+                    SEVENS
+                  </span>
                 </div>
-                <div className="remuda-bottom">REMUDA</div>
+
+                {/* REMUDA (bottom) */}
+                <div
+                  style={{
+                    fontSize: "11px",
+                    letterSpacing: "0.24em",
+                    textTransform: "uppercase",
+                    color: "#c7b08a",
+                    marginTop: "6px",
+                  }}
+                >
+                  REMUDA
+                </div>
               </div>
+
               <p className="initiative-text">
                 Our managed herd of USPPA horses — consigned or owned by the
                 Association, assigned to operating patrons, trainers and local
@@ -734,7 +790,7 @@ export default function App() {
                   position: "absolute",
                   inset: 0,
                   zIndex: 50,
-                  background: "rgba(0,0,0,0.25)", // 90%-ish opaque feel
+                  background: "rgba(0,0,0,0.25)",
                   backdropFilter: "blur(8px)",
                   WebkitBackdropFilter: "blur(8px)",
                   cursor: "pointer",
@@ -878,7 +934,7 @@ export default function App() {
                   </li>
                   <li>
                     Provide Horses or Land — supply the physical foundation of
-                    Polo under insured, transparent, and fair agreements.
+                      Polo under insured, transparent, and fair agreements.
                   </li>
                 </ul>
               </div>

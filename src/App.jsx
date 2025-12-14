@@ -734,7 +734,7 @@ export default function App() {
                   position: "absolute",
                   inset: 0,
                   zIndex: 50,
-                  background: "rgba(0,0,0,0.72)", // 90%-ish opaque feel
+                  background: "rgba(0,0,0,0.25)", // 90%-ish opaque feel
                   backdropFilter: "blur(8px)",
                   WebkitBackdropFilter: "blur(8px)",
                   cursor: "pointer",

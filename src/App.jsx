@@ -487,7 +487,7 @@ export default function App() {
                         marginBottom: "4px",
                       }}
                     >
-                      Patron Balance
+                      Patronium Balance
                     </div>
                     <div
                       style={{

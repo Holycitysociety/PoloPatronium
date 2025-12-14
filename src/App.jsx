@@ -114,9 +114,13 @@ export default function App() {
   // ✅ Gate target (Token Economics section)
   const patroniumGateRef = useRef(null);
 
-  // ✅ Gate math + throttling
-  const gateMaxYRef = useRef(0);
-  const lastGatePromptAtRef = useRef(0);
+  // ✅ Gate position measured from TOP of document (absolute Y)
+  const gateAbsYRef = useRef(0);
+
+  // ✅ Throttle wallet re-open attempts
+  const lastPromptMsRef = useRef(0);
+
+  // iOS touch helpers
   const touchStartYRef = useRef(null);
 
   // Native ETH on Base (gas)
@@ -244,111 +248,126 @@ export default function App() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [isWalletOpen]);
 
-  // ✅ HARD gate Token Economics behind sign-in
+  // ✅ HARD gate Token Economics (measured from TOP, enforced continuously)
   useEffect(() => {
-    const computeGate = () => {
+    const measureGateFromTop = () => {
       const el = patroniumGateRef.current;
       if (!el) return;
-      const rect = el.getBoundingClientRect();
-      // lock line just above the framework section
-      gateMaxYRef.current = Math.max(0, rect.top + window.scrollY - 12);
+      // Absolute Y from top of document:
+      gateAbsYRef.current = el.getBoundingClientRect().top + window.scrollY;
     };
 
-    const maybePromptWallet = () => {
+    const promptWalletThrottled = () => {
       const now = Date.now();
-      if (now - lastGatePromptAtRef.current < 1200) return; // throttle
-      lastGatePromptAtRef.current = now;
+      if (now - lastPromptMsRef.current < 900) return;
+      lastPromptMsRef.current = now;
       setIsWalletOpen(true);
     };
 
-    // Always keep gate coordinate fresh
-    computeGate();
+    // Always measure once we can
+    measureGateFromTop();
 
-    // If connected, remove gating behavior
+    // If connected, no gate
     if (isConnected) return;
 
-    const clampIfPastGate = () => {
-      const maxY = gateMaxYRef.current;
+    const clamp = () => {
+      const gateY = gateAbsYRef.current || 0;
+      const maxY = Math.max(0, gateY - 12); // keep them just above framework
       if (window.scrollY > maxY) {
         window.scrollTo(0, maxY);
-        if (!isWalletOpen) maybePromptWallet();
+        if (!isWalletOpen) promptWalletThrottled();
+        return true;
+      }
+      return false;
+    };
+
+    // This beats iOS momentum scrolling — clamps every frame
+    let rafId = 0;
+    const tick = () => {
+      if (!isConnected) {
+        clamp();
+        rafId = requestAnimationFrame(tick);
       }
     };
+    rafId = requestAnimationFrame(tick);
 
+    // Re-measure on layout shifts
+    const onResize = () => measureGateFromTop();
+    window.addEventListener("resize", onResize);
+    window.addEventListener("orientationchange", onResize);
+
+    // Also clamp on scroll (keeps things snappy)
     const onScroll = () => {
-      // update gate in case layout shifts (font load, orientation, etc.)
-      computeGate();
-      clampIfPastGate();
+      measureGateFromTop();
+      clamp();
     };
+    window.addEventListener("scroll", onScroll, { passive: true });
 
-    // Wheel: block downward scroll past gate
+    // Block “push past” attempts at the gate (capture + non-passive)
     const onWheel = (e) => {
-      const maxY = gateMaxYRef.current;
+      const gateY = gateAbsYRef.current || 0;
+      const maxY = Math.max(0, gateY - 12);
       const atGate = window.scrollY >= maxY - 1;
       if (atGate && e.deltaY > 0) {
         e.preventDefault();
-        if (!isWalletOpen) maybePromptWallet();
+        if (!isWalletOpen) promptWalletThrottled();
       }
     };
 
-    // Touch: block swipe-up (which scrolls down) past gate
     const onTouchStart = (e) => {
       touchStartYRef.current = e.touches?.[0]?.clientY ?? null;
     };
 
     const onTouchMove = (e) => {
       const startY = touchStartYRef.current;
-      const currentY = e.touches?.[0]?.clientY ?? null;
-      if (startY == null || currentY == null) return;
+      const curY = e.touches?.[0]?.clientY ?? null;
+      if (startY == null || curY == null) return;
 
-      const delta = startY - currentY; // positive = swipe up = scroll down
-      const maxY = gateMaxYRef.current;
+      const gateY = gateAbsYRef.current || 0;
+      const maxY = Math.max(0, gateY - 12);
       const atGate = window.scrollY >= maxY - 1;
 
-      if (atGate && delta > 0) {
+      const swipeUp = startY - curY > 0; // swipe up = scroll down
+      if (atGate && swipeUp) {
         e.preventDefault();
-        clampIfPastGate();
-        if (!isWalletOpen) maybePromptWallet();
+        clamp();
+        if (!isWalletOpen) promptWalletThrottled();
       }
     };
 
-    // Keyboard: block PageDown/ArrowDown/End/Space at gate
     const onKeyDown = (e) => {
-      const maxY = gateMaxYRef.current;
+      const gateY = gateAbsYRef.current || 0;
+      const maxY = Math.max(0, gateY - 12);
       const atGate = window.scrollY >= maxY - 1;
       if (!atGate) return;
 
-      const blockedKeys = ["ArrowDown", "PageDown", "End", " "];
-      if (blockedKeys.includes(e.key)) {
+      const blocked = ["ArrowDown", "PageDown", "End", " "];
+      if (blocked.includes(e.key)) {
         e.preventDefault();
-        clampIfPastGate();
-        if (!isWalletOpen) maybePromptWallet();
+        clamp();
+        if (!isWalletOpen) promptWalletThrottled();
       }
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", computeGate);
-    window.addEventListener("orientationchange", computeGate);
-
-    // IMPORTANT: must be non-passive so preventDefault works
-    window.addEventListener("wheel", onWheel, { passive: false });
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    document.addEventListener("wheel", onWheel, { passive: false, capture: true });
+    document.addEventListener("touchstart", onTouchStart, { passive: true, capture: true });
+    document.addEventListener("touchmove", onTouchMove, { passive: false, capture: true });
     window.addEventListener("keydown", onKeyDown);
 
-    // Clamp immediately in case someone loads mid-page
+    // If someone loads mid-page, clamp immediately
     requestAnimationFrame(() => {
-      computeGate();
-      clampIfPastGate();
+      measureGateFromTop();
+      if (clamp()) promptWalletThrottled();
     });
 
     return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("orientationchange", onResize);
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", computeGate);
-      window.removeEventListener("orientationchange", computeGate);
-      window.removeEventListener("wheel", onWheel);
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchmove", onTouchMove);
+      document.removeEventListener("wheel", onWheel, true);
+      document.removeEventListener("touchstart", onTouchStart, true);
+      document.removeEventListener("touchmove", onTouchMove, true);
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [isConnected, isWalletOpen]);

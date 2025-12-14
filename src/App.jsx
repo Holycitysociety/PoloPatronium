@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CheckoutWidget,
   ConnectEmbed,
@@ -35,9 +35,7 @@ const wallets = [
 const patronCheckoutTheme = darkTheme({
   fontFamily:
     '"Cinzel", "EB Garamond", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", serif',
-
   colors: {
-    // General surfaces - black dark mode
     modalBg: "#050505",
     modalOverlayBg: "rgba(0,0,0,0.85)",
     borderColor: "#3a2b16",
@@ -45,13 +43,11 @@ const patronCheckoutTheme = darkTheme({
     mutedBg: "#050505",
     skeletonBg: "#111111",
 
-    // Text
     primaryText: "#f5eedc",
     secondaryText: "#c7b08a",
     selectedTextColor: "#111111",
     selectedTextBg: "#f5eedc",
 
-    // Buttons – gold accents
     primaryButtonBg: "#e3bf72",
     primaryButtonText: "#181210",
     secondaryButtonBg: "#050505",
@@ -62,7 +58,6 @@ const patronCheckoutTheme = darkTheme({
     connectedButtonBg: "#050505",
     connectedButtonHoverBg: "#111111",
 
-    // Icons / misc
     secondaryIconColor: "#c7b08a",
     secondaryIconHoverColor: "#f5eedc",
     secondaryIconHoverBg: "#111111",
@@ -83,15 +78,12 @@ class CheckoutBoundary extends React.Component {
     super(props);
     this.state = { hasError: false };
   }
-
   static getDerivedStateFromError() {
     return { hasError: true };
   }
-
   componentDidCatch(error, info) {
     console.error("CheckoutWidget crashed:", error, info);
   }
-
   render() {
     if (this.state.hasError) {
       return (
@@ -110,7 +102,7 @@ class CheckoutBoundary extends React.Component {
 export default function App() {
   const year = new Date().getFullYear();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
-  const [usdAmount, setUsdAmount] = useState("1"); // controls Checkout amount in USD
+  const [usdAmount, setUsdAmount] = useState("1");
 
   const account = useActiveAccount();
   const activeWallet = useActiveWallet();
@@ -119,17 +111,14 @@ export default function App() {
   const isConnected = !!account;
   const gateArmed = !isConnected;
 
-  // Optional: small gap so framework never "peeks"
   const GATE_PADDING_PX = 8;
 
-  // Native ETH on Base (gas)
   const { data: baseBalance } = useWalletBalance({
     address: account?.address,
     chain: BASE,
     client,
   });
 
-  // USDC on Base (fiat on-ramp target)
   const { data: usdcBalance } = useWalletBalance({
     address: account?.address,
     chain: BASE,
@@ -137,7 +126,6 @@ export default function App() {
     tokenAddress: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
   });
 
-  // PATRON ERC-20 (real contract)
   const { data: patronBalance } = useWalletBalance({
     address: account?.address,
     chain: BASE,
@@ -150,7 +138,6 @@ export default function App() {
 
   const handleBuyPatron = () => openWallet();
 
-  // Disconnect the embedded wallet but keep the modal open
   const handleSignOut = () => {
     if (!activeWallet || !disconnect) return;
     try {
@@ -174,11 +161,9 @@ export default function App() {
     }
   };
 
-  // Make sure Checkout always gets a sane positive string
   const normalizedAmount =
     usdAmount && Number(usdAmount) > 0 ? String(usdAmount) : "1";
 
-  // Fired after successful Checkout payment
   const handleCheckoutSuccess = async (result) => {
     try {
       if (!account?.address) {
@@ -210,8 +195,7 @@ export default function App() {
         return;
       }
 
-      const data = await resp.json();
-      console.log("Mint-patron response:", data);
+      await resp.json();
 
       alert(
         "Thank you — your patronage payment was received.\n\n" +
@@ -242,9 +226,7 @@ export default function App() {
     document.body.style.overflow = "";
   }, [isWalletOpen]);
 
-  // ---------------------------------------------
   // Close modal on Escape (desktop)
-  // ---------------------------------------------
   useEffect(() => {
     if (!isWalletOpen) return;
     const onKeyDown = (e) => {
@@ -254,10 +236,7 @@ export default function App() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [isWalletOpen]);
 
-  // ---------------------------------------------
-  // Gate: allow scrolling initiatives, but do NOT allow
-  // Patronium Framework section to enter viewport until connected.
-  // ---------------------------------------------
+  // Gate: prevent Patronium Framework section entering viewport until connected
   useEffect(() => {
     if (!gateArmed) return;
 
@@ -285,7 +264,6 @@ export default function App() {
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
 
-    // clamp on mount (for deep links)
     clampBeforeFramework();
 
     return () => {
@@ -347,7 +325,6 @@ export default function App() {
         </div>
 
         <div className="hero-actions">
-          {/* Main BUY button -> opens Patron Wallet modal */}
           <button className="btn btn-primary" onClick={handleBuyPatron}>
             BUY PATRON
           </button>
@@ -358,93 +335,87 @@ export default function App() {
         </div>
       </header>
 
-      {/* Patron Wallet modal */}
+      {/* Patron Wallet modal (NO OUTER CARD) */}
       {isWalletOpen && (
         <div
           className="wallet-modal-backdrop"
-          onClick={closeWallet} // click outside closes (including over locked checkout overlay)
+          onClick={closeWallet}
           style={{
             position: "fixed",
             inset: 0,
-            background: "rgba(0, 0, 0, 0.82)",
+            background: "rgba(0,0,0,0.86)",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             zIndex: 9999,
-            padding: "16px",
+            padding: "14px",
           }}
         >
+          {/* content wrapper: floating stack, no “card” */}
           <div
-            className="wallet-modal"
-            onClick={(e) => e.stopPropagation()} // prevent inside clicks from closing
+            onClick={(e) => e.stopPropagation()}
             style={{
-              background: "#050505",
-              borderRadius: "12px",
-              padding: "20px",
-              maxWidth: "380px",
               width: "100%",
-              boxShadow: "0 18px 60px rgba(0,0,0,0.9)",
-              border: "1px solid #3a2b16",
+              maxWidth: "380px",
               maxHeight: "90vh",
               overflowY: "auto",
-              margin: "16px",
               fontFamily:
                 '"Cinzel", "EB Garamond", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", serif',
               color: "#f5eedc",
               fontSize: "13px",
+              position: "relative",
             }}
           >
-            {/* Modal header with centered wordmark and close button */}
+            {/* Floating header (no frame) */}
             <div
               style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "10px",
                 position: "relative",
-                marginBottom: "16px",
-                textAlign: "center",
               }}
             >
               <div
                 style={{
-                  fontSize: "13px",
-                  letterSpacing: "0.16em",
+                  fontSize: "12px",
+                  letterSpacing: "0.18em",
                   textTransform: "uppercase",
+                  color: "#c7b08a",
                 }}
               >
                 PATRON WALLET
               </div>
 
-              {/* Bigger, easier close target */}
+              {/* Big close button (no box) */}
               <button
                 onClick={closeWallet}
+                aria-label="Close wallet"
+                title="Close"
                 style={{
                   position: "absolute",
-                  right: -6,
+                  right: 0,
                   top: "50%",
                   transform: "translateY(-50%)",
-                  border: "1px solid rgba(227,191,114,0.25)",
-                  background: "rgba(0,0,0,0.35)",
+                  width: "52px",
+                  height: "52px",
+                  border: "none",
+                  background: "transparent",
                   color: "#e3bf72",
-                  fontSize: "26px",
-                  cursor: "pointer",
+                  fontSize: "34px",
                   lineHeight: 1,
-                  width: "44px",
-                  height: "44px",
-                  borderRadius: "10px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  cursor: "pointer",
                   padding: 0,
                   WebkitTapHighlightColor: "transparent",
                 }}
-                aria-label="Close wallet"
-                title="Close"
               >
                 ×
               </button>
             </div>
 
-            {/* Wallet status / connect section */}
+            {/* Connect / Account */}
             {!account ? (
-              <div style={{ marginBottom: "16px" }}>
+              <div style={{ marginBottom: "14px" }}>
                 <ConnectEmbed
                   client={client}
                   wallets={wallets}
@@ -453,26 +424,17 @@ export default function App() {
                 />
               </div>
             ) : (
-              <div
-                style={{
-                  borderRadius: "10px",
-                  border: "1px solid #3a2b16",
-                  padding: "12px 14px 14px",
-                  marginBottom: "16px",
-                  textAlign: "center",
-                  background: "#050505",
-                }}
-              >
+              <div style={{ marginBottom: "14px", textAlign: "center" }}>
                 <div
                   style={{
-                    fontSize: "11px",
+                    fontSize: "10px",
                     letterSpacing: "0.16em",
                     textTransform: "uppercase",
                     color: "#c7b08a",
-                    marginBottom: "4px",
+                    marginBottom: "6px",
                   }}
                 >
-                  Connected as
+                  Connected
                 </div>
 
                 <div
@@ -481,15 +443,10 @@ export default function App() {
                     justifyContent: "center",
                     alignItems: "center",
                     gap: 8,
-                    marginBottom: "8px",
+                    marginBottom: "10px",
                   }}
                 >
-                  <div
-                    style={{
-                      fontFamily: "monospace",
-                      fontSize: "13px",
-                    }}
-                  >
+                  <div style={{ fontFamily: "monospace", fontSize: "13px" }}>
                     {shortAddress}
                   </div>
                   <button
@@ -508,13 +465,14 @@ export default function App() {
                   </button>
                 </div>
 
-                {/* Gas + USDC balances side-by-side */}
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "center",
-                    gap: "24px",
-                    marginBottom: "8px",
+                    gap: "22px",
+                    marginBottom: "10px",
+                    color: "#c7b08a",
+                    fontSize: "12px",
                   }}
                 >
                   <div>
@@ -527,13 +485,14 @@ export default function App() {
                         marginBottom: "2px",
                       }}
                     >
-                      Gas (Base)
+                      Gas
                     </div>
-                    <div style={{ fontSize: "13px" }}>
+                    <div style={{ color: "#f5eedc" }}>
                       {baseBalance?.displayValue || "0"}{" "}
                       {baseBalance?.symbol || "ETH"}
                     </div>
                   </div>
+
                   <div>
                     <div
                       style={{
@@ -546,28 +505,29 @@ export default function App() {
                     >
                       USDC
                     </div>
-                    <div style={{ fontSize: "13px" }}>
+                    <div style={{ color: "#f5eedc" }}>
                       {usdcBalance?.displayValue || "0"}{" "}
                       {usdcBalance?.symbol || "USDC"}
                     </div>
                   </div>
-                </div>
 
-                {/* PATRON balance centered below */}
-                <div
-                  style={{
-                    fontSize: "10px",
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
-                    color: "#9f8a64",
-                    marginBottom: "2px",
-                  }}
-                >
-                  PATRON
-                </div>
-                <div style={{ fontSize: "13px", marginBottom: "8px" }}>
-                  {patronBalance?.displayValue || "0"}{" "}
-                  {patronBalance?.symbol || "PATRON"}
+                  <div>
+                    <div
+                      style={{
+                        fontSize: "10px",
+                        letterSpacing: "0.12em",
+                        textTransform: "uppercase",
+                        color: "#9f8a64",
+                        marginBottom: "2px",
+                      }}
+                    >
+                      PATRON
+                    </div>
+                    <div style={{ color: "#f5eedc" }}>
+                      {patronBalance?.displayValue || "0"}{" "}
+                      {patronBalance?.symbol || "PATRON"}
+                    </div>
+                  </div>
                 </div>
 
                 <button
@@ -586,18 +546,16 @@ export default function App() {
               </div>
             )}
 
-            {/* Locked area: Amount + Checkout (visible but not clickable until connected) */}
+            {/* Amount + Checkout (no extra wrapper frame) */}
             <div style={{ position: "relative" }}>
-              {/* NOTE: this overlay is inside the modal, so clicking it will NOT close.
-                  That's good: only clicking the BACKDROP (outside the modal) closes. */}
               {!isConnected && (
                 <div
                   style={{
                     position: "absolute",
                     inset: 0,
-                    background: "rgba(0,0,0,0.65)",
+                    background: "rgba(0,0,0,0.68)",
                     zIndex: 10,
-                    borderRadius: "10px",
+                    borderRadius: "12px",
                     pointerEvents: "auto",
                   }}
                 />
@@ -605,15 +563,9 @@ export default function App() {
 
               <div
                 style={{
-                  border: "1px solid #3a2b16",
-                  borderRadius: "10px",
-                  padding: "12px",
-                  opacity: !isConnected ? 0.78 : 1,
-                  filter: !isConnected
-                    ? "saturate(0.9) brightness(0.92)"
-                    : "none",
-                  transition: "opacity 160ms ease, filter 160ms ease",
+                  opacity: !isConnected ? 0.75 : 1,
                   pointerEvents: isConnected ? "auto" : "none",
+                  transition: "opacity 160ms ease",
                 }}
               >
                 <div style={{ marginBottom: "12px" }}>
@@ -624,7 +576,7 @@ export default function App() {
                       letterSpacing: "0.12em",
                       textTransform: "uppercase",
                       color: "#c7b08a",
-                      marginBottom: "4px",
+                      marginBottom: "6px",
                     }}
                   >
                     Choose Your Patronage (USD)
@@ -637,14 +589,14 @@ export default function App() {
                     onChange={(e) => setUsdAmount(e.target.value)}
                     style={{
                       width: "100%",
-                      padding: "8px 10px",
-                      borderRadius: "6px",
+                      padding: "10px 12px",
+                      borderRadius: "10px",
                       border: "1px solid #3a2b16",
                       background: "#050505",
                       color: "#f5eedc",
-                      fontSize: "14px",
-                      marginBottom: "4px",
+                      fontSize: "16px",
                       outline: "none",
+                      boxShadow: "0 10px 30px rgba(0,0,0,0.55)",
                     }}
                   />
                 </div>
@@ -661,7 +613,7 @@ export default function App() {
                     amount={normalizedAmount}
                     tokenAddress={
                       "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
-                    } // USDC on Base
+                    }
                     seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
                     buttonLabel={"BUY PATRON (USDC on Base)"}
                     theme={patronCheckoutTheme}
@@ -684,7 +636,6 @@ export default function App() {
           <h2 className="roadmap-title">INITIATIVE ROADMAP</h2>
 
           <div className="brand-grid">
-            {/* UPDATED 777 WORDMARK BLOCK */}
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
                 <div className="usp-top">USPPA</div>
@@ -761,7 +712,6 @@ export default function App() {
           </p>
         </section>
 
-        {/* Patronium framework copy section */}
         <section className="copy-section" id="patronium-framework">
           <div className="copy-section-title">THE PATRONIUM FRAMEWORK</div>
 

@@ -642,7 +642,7 @@ export default function App() {
             className="roadmap-title"
             style={{
               textAlign: "center",
-              marginBottom: "28px",
+              marginBottom: "34px", // a bit more space below the title block
             }}
           >
             <div
@@ -666,6 +666,19 @@ export default function App() {
             >
               ROADMAP
             </div>
+
+            {/* subtle spacer / rule under the wordmark */}
+            <div
+              style={{
+                marginTop: "10px",
+                height: "1px",
+                width: "80px",
+                marginLeft: "auto",
+                marginRight: "auto",
+                background: "#3a2b16",
+                opacity: 0.9,
+              }}
+            />
           </div>
 
           <div className="brand-grid">

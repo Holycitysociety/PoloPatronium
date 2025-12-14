@@ -608,7 +608,7 @@ export default function App() {
                       client={client}
                       name={"POLO PATRONIUM"}
                       description={
-                        "USPPA PATRONAGE UTILITY TOKEN · THREE SEVENS 777 REMUDA · COWBOY POLO CIRCUIT · THE POLO LIFE · CHARLESTON POLO CLUB"
+                        "USPPA PATRONAGE UTILITY TOKEN · THREE SEVENS 7̶7̶7̶ REMUDA · COWBOY POLO CIRCUIT · THE POLO LIFE · CHARLESTON POLO CLUB"
                       }
                       currency={"USD"}
                       chain={BASE}
@@ -637,7 +637,36 @@ export default function App() {
       <main>
         {/* Roadmap (scroll trigger) */}
         <section className="brand-row" id="brands" ref={roadmapGateRef}>
-          <h2 className="roadmap-title">INITIATIVE ROADMAP</h2>
+          {/* INITIATIVE ROADMAP as a proper wordmark */}
+          <div
+            className="roadmap-title"
+            style={{
+              textAlign: "center",
+              marginBottom: "28px",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "11px",
+                letterSpacing: "0.28em",
+                textTransform: "uppercase",
+                color: "#9f8a64",
+                marginBottom: "4px",
+              }}
+            >
+              INITIATIVE
+            </div>
+            <div
+              style={{
+                fontSize: "20px",
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                color: "#f5eedc",
+              }}
+            >
+              ROADMAP
+            </div>
+          </div>
 
           <div className="brand-grid">
             {/* 777 WORDMARK BLOCK */}
@@ -647,10 +676,10 @@ export default function App() {
                 <div
                   style={{
                     display: "inline-flex",
-                    alignItems: "baseline",
+                    alignItems: "center",
                     justifyContent: "center",
-                    gap: "0.6em",
-                    padding: "8px 14px 6px",
+                    gap: "0.5em",
+                    padding: "8px 16px 6px",
                     borderTop: "1px solid #c7b08a",
                     borderBottom: "1px solid #c7b08a",
                   }}
@@ -658,7 +687,7 @@ export default function App() {
                   <span
                     style={{
                       fontSize: "10px",
-                      letterSpacing: "0.2em",
+                      letterSpacing: "0.22em",
                       textTransform: "uppercase",
                       color: "#c7b08a",
                     }}
@@ -667,17 +696,34 @@ export default function App() {
                   </span>
                   <span
                     style={{
-                      fontSize: "30px",
+                      fontSize: "12px",
+                      color: "#c7b08a",
+                    }}
+                  >
+                    ·
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "32px",
                       letterSpacing: "0.22em",
                       color: "#f5eedc",
+                      lineHeight: 1,
                     }}
                   >
                     7̶7̶7̶
                   </span>
                   <span
                     style={{
+                      fontSize: "12px",
+                      color: "#c7b08a",
+                    }}
+                  >
+                    ·
+                  </span>
+                  <span
+                    style={{
                       fontSize: "10px",
-                      letterSpacing: "0.2em",
+                      letterSpacing: "0.22em",
                       textTransform: "uppercase",
                       color: "#c7b08a",
                     }}
@@ -690,10 +736,10 @@ export default function App() {
                 <div
                   style={{
                     marginTop: "6px",
-                    fontSize: "10px",
-                    letterSpacing: "0.28em",
+                    fontSize: "9px",
+                    letterSpacing: "0.32em",
                     textTransform: "uppercase",
-                    color: "#c7b08a",
+                    color: "#9f8a64",
                   }}
                 >
                   STRING REMUDA

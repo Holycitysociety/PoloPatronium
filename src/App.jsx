@@ -73,18 +73,15 @@ const patronCheckoutTheme = darkTheme({
 // ---------------------------------------------
 // Simple error boundary for CheckoutWidget (plain JS)
 // ---------------------------------------------
-class CheckoutBoundary extends React.Component<
-  { children: React.ReactNode },
-  { hasError: boolean }
-> {
-  constructor(props: any) {
+class CheckoutBoundary extends React.Component {
+  constructor(props) {
     super(props);
     this.state = { hasError: false };
   }
   static getDerivedStateFromError() {
     return { hasError: true };
   }
-  componentDidCatch(error: any, info: any) {
+  componentDidCatch(error, info) {
     console.error("CheckoutWidget crashed:", error, info);
   }
   render() {
@@ -112,11 +109,15 @@ export default function App() {
   const { disconnect } = useDisconnect();
   const isConnected = !!account;
 
-  const walletScrollRef = useRef<HTMLDivElement | null>(null);
+  const walletScrollRef = useRef(null);
 
-  // Gate target (Token Economics section)
-  const patroniumGateRef = useRef<HTMLElement | null>(null);
-  const [promptedGate, setPromptedGate] = useState(false);
+  // ✅ Gate target (Token Economics section)
+  const patroniumGateRef = useRef(null);
+
+  // ✅ Gate math + throttling
+  const gateMaxYRef = useRef(0);
+  const lastGatePromptAtRef = useRef(0);
+  const touchStartYRef = useRef(null);
 
   // Native ETH on Base (gas)
   const { data: baseBalance } = useWalletBalance({
@@ -172,7 +173,7 @@ export default function App() {
   const normalizedAmount =
     usdAmount && Number(usdAmount) > 0 ? String(usdAmount) : "1";
 
-  const handleCheckoutSuccess = async (result: any) => {
+  const handleCheckoutSuccess = async (result) => {
     try {
       if (!account?.address) return;
 
@@ -236,41 +237,121 @@ export default function App() {
   // Escape closes modal
   useEffect(() => {
     if (!isWalletOpen) return;
-    const onKeyDown = (e: KeyboardEvent) => {
+    const onKeyDown = (e) => {
       if (e.key === "Escape") closeWallet();
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [isWalletOpen]);
 
-  // Scroll gate: when Patronium Framework scrolls into view (and not connected),
-  // auto-open the Patron Wallet once.
+  // ✅ HARD gate Token Economics behind sign-in
   useEffect(() => {
-    if (isConnected) {
-      if (promptedGate) setPromptedGate(false);
-      return;
-    }
+    const computeGate = () => {
+      const el = patroniumGateRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      // lock line just above the framework section
+      gateMaxYRef.current = Math.max(0, rect.top + window.scrollY - 12);
+    };
+
+    const maybePromptWallet = () => {
+      const now = Date.now();
+      if (now - lastGatePromptAtRef.current < 1200) return; // throttle
+      lastGatePromptAtRef.current = now;
+      setIsWalletOpen(true);
+    };
+
+    // Always keep gate coordinate fresh
+    computeGate();
+
+    // If connected, remove gating behavior
+    if (isConnected) return;
+
+    const clampIfPastGate = () => {
+      const maxY = gateMaxYRef.current;
+      if (window.scrollY > maxY) {
+        window.scrollTo(0, maxY);
+        if (!isWalletOpen) maybePromptWallet();
+      }
+    };
 
     const onScroll = () => {
-      const el = patroniumGateRef.current;
-      if (!el || promptedGate) return;
+      // update gate in case layout shifts (font load, orientation, etc.)
+      computeGate();
+      clampIfPastGate();
+    };
 
-      const rect = el.getBoundingClientRect();
-      const viewportHeight =
-        window.innerHeight || document.documentElement.clientHeight;
+    // Wheel: block downward scroll past gate
+    const onWheel = (e) => {
+      const maxY = gateMaxYRef.current;
+      const atGate = window.scrollY >= maxY - 1;
+      if (atGate && e.deltaY > 0) {
+        e.preventDefault();
+        if (!isWalletOpen) maybePromptWallet();
+      }
+    };
 
-      // Trigger when top of section reaches ~60% of viewport height
-      const threshold = viewportHeight * 0.6;
+    // Touch: block swipe-up (which scrolls down) past gate
+    const onTouchStart = (e) => {
+      touchStartYRef.current = e.touches?.[0]?.clientY ?? null;
+    };
 
-      if (rect.top < threshold) {
-        setPromptedGate(true);
-        setIsWalletOpen(true);
+    const onTouchMove = (e) => {
+      const startY = touchStartYRef.current;
+      const currentY = e.touches?.[0]?.clientY ?? null;
+      if (startY == null || currentY == null) return;
+
+      const delta = startY - currentY; // positive = swipe up = scroll down
+      const maxY = gateMaxYRef.current;
+      const atGate = window.scrollY >= maxY - 1;
+
+      if (atGate && delta > 0) {
+        e.preventDefault();
+        clampIfPastGate();
+        if (!isWalletOpen) maybePromptWallet();
+      }
+    };
+
+    // Keyboard: block PageDown/ArrowDown/End/Space at gate
+    const onKeyDown = (e) => {
+      const maxY = gateMaxYRef.current;
+      const atGate = window.scrollY >= maxY - 1;
+      if (!atGate) return;
+
+      const blockedKeys = ["ArrowDown", "PageDown", "End", " "];
+      if (blockedKeys.includes(e.key)) {
+        e.preventDefault();
+        clampIfPastGate();
+        if (!isWalletOpen) maybePromptWallet();
       }
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [isConnected, promptedGate]);
+    window.addEventListener("resize", computeGate);
+    window.addEventListener("orientationchange", computeGate);
+
+    // IMPORTANT: must be non-passive so preventDefault works
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("keydown", onKeyDown);
+
+    // Clamp immediately in case someone loads mid-page
+    requestAnimationFrame(() => {
+      computeGate();
+      clampIfPastGate();
+    });
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", computeGate);
+      window.removeEventListener("orientationchange", computeGate);
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isConnected, isWalletOpen]);
 
   return (
     <div className="page">
@@ -339,7 +420,7 @@ export default function App() {
       {isWalletOpen && (
         <div
           className="wallet-modal-backdrop"
-          onClick={closeWallet} // click outside closes
+          onClick={closeWallet} // ✅ click outside closes
           style={{
             position: "fixed",
             inset: 0,
@@ -354,7 +435,7 @@ export default function App() {
           <div style={{ width: "100%", maxWidth: "380px" }}>
             <div
               ref={walletScrollRef}
-              onClick={(e) => e.stopPropagation()} // clicks inside modal don't close
+              onClick={(e) => e.stopPropagation()} // ✅ clicks inside modal don't close
               style={{
                 width: "100%",
                 maxHeight: "90vh",
@@ -509,7 +590,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Patronium balance (bigger, own line) */}
+                  {/* Patron balance (bigger, own line) */}
                   <div style={{ marginBottom: "12px" }}>
                     <div
                       style={{
@@ -555,7 +636,7 @@ export default function App() {
                 {!isConnected && (
                   <button
                     type="button"
-                    onClick={closeWallet} // tapping locked overlay closes too
+                    onClick={closeWallet} // ✅ tapping locked overlay closes too
                     aria-label="Close Patron Wallet"
                     style={{
                       position: "absolute",
@@ -646,7 +727,7 @@ export default function App() {
           <h2 className="roadmap-title">INITIATIVE ROADMAP</h2>
 
           <div className="brand-grid">
-            {/* 777 WORDMARK BLOCK (current version) */}
+            {/* 777 WORDMARK BLOCK (unchanged here) */}
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
                 <div className="usp-top">USPPA</div>
@@ -723,67 +804,12 @@ export default function App() {
           </p>
         </section>
 
-        {/* Patronium Framework section: FULL content + hard gate overlay when !isConnected */}
+        {/* FULL "TOKEN ECONOMICS" / FRAMEWORK SECTION RESTORED + ✅ GATED */}
         <section
           className="copy-section"
           id="patronium-framework"
           ref={patroniumGateRef}
-          style={{ position: "relative" }}
         >
-          {/* Hard gate overlay for token economics */}
-          {!isConnected && (
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "rgba(5,5,5,0.96)",
-                zIndex: 5,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "24px 16px",
-                textAlign: "center",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: "11px",
-                  letterSpacing: "0.18em",
-                  textTransform: "uppercase",
-                  color: "#c7b08a",
-                  marginBottom: "10px",
-                }}
-              >
-                Patronium Framework
-              </div>
-              <p
-                style={{
-                  maxWidth: "420px",
-                  fontSize: "13px",
-                  color: "#f5eedc",
-                  marginBottom: "16px",
-                }}
-              >
-                Sign in to your Patron Wallet to view the full Patronium
-                economics, tribute structure, and participation framework.
-              </p>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={openWallet}
-                style={{
-                  fontSize: "11px",
-                  letterSpacing: "0.16em",
-                  textTransform: "uppercase",
-                  padding: "8px 20px",
-                }}
-              >
-                SIGN IN TO VIEW
-              </button>
-            </div>
-          )}
-
           <div className="copy-section-title">THE PATRONIUM FRAMEWORK</div>
 
           <div className="copy-block">

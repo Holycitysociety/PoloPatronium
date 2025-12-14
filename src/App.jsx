@@ -114,14 +114,11 @@ export default function App() {
   // ✅ Gate target (Token Economics section)
   const patroniumGateRef = useRef(null);
 
-  // ✅ Gate position measured from TOP of document (absolute Y)
-  const gateAbsYRef = useRef(0);
+  // ✅ Gate max scroll Y (absolute document Y)
+  const gateMaxYRef = useRef(0);
 
-  // ✅ Throttle wallet re-open attempts
-  const lastPromptMsRef = useRef(0);
-
-  // iOS touch helpers
-  const touchStartYRef = useRef(null);
+  // ✅ throttle so we don't spam openWallet every single event tick
+  const lastPromptRef = useRef(0);
 
   // Native ETH on Base (gas)
   const { data: baseBalance } = useWalletBalance({
@@ -147,7 +144,19 @@ export default function App() {
   });
 
   const openWallet = () => setIsWalletOpen(true);
-  const closeWallet = () => setIsWalletOpen(false);
+
+  const closeWallet = () => {
+    setIsWalletOpen(false);
+
+    // ✅ If not signed in, closing should NOT allow bypass:
+    // snap to gate line (or above) immediately.
+    if (!isConnected) {
+      requestAnimationFrame(() => {
+        const maxY = gateMaxYRef.current || 0;
+        if (window.scrollY > maxY) window.scrollTo(0, maxY);
+      });
+    }
+  };
 
   const handleBuyPatron = () => openWallet();
 
@@ -219,6 +228,124 @@ export default function App() {
     }
   };
 
+  // -------------------------------------------------------
+  // Compute the hard gate maxY (MEASURED FROM TOP OF PAGE)
+  // -------------------------------------------------------
+  const computeGateMaxY = () => {
+    const el = patroniumGateRef.current;
+    if (!el) return;
+
+    const gateTop = el.getBoundingClientRect().top + window.scrollY;
+    // ✅ This is the "line above Token Economics"
+    // You can tweak the offset (-12) to taste.
+    gateMaxYRef.current = Math.max(0, gateTop - 12);
+  };
+
+  useEffect(() => {
+    computeGateMaxY();
+
+    // Recompute on resize / orientation change / font load
+    const onResize = () => computeGateMaxY();
+    window.addEventListener("resize", onResize);
+
+    // Some browsers shift layout after fonts/images; do a couple delayed recalcs
+    const t1 = setTimeout(computeGateMaxY, 200);
+    const t2 = setTimeout(computeGateMaxY, 800);
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, []);
+
+  // -------------------------------------------------------
+  // TRUE HARD GATE (scroll / wheel / touch / keys)
+  // - if not connected, you cannot move past gateMaxY
+  // - closing modal does not unlock; next attempt re-opens
+  // -------------------------------------------------------
+  useEffect(() => {
+    if (isConnected) return;
+
+    let rafId = null;
+
+    const maybePrompt = () => {
+      const now = Date.now();
+      if (now - lastPromptRef.current < 700) return; // throttle prompts
+      lastPromptRef.current = now;
+      setIsWalletOpen(true);
+    };
+
+    const clampScroll = () => {
+      const maxY = gateMaxYRef.current || 0;
+      if (window.scrollY > maxY) {
+        window.scrollTo(0, maxY);
+        maybePrompt();
+      }
+      rafId = requestAnimationFrame(clampScroll);
+    };
+
+    rafId = requestAnimationFrame(clampScroll);
+
+    // Wheel (desktop / trackpad)
+    const onWheel = (e) => {
+      const maxY = gateMaxYRef.current || 0;
+      if (window.scrollY >= maxY - 1 && e.deltaY > 0) {
+        e.preventDefault();
+        maybePrompt();
+      }
+    };
+
+    // Keydown (page down, space, arrow down, end)
+    const onKeyDown = (e) => {
+      const maxY = gateMaxYRef.current || 0;
+      const blockKeys = [
+        "ArrowDown",
+        "PageDown",
+        "End",
+        " ",
+        "Spacebar",
+      ];
+      if (blockKeys.includes(e.key) && window.scrollY >= maxY - 1) {
+        e.preventDefault();
+        maybePrompt();
+      }
+    };
+
+    // Touch (mobile)
+    let touchStartY = 0;
+    const onTouchStart = (e) => {
+      if (!e.touches || !e.touches.length) return;
+      touchStartY = e.touches[0].clientY;
+    };
+    const onTouchMove = (e) => {
+      const maxY = gateMaxYRef.current || 0;
+      if (!e.touches || !e.touches.length) return;
+      const currentY = e.touches[0].clientY;
+
+      // Swiping up (currentY < startY) tries to scroll down
+      const tryingToScrollDown = currentY < touchStartY - 2;
+
+      if (tryingToScrollDown && window.scrollY >= maxY - 1) {
+        e.preventDefault();
+        maybePrompt();
+      }
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("keydown", onKeyDown, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+    };
+  }, [isConnected]);
+
   // Lock background scroll when modal open
   useEffect(() => {
     if (isWalletOpen) {
@@ -238,7 +365,7 @@ export default function App() {
     document.body.style.overflow = "";
   }, [isWalletOpen]);
 
-  // Escape closes modal
+  // Escape closes modal (but gate stays locked)
   useEffect(() => {
     if (!isWalletOpen) return;
     const onKeyDown = (e) => {
@@ -246,131 +373,7 @@ export default function App() {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [isWalletOpen]);
-
-  // ✅ HARD gate Token Economics (measured from TOP, enforced continuously)
-  useEffect(() => {
-    const measureGateFromTop = () => {
-      const el = patroniumGateRef.current;
-      if (!el) return;
-      // Absolute Y from top of document:
-      gateAbsYRef.current = el.getBoundingClientRect().top + window.scrollY;
-    };
-
-    const promptWalletThrottled = () => {
-      const now = Date.now();
-      if (now - lastPromptMsRef.current < 900) return;
-      lastPromptMsRef.current = now;
-      setIsWalletOpen(true);
-    };
-
-    // Always measure once we can
-    measureGateFromTop();
-
-    // If connected, no gate
-    if (isConnected) return;
-
-    const clamp = () => {
-      const gateY = gateAbsYRef.current || 0;
-      const maxY = Math.max(0, gateY - 12); // keep them just above framework
-      if (window.scrollY > maxY) {
-        window.scrollTo(0, maxY);
-        if (!isWalletOpen) promptWalletThrottled();
-        return true;
-      }
-      return false;
-    };
-
-    // This beats iOS momentum scrolling — clamps every frame
-    let rafId = 0;
-    const tick = () => {
-      if (!isConnected) {
-        clamp();
-        rafId = requestAnimationFrame(tick);
-      }
-    };
-    rafId = requestAnimationFrame(tick);
-
-    // Re-measure on layout shifts
-    const onResize = () => measureGateFromTop();
-    window.addEventListener("resize", onResize);
-    window.addEventListener("orientationchange", onResize);
-
-    // Also clamp on scroll (keeps things snappy)
-    const onScroll = () => {
-      measureGateFromTop();
-      clamp();
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    // Block “push past” attempts at the gate (capture + non-passive)
-    const onWheel = (e) => {
-      const gateY = gateAbsYRef.current || 0;
-      const maxY = Math.max(0, gateY - 12);
-      const atGate = window.scrollY >= maxY - 1;
-      if (atGate && e.deltaY > 0) {
-        e.preventDefault();
-        if (!isWalletOpen) promptWalletThrottled();
-      }
-    };
-
-    const onTouchStart = (e) => {
-      touchStartYRef.current = e.touches?.[0]?.clientY ?? null;
-    };
-
-    const onTouchMove = (e) => {
-      const startY = touchStartYRef.current;
-      const curY = e.touches?.[0]?.clientY ?? null;
-      if (startY == null || curY == null) return;
-
-      const gateY = gateAbsYRef.current || 0;
-      const maxY = Math.max(0, gateY - 12);
-      const atGate = window.scrollY >= maxY - 1;
-
-      const swipeUp = startY - curY > 0; // swipe up = scroll down
-      if (atGate && swipeUp) {
-        e.preventDefault();
-        clamp();
-        if (!isWalletOpen) promptWalletThrottled();
-      }
-    };
-
-    const onKeyDown = (e) => {
-      const gateY = gateAbsYRef.current || 0;
-      const maxY = Math.max(0, gateY - 12);
-      const atGate = window.scrollY >= maxY - 1;
-      if (!atGate) return;
-
-      const blocked = ["ArrowDown", "PageDown", "End", " "];
-      if (blocked.includes(e.key)) {
-        e.preventDefault();
-        clamp();
-        if (!isWalletOpen) promptWalletThrottled();
-      }
-    };
-
-    document.addEventListener("wheel", onWheel, { passive: false, capture: true });
-    document.addEventListener("touchstart", onTouchStart, { passive: true, capture: true });
-    document.addEventListener("touchmove", onTouchMove, { passive: false, capture: true });
-    window.addEventListener("keydown", onKeyDown);
-
-    // If someone loads mid-page, clamp immediately
-    requestAnimationFrame(() => {
-      measureGateFromTop();
-      if (clamp()) promptWalletThrottled();
-    });
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("orientationchange", onResize);
-      window.removeEventListener("scroll", onScroll);
-      document.removeEventListener("wheel", onWheel, true);
-      document.removeEventListener("touchstart", onTouchStart, true);
-      document.removeEventListener("touchmove", onTouchMove, true);
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [isConnected, isWalletOpen]);
+  }, [isWalletOpen, isConnected]);
 
   return (
     <div className="page">
@@ -746,7 +749,7 @@ export default function App() {
           <h2 className="roadmap-title">INITIATIVE ROADMAP</h2>
 
           <div className="brand-grid">
-            {/* 777 WORDMARK BLOCK (unchanged here) */}
+            {/* 777 WORDMARK BLOCK */}
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
                 <div className="usp-top">USPPA</div>
@@ -823,7 +826,7 @@ export default function App() {
           </p>
         </section>
 
-        {/* FULL "TOKEN ECONOMICS" / FRAMEWORK SECTION RESTORED + ✅ GATED */}
+        {/* ✅ TOKEN ECONOMICS / FRAMEWORK SECTION (GATED) */}
         <section
           className="copy-section"
           id="patronium-framework"

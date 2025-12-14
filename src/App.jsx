@@ -642,7 +642,7 @@ export default function App() {
             className="roadmap-title"
             style={{
               textAlign: "center",
-              marginBottom: "34px", // a bit more space below the title block
+              marginBottom: "34px",
             }}
           >
             <div
@@ -772,15 +772,13 @@ export default function App() {
               <div
                 className="logo-cowboy-polo-circuit"
                 style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: "8px 18px 6px",
-                  borderTop: "1px solid #c7b08a",
-                  borderBottom: "1px solid #c7b08a",
+                  display: "inline-block",
+                  padding: "8px 18px 7px",
+                  border: "1px solid #c7b08a",
+                  borderRadius: "999px",
                   textTransform: "uppercase",
                   letterSpacing: "0.18em",
-                  fontSize: "11px",
+                  fontSize: "10px",
                   color: "#f5eedc",
                 }}
               >
@@ -794,51 +792,23 @@ export default function App() {
               </p>
             </div>
 
-            {/* THE POLO LIFE with gold "THE" and accent line */}
+            {/* THE POLO LIFE with gold "THE" accent */}
             <div className="logo-block">
-              <div
-                className="logo-the-polo-life"
-                style={{
-                  textAlign: "center",
-                  display: "inline-block",
-                }}
-              >
+              <div className="logo-the-polo-life">
                 <span
                   className="top"
                   style={{
                     display: "block",
                     fontSize: "9px",
-                    letterSpacing: "0.24em",
+                    letterSpacing: "0.26em",
                     textTransform: "uppercase",
-                    color: "#c7b08a", // gold accent
+                    color: "#e3bf72",
                     marginBottom: "2px",
                   }}
                 >
                   THE
                 </span>
-                <span
-                  className="main"
-                  style={{
-                    display: "block",
-                    fontSize: "20px",
-                    letterSpacing: "0.16em",
-                    textTransform: "uppercase",
-                    color: "#f5eedc",
-                  }}
-                >
-                  POLO LIFE
-                </span>
-                <div
-                  style={{
-                    marginTop: "6px",
-                    height: "1px",
-                    width: "70px",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    background: "#3a2b16",
-                    opacity: 0.95,
-                  }}
-                />
+                <span className="main">POLO LIFE</span>
               </div>
               <p className="initiative-text">
                 A platform dedicated to presenting the elegance and traditions
@@ -847,48 +817,25 @@ export default function App() {
               </p>
             </div>
 
-            {/* CHARLESTON POLO CLUB with gold Charleston + line */}
+            {/* CHARLESTON POLO with gold Charleston + line */}
             <div className="logo-block">
-              <div
-                className="logo-charleston-polo"
-                style={{ textAlign: "center" }}
-              >
+              <div className="logo-charleston-polo">
                 <span
                   className="top"
                   style={{
-                    display: "block",
+                    display: "inline-block",
                     fontSize: "11px",
                     letterSpacing: "0.22em",
                     textTransform: "uppercase",
-                    color: "#c7b08a", // gold Charleston
+                    color: "#e3bf72",
+                    paddingBottom: "3px",
+                    borderBottom: "1px solid #e3bf72",
                     marginBottom: "4px",
                   }}
                 >
                   CHARLESTON
                 </span>
-                <div
-                  style={{
-                    height: "1px",
-                    width: "80px",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    background: "#3a2b16",
-                    marginBottom: "6px",
-                    opacity: 0.9,
-                  }}
-                />
-                <span
-                  className="main"
-                  style={{
-                    display: "block",
-                    fontSize: "18px",
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                    color: "#f5eedc",
-                  }}
-                >
-                  POLO CLUB
-                </span>
+                <span className="main">POLO CLUB</span>
               </div>
               <p className="initiative-text">
                 The renewal of Charleston, South Carolina&apos;s polo tradition

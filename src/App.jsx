@@ -755,7 +755,7 @@ export default function App() {
                     color: "#9f8a64",
                   }}
                 >
-                  STRING REMUDA
+                  REMUDA
                 </div>
               </div>
 
@@ -782,7 +782,7 @@ export default function App() {
                 An American endeavour to broaden Polo&apos;s reach, nurture
                 emerging talent, and encourage the next generation of American
                 players — where riders not only learn to play, but learn to make
-                the horses of the 7̶7̶7̶ (String Three Sevens) Remuda.
+                the horses of the 7̶7̶7̶ (Three Sevens) Remuda.
               </p>
             </div>
 

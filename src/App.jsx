@@ -1,3 +1,4 @@
+// App.jsx
 import React, { useEffect, useRef, useState } from "react";
 import {
   CheckoutWidget,
@@ -352,7 +353,7 @@ export default function App() {
                 width: "100%",
                 maxHeight: "90vh",
                 overflowY: "auto",
-                border: "1px solid "#3a2b16",
+                border: "1px solid #3a2b16",
                 borderRadius: "14px",
                 padding: "16px",
                 paddingTop: "26px",
@@ -811,7 +812,7 @@ export default function App() {
               <div
                 className="logo-charleston-polo"
                 style={{
-                  borderColor: "#c7b08a", // assumes existing line uses border
+                  borderColor: "#c7b08a",
                 }}
               >
                 <span

@@ -609,7 +609,7 @@ export default function App() {
                       client={client}
                       name={"POLO PATRONIUM"}
                       description={
-                        "USPPA PATRONAGE UTILITY TOKEN · THREE SEVENS 7̶7̶7̶ REMUDA · COWBOY POLO CIRCUIT · THE POLO LIFE · CHARLESTON POLO CLUB"
+                        "USPPA PATRONAGE UTILITY TOKEN · THREE SEVENS 7̶7̶7̶ REMUDA · COWBOY POLO CIRCUIT · THE POLO WAY · CHARLESTON POLO"
                       }
                       currency={"USD"}
                       chain={BASE}
@@ -787,9 +787,9 @@ export default function App() {
               </p>
             </div>
 
-            {/* THE POLO LIFE with gold "THE" */}
+            {/* THE POLO WAY with gold "THE" */}
             <div className="logo-block">
-              <div className="logo-the-polo-life">
+              <div className="logo-the-polo-way">
                 <span
                   className="top"
                   style={{
@@ -798,7 +798,7 @@ export default function App() {
                 >
                   THE
                 </span>
-                <span className="main">POLO LIFE</span>
+                <span className="main">POLO WAY</span>
               </div>
               <p className="initiative-text">
                 A platform dedicated to presenting the elegance and traditions
@@ -841,7 +841,7 @@ export default function App() {
             All of these initiatives are coordinated and supported through Polo
             Patronium, the living token of patronage within the United States
             Polo Patrons Association, uniting patrons, players, and clubs in a
-            shared Polo Life ecosystem.
+            shared Polo ecosystem.
           </p>
         </section>
 

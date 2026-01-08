@@ -323,7 +323,11 @@ export default function App() {
             BUY PATRON
           </button>
 
-          <a className="btn btn-outline" href="#founding-patrons">
+          {/* UPDATED: Founding patron inquiries now open email draft */}
+          <a
+            className="btn btn-outline"
+            href="mailto:charlestonpolo.info@gmail.com?subject=Founding%20Patron%20Inquiry"
+          >
             FOUNDING PATRON INQUIRIES
           </a>
         </div>

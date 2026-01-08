@@ -307,9 +307,14 @@ export default function App() {
         <h1 className="hero-title">POLO PATRONIUM</h1>
 
         <div className="hero-symbol">
+          
           <div className="hero-symbol-main">
-            ERC777→ERC20 <Br/> TOKEN SYMBOL &quot;PATRON&quot;
-          </div>
+  ERC-777 → ERC-20
+  <br />
+  TOKEN SYMBOL &quot;PATRON&quot;
+</div>
+          
+          
           <div className="hero-network">ON BASE NETWORK BY COINBASE</div>
           <div className="hero-contract">
             <span className="hero-contract-label">CA:</span>

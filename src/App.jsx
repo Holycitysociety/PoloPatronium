@@ -326,9 +326,9 @@ export default function App() {
           {/* UPDATED: Founding patron inquiries now open email draft */}
           <a
             className="btn btn-outline"
-            href="mailto:charlestonpolo.info@gmail.com?subject=Founding%20Patron%20Inquiry"
+            href="mailto:charlestonpoloinfo@gmail.com?subject=Founding%20Patron%20Inquiry"
           >
-            FOUNDING PATRON INQUIRIES
+            PATRON INQUIRIES
           </a>
         </div>
       </header>

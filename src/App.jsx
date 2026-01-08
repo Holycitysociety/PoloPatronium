@@ -344,7 +344,7 @@ export default function App() {
               )
             }
           >
-            FOUNDING PATRON INQUIRIES
+            PATRON INQUIRIES
           </a>
         </div>
       </header>

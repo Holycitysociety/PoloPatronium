@@ -756,7 +756,7 @@ export default function App() {
                     color: "#9f8a64",
                   }}
                 >
-                  STRING REMUDA
+                  REMUDA
                 </div>
               </div>
 
@@ -823,7 +823,7 @@ export default function App() {
                 >
                   CHARLESTON
                 </span>
-                <span className="main">POLO CLUB</span>
+                <span className="main">POLO</span>
               </div>
               <p className="initiative-text">
                 The renewal of Charleston, South Carolina&apos;s polo tradition

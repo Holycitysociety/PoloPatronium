@@ -309,7 +309,7 @@ export default function App() {
         <div className="hero-symbol">
           
           <div className="hero-symbol-main">
-  ERC-777 → ERC-20
+  ERC-777 V0 → ERC-20 V1
   <br />
   TOKEN SYMBOL &quot;PATRON&quot;
 </div>

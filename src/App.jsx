@@ -167,14 +167,9 @@ export default function App() {
     }
   };
 
-  // ------------------------------------------------------------------
-  // IMPORTANT: Keep BOTH forms:
-  // - number for CheckoutWidget amount
-  // - string for your mint function payload/logging
-  // ------------------------------------------------------------------
+  // ✅ CheckoutWidget amount expects a NUMBER (not a string)
   const normalizedAmountNumber =
     usdAmount && Number(usdAmount) > 0 ? Number(usdAmount) : 1;
-  const normalizedAmount = String(normalizedAmountNumber);
 
   const handleCheckoutSuccess = async (result) => {
     try {
@@ -185,10 +180,10 @@ export default function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           address: account.address,
-          usdAmount: normalizedAmount, // keep string in payload for consistency
+          usdAmount: String(normalizedAmountNumber),
           checkout: {
             id: result?.id,
-            amountPaid: result?.amountPaid ?? normalizedAmount,
+            amountPaid: result?.amountPaid ?? String(normalizedAmountNumber),
             currency: result?.currency ?? "USD",
           },
         }),
@@ -217,16 +212,6 @@ export default function App() {
       );
     }
   };
-
-  // Mailto for Founding Patron inquiries
-  const foundingPatronMailto =
-    "mailto:CharlestonPoloinfo@gmail.com" +
-    "?subject=" +
-    encodeURIComponent("Founding Patron Inquiry — Polo Patronium") +
-    "&body=" +
-    encodeURIComponent(
-      "Hello Charleston Polo,\n\nI’d like to discuss Founding Patron participation.\n\nName:\nPhone:\nLocation:\nI can contribute (capital / horses / land / facilities):\n\nNotes:\n"
-    );
 
   // Lock background scroll when modal open
   useEffect(() => {
@@ -339,8 +324,26 @@ export default function App() {
             BUY PATRON
           </button>
 
-          {/* Open email draft */}
-          <a className="btn btn-outline" href={foundingPatronMailto}>
+          {/* ✅ Opens email draft */}
+          <a
+            className="btn btn-outline"
+            href={
+              "mailto:CharlestonPoloinfo@gmail.com" +
+              "?subject=" +
+              encodeURIComponent("Founding Patron Inquiry") +
+              "&body=" +
+              encodeURIComponent(
+                "Hello Charleston Polo,\n\n" +
+                  "I’m interested in becoming a Founding Patron.\n\n" +
+                  "Name:\n" +
+                  "Phone:\n" +
+                  "City/State:\n" +
+                  "Interest (capital / horses / land / facilities):\n" +
+                  "Notes:\n\n" +
+                  "Thank you,\n"
+              )
+            }
+          >
             FOUNDING PATRON INQUIRIES
           </a>
         </div>
@@ -660,7 +663,6 @@ export default function App() {
                       }
                       currency={"USD"}
                       chain={BASE}
-                      // ✅ back to numeric amount
                       amount={normalizedAmountNumber}
                       tokenAddress={
                         "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
@@ -756,7 +758,14 @@ export default function App() {
                   >
                     THREE
                   </span>
-                  <span style={{ fontSize: "12px", color: "#c7b08a" }}>·</span>
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      color: "#c7b08a",
+                    }}
+                  >
+                    ·
+                  </span>
                   <span
                     style={{
                       fontSize: "32px",
@@ -767,7 +776,14 @@ export default function App() {
                   >
                     7̶7̶7̶
                   </span>
-                  <span style={{ fontSize: "12px", color: "#c7b08a" }}>·</span>
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      color: "#c7b08a",
+                    }}
+                  >
+                    ·
+                  </span>
                   <span
                     style={{
                       fontSize: "10px",
@@ -780,7 +796,7 @@ export default function App() {
                   </span>
                 </div>
 
-                {/* Base caption: REMUDA */}
+                {/* Base caption: STRING REMUDA */}
                 <div
                   style={{
                     marginTop: "6px",
@@ -802,11 +818,14 @@ export default function App() {
               </p>
             </div>
 
-            {/* COWBOY POLO CIRCUIT */}
+            {/* COWBOY POLO CIRCUIT with gold frame accents */}
             <div className="logo-block">
               <div
                 className="logo-cowboy-polo-circuit"
-                style={{ borderColor: "#c7b08a", color: "#f5eedc" }}
+                style={{
+                  borderColor: "#c7b08a",
+                  color: "#f5eedc",
+                }}
               >
                 <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
               </div>
@@ -818,10 +837,15 @@ export default function App() {
               </p>
             </div>
 
-            {/* THE POLO WAY */}
+            {/* THE POLO WAY with gold "THE" */}
             <div className="logo-block">
               <div className="logo-the-polo-way">
-                <span className="top" style={{ color: "#c7b08a" }}>
+                <span
+                  className="top"
+                  style={{
+                    color: "#c7b08a",
+                  }}
+                >
                   THE
                 </span>
                 <span className="main">POLO WAY</span>
@@ -833,10 +857,20 @@ export default function App() {
               </p>
             </div>
 
-            {/* CHARLESTON POLO */}
+            {/* CHARLESTON POLO with gold "CHARLESTON" + line */}
             <div className="logo-block">
-              <div className="logo-charleston-polo" style={{ borderColor: "#c7b08a" }}>
-                <span className="top" style={{ color: "#c7b08a" }}>
+              <div
+                className="logo-charleston-polo"
+                style={{
+                  borderColor: "#c7b08a",
+                }}
+              >
+                <span
+                  className="top"
+                  style={{
+                    color: "#c7b08a",
+                  }}
+                >
                   CHARLESTON
                 </span>
                 <span className="main">P  O  L  O</span>
@@ -865,7 +899,12 @@ export default function App() {
         <section className="copy-section" id="patronium-framework">
           <div className="copy-section-title">THE PATRONIUM FRAMEWORK</div>
 
-          <div style={{ position: "relative", marginTop: "8px" }}>
+          <div
+            style={{
+              position: "relative",
+              marginTop: "8px",
+            }}
+          >
             {!isConnected && (
               <div
                 onClick={openWallet}
@@ -912,7 +951,7 @@ export default function App() {
               </div>
             )}
 
-            {/* Actual content */}
+            {/* Actual content (visible only when connected, but always rendered) */}
             <div aria-hidden={!isConnected && true}>
               <div className="copy-block">
                 <h3>Patronium — Polo Patronage Perfected</h3>
@@ -920,9 +959,9 @@ export default function App() {
                   Patronium is the living token of patronage within the United
                   States Polo Patrons Association. It is the medium through
                   which honourable support is recognised and shared — not
-                  through speculation, but through participation. Every token
-                  of Patronium represents a place within the fellowship of
-                  those who uphold the game, its horses, and its players.
+                  through speculation, but through participation. Every token of
+                  Patronium represents a place within the fellowship of those
+                  who uphold the game, its horses, and its players.
                 </p>
                 <p>
                   It serves as the bridge between patron and player: a clear

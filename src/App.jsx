@@ -823,7 +823,7 @@ export default function App() {
                 >
                   CHARLESTON
                 </span>
-                <span className="main">P O L O</span>
+                <span className="main">P  O  L  O</span>
               </div>
               <p className="initiative-text">
                 The renewal of Charleston, South Carolina&apos;s polo tradition

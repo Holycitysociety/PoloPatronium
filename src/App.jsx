@@ -733,7 +733,26 @@ export default function App() {
           </div>
 
           <div className="brand-grid">
-            {/* 777 WORDMARK BLOCK */}
+            {/* ✅ SWAPPED ORDER: COWBOY POLO CIRCUIT FIRST */}
+            <div className="logo-block">
+              <div
+                className="logo-cowboy-polo-circuit"
+                style={{
+                  borderColor: "#c7b08a",
+                  color: "#f5eedc",
+                }}
+              >
+                <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
+              </div>
+              <p className="initiative-text">
+                An American endeavour to broaden Polo&apos;s reach, nurture
+                emerging talent, and encourage the next generation of American
+                players — where riders not only learn to play, but learn to make
+                the horses of the 7̶7̶7̶ (String Three Sevens) Remuda.
+              </p>
+            </div>
+
+            {/* ✅ SWAPPED ORDER: 777 WORDMARK SECOND */}
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
                 {/* Central bar: THREE · 7̶7̶7̶ · SEVENS */}
@@ -815,25 +834,6 @@ export default function App() {
                 Association, assigned to operating patrons, trainers and local
                 players, and developed for play, exhibition and training across
                 our programmes.
-              </p>
-            </div>
-
-            {/* COWBOY POLO CIRCUIT with gold frame accents */}
-            <div className="logo-block">
-              <div
-                className="logo-cowboy-polo-circuit"
-                style={{
-                  borderColor: "#c7b08a",
-                  color: "#f5eedc",
-                }}
-              >
-                <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
-              </div>
-              <p className="initiative-text">
-                An American endeavour to broaden Polo&apos;s reach, nurture
-                emerging talent, and encourage the next generation of American
-                players — where riders not only learn to play, but learn to make
-                the horses of the 7̶7̶7̶ (String Three Sevens) Remuda.
               </p>
             </div>
 

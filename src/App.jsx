@@ -323,12 +323,8 @@ export default function App() {
             BUY PATRON
           </button>
 
-          {/* UPDATED: Founding patron inquiries now open email draft */}
-          <a
-            className="btn btn-outline"
-            href="mailto:charlestonpoloinfo@gmail.com?subject=Founding%20Patron%20Inquiry"
-          >
-            PATRON INQUIRIES
+          <a className="btn btn-outline" href="#founding-patrons">
+            FOUNDING PATRON INQUIRIES
           </a>
         </div>
       </header>
@@ -376,21 +372,51 @@ export default function App() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginBottom: "10px",
+                  marginBottom: "12px",
                   position: "relative",
                   paddingTop: "4px",
+                  textAlign: "center",
+                  flexDirection: "column",
+                  gap: 3,
                 }}
               >
+                {/* Line 1: USPPA (wide spaced) */}
                 <div
                   style={{
-                    fontSize: "18px",
+                    fontSize: "10px",
+                    letterSpacing: "0.24em",
+                    textTransform: "uppercase",
+                    color: "#9f8a64",
+                    lineHeight: 1.1,
+                  }}
+                >
+                  U&nbsp;S&nbsp;P&nbsp;P&nbsp;A
+                </div>
+
+                {/* Line 2: Polo Patronium */}
+                <div
+                  style={{
+                    fontSize: "15px",
                     letterSpacing: "0.18em",
                     textTransform: "uppercase",
                     color: "#c7b08a",
                     lineHeight: 1.1,
                   }}
                 >
-                  PATRON WALLET
+                  Polo Patronium
+                </div>
+
+                {/* Line 3: Patron Wallet */}
+                <div
+                  style={{
+                    fontSize: "12px",
+                    letterSpacing: "0.16em",
+                    textTransform: "uppercase",
+                    color: "#f5eedc",
+                    lineHeight: 1.1,
+                  }}
+                >
+                  Patron Wallet
                 </div>
 
                 <button

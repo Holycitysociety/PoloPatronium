@@ -876,13 +876,9 @@ export default function App() {
                 <span className="main">P  O  L  O</span>
               </div>
               <p className="initiative-text">
-                The renewal of Charleston, South Carolina&apos;s polo tradition
-                — our flagship Chapter and living test model for the USPPA Polo
-                Incubator, where horses are gathered, pasture secured,
-                instruction established, and the public welcomed to learn and
-                play. Once an Incubator achieves steady operations, sound
-                horsemanship, and visible community benefit, it becomes a
-                standing Chapter of the Association.
+              Each USPPA Chapter is a fully integrated programme operating under the Association&apos;s standards. Charleston Polo, as the flagship Chapter, serves as the organisational hub for the Cowboy Polo Circuit — coordinating local Cowboy Polo clinics, sanctioned chukkers at member barns and arenas, and the first pool of Chapter horses.
+
+In its early life, a Chapter begins as a Polo Incubator: a local startup where the “bring your own horse” model allows riders and stables to join the Circuit quickly, while a shared remuda is trained for exhibitions, league play, and new riders. Once an Incubator demonstrates steady operations, sound horsemanship, and visible benefit to the community, it is recognised as a standing Chapter of the USPPA.
               </p>
             </div>
           </div>

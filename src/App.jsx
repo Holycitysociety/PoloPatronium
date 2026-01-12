@@ -167,9 +167,9 @@ export default function App() {
     }
   };
 
-  // ✅ CheckoutWidget amount expects a NUMBER (not a string)
-  const normalizedAmountNumber =
-    usdAmount && Number(usdAmount) > 0 ? Number(usdAmount) : 1;
+  // ✅ CheckoutWidget `amount` expects a CLEAN STRING (e.g. "10")
+  const normalizedAmount =
+    usdAmount && Number(usdAmount) > 0 ? String(Number(usdAmount)) : "1";
 
   const handleCheckoutSuccess = async (result) => {
     try {
@@ -180,10 +180,10 @@ export default function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           address: account.address,
-          usdAmount: String(normalizedAmountNumber),
+          usdAmount: normalizedAmount,
           checkout: {
             id: result?.id,
-            amountPaid: result?.amountPaid ?? String(normalizedAmountNumber),
+            amountPaid: result?.amountPaid ?? normalizedAmount,
             currency: result?.currency ?? "USD",
           },
         }),
@@ -307,14 +307,12 @@ export default function App() {
         <h1 className="hero-title">POLO PATRONIUM</h1>
 
         <div className="hero-symbol">
-          
           <div className="hero-symbol-main">
-  ERC-777 V0 → ERC-20 V1
-  <br />
-  TOKEN SYMBOL &quot;PATRON&quot;
-</div>
-          
-          
+            ERC-777 V0 → ERC-20 V1
+            <br />
+            TOKEN SYMBOL &quot;PATRON&quot;
+          </div>
+
           <div className="hero-network">ON BASE NETWORK BY COINBASE</div>
           <div className="hero-contract">
             <span className="hero-contract-label">CA:</span>
@@ -649,7 +647,7 @@ export default function App() {
                         width: "100%",
                         padding: "10px 12px",
                         borderRadius: "10px",
-                        border: "1px solid #3a2b16",
+                        border: "1px solid "#3a2b16",
                         background: "#050505",
                         color: "#f5eedc",
                         fontSize: "16px",
@@ -668,7 +666,7 @@ export default function App() {
                       }
                       currency={"USD"}
                       chain={BASE}
-                      amount={normalizedAmountNumber}
+                      amount={normalizedAmount}          {/* <-- now a string */}
                       tokenAddress={
                         "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
                       }

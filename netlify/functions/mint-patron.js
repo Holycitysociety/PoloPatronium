@@ -1,7 +1,38 @@
 // netlify/functions/mint-patron.js
 const { ethers } = require("ethers");
 
+// Helpers to support both ethers v5 and v6
+function getProvider(rpcUrl) {
+  if (!rpcUrl) {
+    throw new Error("RPC_URL env var is missing");
+  }
+
+  // ethers v6
+  if (ethers.JsonRpcProvider) {
+    return new ethers.JsonRpcProvider(rpcUrl);
+  }
+  // ethers v5
+  if (ethers.providers && ethers.providers.JsonRpcProvider) {
+    return new ethers.providers.JsonRpcProvider(rpcUrl);
+  }
+
+  throw new Error("No JsonRpcProvider found on ethers");
+}
+
+function isAddress(addr) {
+  if (ethers.isAddress) return ethers.isAddress(addr); // v6
+  if (ethers.utils && ethers.utils.isAddress) return ethers.utils.isAddress(addr); // v5
+  throw new Error("No isAddress helper on ethers");
+}
+
+function parseUnits(value, decimals) {
+  if (ethers.parseUnits) return ethers.parseUnits(value, decimals); // v6
+  if (ethers.utils && ethers.utils.parseUnits) return ethers.utils.parseUnits(value, decimals); // v5
+  throw new Error("No parseUnits helper on ethers");
+}
+
 exports.handler = async (event) => {
+  // Only allow POST
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -11,43 +42,24 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body || "{}");
-    console.log("mint-patron incoming body:", body);
-
     const { address, usdAmount, checkout, paymentTxHash } = body;
 
-    // ------------------------------
-    // Env vars / config
-    // ------------------------------
     const RPC_URL = process.env.RPC_URL;
     const TOKEN_ADDRESS = process.env.PATRON_TOKEN_ADDRESS;
     const TREASURY_PRIVATE_KEY = process.env.TREASURY_PRIVATE_KEY;
-    const DECIMALS_STR = process.env.PATRON_DECIMALS ?? "18";
-    const PATRON_PER_USD_STR = process.env.PATRON_PER_USD ?? "1";
+    const DECIMALS = Number(process.env.PATRON_DECIMALS || "18");
+    const PATRON_PER_USD = Number(process.env.PATRON_PER_USD || "1");
 
-    if (!RPC_URL) {
-      throw new Error("Missing RPC_URL env var");
-    }
-    if (!TOKEN_ADDRESS) {
-      throw new Error("Missing PATRON_TOKEN_ADDRESS env var");
-    }
-    if (!TREASURY_PRIVATE_KEY) {
-      throw new Error("Missing TREASURY_PRIVATE_KEY env var");
+    if (!TOKEN_ADDRESS || !TREASURY_PRIVATE_KEY) {
+      console.error("Missing TOKEN_ADDRESS or TREASURY_PRIVATE_KEY env vars");
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "Server misconfigured" }),
+      };
     }
 
-    const DECIMALS = Number(DECIMALS_STR);
-    const PATRON_PER_USD = Number(PATRON_PER_USD_STR);
-
-    if (!Number.isFinite(DECIMALS)) {
-      throw new Error(`Invalid PATRON_DECIMALS: "${DECIMALS_STR}"`);
-    }
-    if (!Number.isFinite(PATRON_PER_USD) || PATRON_PER_USD <= 0) {
-      throw new Error(`Invalid PATRON_PER_USD: "${PATRON_PER_USD_STR}"`);
-    }
-
-    // ------------------------------
-    // Input validation
-    // ------------------------------
-    if (!address || !ethers.isAddress(address)) {
+    // Basic validation
+    if (!address || !isAddress(address)) {
       return {
         statusCode: 400,
         body: JSON.stringify({ error: "Invalid address" }),
@@ -55,38 +67,47 @@ exports.handler = async (event) => {
     }
 
     const usdNum = Number(usdAmount);
-    if (!Number.isFinite(usdNum) || usdNum <= 0) {
+    if (!usdNum || usdNum <= 0) {
       return {
         statusCode: 400,
         body: JSON.stringify({ error: "Invalid usdAmount" }),
       };
     }
 
-    // 1 USD = 1 PATRON (as requested)
+    if (!PATRON_PER_USD || PATRON_PER_USD <= 0) {
+      console.error("Invalid PATRON_PER_USD env value:", PATRON_PER_USD);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "Server misconfigured" }),
+      };
+    }
+
+    // 1 USD = PATRON_PER_USD tokens (you’ve set this to 1)
     const patronAmount = usdNum * PATRON_PER_USD;
-    const amountWei = ethers.parseUnits(patronAmount.toString(), DECIMALS);
+    const amountWei = parseUnits(String(patronAmount), DECIMALS);
 
-    console.log(
-      `Minting ${patronAmount} PATRON (${amountWei.toString()} wei) to ${address}`,
-      paymentTxHash ? `for payment tx ${paymentTxHash}` : ""
-    );
-
-    // ------------------------------
-    // Ethers / contract
-    // ------------------------------
-    const provider = new ethers.JsonRpcProvider(RPC_URL);
+    const provider = getProvider(RPC_URL);
     const signer = new ethers.Wallet(TREASURY_PRIVATE_KEY, provider);
 
+    // Minimal ABI – we only need transfer() for treasury distribution
     const patronAbi = [
-      "function mint(address to, uint256 amount) public",
+      "function transfer(address to, uint256 amount) public returns (bool)"
     ];
 
     const patron = new ethers.Contract(TOKEN_ADDRESS, patronAbi, signer);
 
-    const tx = await patron.mint(address, amountWei);
-    console.log("Mint tx sent:", tx.hash);
+    const paymentRef =
+      paymentTxHash || checkout?.id || checkout?.transactionId || null;
+
+    console.log(
+      `Transferring ${patronAmount} PATRON from treasury ${signer.address} to ${address}` +
+        (paymentRef ? ` for payment ref ${paymentRef}` : "")
+    );
+
+    const tx = await patron.transfer(address, amountWei);
     const receipt = await tx.wait();
-    console.log("Mint tx mined:", receipt.transactionHash);
+
+    console.log("Transfer tx mined:", receipt.transactionHash);
 
     return {
       statusCode: 200,
@@ -96,18 +117,16 @@ exports.handler = async (event) => {
         usdAmount,
         patronAmount,
         mintedAmountHuman: `${patronAmount} PATRON`,
+        fromTreasury: signer.address,
         txHash: receipt.transactionHash,
-        checkout,
-        paymentTxHash: paymentTxHash || null,
+        paymentRef,
       }),
     };
   } catch (err) {
-    console.error("Mint error:", err);
+    console.error("Mint/transfer error:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({
-        error: err.message || "Mint failed",
-      }),
+      body: JSON.stringify({ error: "Mint failed" }),
     };
   }
 };

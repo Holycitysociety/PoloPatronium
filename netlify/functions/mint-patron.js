@@ -5,7 +5,6 @@ const { ethers } = require("ethers");
 const ERC20_ABI = [
   "function transfer(address to, uint256 amount) public returns (bool)",
   "function balanceOf(address owner) public view returns (uint256)",
-  "function decimals() public view returns (uint8)",
 ];
 
 exports.handler = async (event) => {
@@ -18,12 +17,20 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body || "{}");
-    const { address, usdAmount, paymentTxHash } = body || {};
+    // align with what your frontend actually sends:
+    // { address, usdAmount, checkout: { id, amountPaid, currency } }
+    const { address, usdAmount, checkout } = body || {};
+    const paymentTxHash = checkout?.id;
 
     const RPC_URL = process.env.RPC_URL;
     const TOKEN_ADDRESS = process.env.PATRON_TOKEN_ADDRESS;
     const TREASURY_PRIVATE_KEY = process.env.TREASURY_PRIVATE_KEY;
+
+    // DECIMALS: must match your token (likely 18)
     const DECIMALS = Number(process.env.PATRON_DECIMALS || "18");
+
+    // 🔑 1 PATRON = 1 USD by default
+    // If PATRON_PER_USD is not set, this falls back to 1:1.
     const PATRON_PER_USD = Number(process.env.PATRON_PER_USD || "1");
 
     // ---- Basic validation ----
@@ -55,7 +62,7 @@ exports.handler = async (event) => {
     }
 
     // ---- Compute token amount ----
-    // Simple mapping: 1 USD = PATRON_PER_USD whole tokens
+    // 1 USD = PATRON_PER_USD PATRON (with your mapping, this is 1:1)
     const patronAmount = usdNum * PATRON_PER_USD;
     const amountWei = ethers.parseUnits(String(patronAmount), DECIMALS);
 
@@ -70,7 +77,7 @@ exports.handler = async (event) => {
 
     const patron = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI, signer);
 
-    // Optional: sanity-check treasury balance
+    // Optional sanity check: ensure treasury has enough PATRON
     const treasuryAddress = await signer.getAddress();
     const treasuryBal = await patron.balanceOf(treasuryAddress);
 

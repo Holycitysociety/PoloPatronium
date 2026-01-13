@@ -1,6 +1,13 @@
 // netlify/functions/mint-patron.js
 const { ethers } = require("ethers");
 
+// Minimal ERC-20 ABI for transfer-based distribution
+const ERC20_ABI = [
+  "function transfer(address to, uint256 amount) public returns (bool)",
+  "function balanceOf(address owner) public view returns (uint256)",
+  "function decimals() public view returns (uint8)",
+];
+
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return {
@@ -11,7 +18,7 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body || "{}");
-    const { address, usdAmount, paymentTxHash } = body;
+    const { address, usdAmount, paymentTxHash } = body || {};
 
     const RPC_URL = process.env.RPC_URL;
     const TOKEN_ADDRESS = process.env.PATRON_TOKEN_ADDRESS;
@@ -19,6 +26,7 @@ exports.handler = async (event) => {
     const DECIMALS = Number(process.env.PATRON_DECIMALS || "18");
     const PATRON_PER_USD = Number(process.env.PATRON_PER_USD || "1");
 
+    // ---- Basic validation ----
     if (!address || !ethers.isAddress(address)) {
       return {
         statusCode: 400,
@@ -34,33 +42,57 @@ exports.handler = async (event) => {
       };
     }
 
-    // Simple mapping: 1 USD = 1 PATRON (tunable)
+    if (!RPC_URL || !TOKEN_ADDRESS || !TREASURY_PRIVATE_KEY) {
+      console.error("Missing env vars", {
+        RPC_URL: !!RPC_URL,
+        TOKEN_ADDRESS: !!TOKEN_ADDRESS,
+        TREASURY_PRIVATE_KEY: !!TREASURY_PRIVATE_KEY,
+      });
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "Server misconfigured" }),
+      };
+    }
+
+    // ---- Compute token amount ----
+    // Simple mapping: 1 USD = PATRON_PER_USD whole tokens
     const patronAmount = usdNum * PATRON_PER_USD;
     const amountWei = ethers.parseUnits(String(patronAmount), DECIMALS);
 
     console.log(
-      `Minting ${patronAmount} PATRON to ${address}`,
+      `Sending ${patronAmount} PATRON to ${address} (${amountWei.toString()} base units)`,
       paymentTxHash ? `for payment tx ${paymentTxHash}` : ""
     );
 
+    // ---- Provider + signer ----
     const provider = new ethers.JsonRpcProvider(RPC_URL);
     const signer = new ethers.Wallet(TREASURY_PRIVATE_KEY, provider);
 
-    // Minimal ABI – adjust if your contract uses a different mint function
-    const patronAbi = [
-      "function mint(address to, uint256 amount) public",
-      "function transfer(address to, uint256 amount) public returns (bool)",
-    ];
+    const patron = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI, signer);
 
-    const patron = new ethers.Contract(TOKEN_ADDRESS, patronAbi, signer);
+    // Optional: sanity-check treasury balance
+    const treasuryAddress = await signer.getAddress();
+    const treasuryBal = await patron.balanceOf(treasuryAddress);
 
-    // If this signer can mint:
-    const tx = await patron.mint(address, amountWei);
+    if (treasuryBal < amountWei) {
+      console.error("Insufficient PATRON in treasury", {
+        treasury: treasuryAddress,
+        treasuryBal: treasuryBal.toString(),
+        needed: amountWei.toString(),
+      });
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          error: "Treasury lacks sufficient PATRON to fulfill purchase",
+        }),
+      };
+    }
 
-    // If instead you only transfer pre-minted tokens, use:
-    // const tx = await patron.transfer(address, amountWei);
-
+    // ---- Transfer PATRON from treasury/admin to buyer ----
+    const tx = await patron.transfer(address, amountWei);
+    console.log("PATRON transfer tx sent:", tx.hash);
     const receipt = await tx.wait();
+    console.log("PATRON transfer confirmed");
 
     return {
       statusCode: 200,
@@ -74,10 +106,13 @@ exports.handler = async (event) => {
       }),
     };
   } catch (err) {
-    console.error("Mint error:", err);
+    console.error("Mint/transfer error:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Mint failed" }),
+      body: JSON.stringify({
+        error: "Mint/transfer failed",
+        message: err?.message || String(err),
+      }),
     };
   }
 };

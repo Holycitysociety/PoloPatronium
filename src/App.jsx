@@ -131,22 +131,13 @@ export default function App() {
     tokenAddress: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
   });
 
-  // PATRON — now with refetch handle
-  const {
-    data: patronBalance,
-    refetch: refetchPatronBalance,
-  } = useWalletBalance(
-    {
-      address: account?.address,
-      chain: BASE,
-      client,
-      tokenAddress: "0xD766a771887fFB6c528434d5710B406313CAe03A",
-    },
-    {
-      // only try when we actually have an address
-      enabled: !!account?.address,
-    }
-  );
+  // PATRON
+  const { data: patronBalance } = useWalletBalance({
+    address: account?.address,
+    chain: BASE,
+    client,
+    tokenAddress: "0xD766a771887fFB6c528434d5710B406313CAe03A",
+  });
 
   const openWallet = () => setIsWalletOpen(true);
   const closeWallet = () => setIsWalletOpen(false);
@@ -210,15 +201,6 @@ export default function App() {
       }
 
       console.log("mint-patron success:", data);
-
-      // 🔄 Immediately refresh Patronium balance after successful mint
-      if (typeof refetchPatronBalance === "function") {
-        try {
-          await refetchPatronBalance();
-        } catch (e) {
-          console.error("Error refetching Patron balance:", e);
-        }
-      }
 
       alert(
         "Thank you — your patronage payment was received.\n\n" +

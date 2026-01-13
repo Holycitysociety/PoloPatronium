@@ -7,6 +7,7 @@ import {
   useActiveWallet,
   useDisconnect,
   useWalletBalance,
+  useInvalidateWalletBalances, // ✅ NEW
   darkTheme,
 } from "thirdweb/react";
 import { createThirdwebClient, defineChain } from "thirdweb";
@@ -110,6 +111,8 @@ export default function App() {
   const { disconnect } = useDisconnect();
   const isConnected = !!account;
 
+  const invalidateBalances = useInvalidateWalletBalances(); // ✅ NEW
+
   const walletScrollRef = useRef(null);
 
   // Roadmap section – used as scroll trigger
@@ -201,6 +204,14 @@ export default function App() {
       }
 
       console.log("mint-patron success:", data);
+
+      // ✅ Force all balances (including PATRON) to refresh for this wallet
+      if (account?.address) {
+        invalidateBalances({
+          address: account.address,
+          chain: BASE,
+        });
+      }
 
       alert(
         "Thank you — your patronage payment was received.\n\n" +

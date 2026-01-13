@@ -1,13 +1,13 @@
 // netlify/functions/mint-patron.js
 const { ethers } = require("ethers");
 
-// Minimal ERC-20 ABI for transfer-based distribution
+// Minimal ERC-20 ABI for transfer-based payouts
 const ERC20_ABI = [
   "function transfer(address to, uint256 amount) public returns (bool)",
-  "function balanceOf(address owner) public view returns (uint256)",
 ];
 
 exports.handler = async (event) => {
+  // Only allow POST
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -17,23 +17,22 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body || "{}");
-    // align with what your frontend actually sends:
-    // { address, usdAmount, checkout: { id, amountPaid, currency } }
+
+    // Frontend sends: { address, usdAmount, checkout: { id, amountPaid, currency } }
     const { address, usdAmount, checkout } = body || {};
-    const paymentTxHash = checkout?.id;
+    const paymentTxId = checkout?.id;
 
     const RPC_URL = process.env.RPC_URL;
     const TOKEN_ADDRESS = process.env.PATRON_TOKEN_ADDRESS;
     const TREASURY_PRIVATE_KEY = process.env.TREASURY_PRIVATE_KEY;
 
-    // DECIMALS: must match your token (likely 18)
+    // Must match your PATRON token decimals (likely 18)
     const DECIMALS = Number(process.env.PATRON_DECIMALS || "18");
 
     // 🔑 1 PATRON = 1 USD by default
-    // If PATRON_PER_USD is not set, this falls back to 1:1.
     const PATRON_PER_USD = Number(process.env.PATRON_PER_USD || "1");
 
-    // ---- Basic validation ----
+    // -------- Validation --------
     if (!address || !ethers.isAddress(address)) {
       return {
         statusCode: 400,
@@ -61,45 +60,34 @@ exports.handler = async (event) => {
       };
     }
 
-    // ---- Compute token amount ----
-    // 1 USD = PATRON_PER_USD PATRON (with your mapping, this is 1:1)
-    const patronAmount = usdNum * PATRON_PER_USD;
+    // -------- Compute amount: 1 USD = 1 PATRON --------
+    const patronAmount = usdNum * PATRON_PER_USD; // with default, 1 USD = 1 PATRON
     const amountWei = ethers.parseUnits(String(patronAmount), DECIMALS);
 
     console.log(
-      `Sending ${patronAmount} PATRON to ${address} (${amountWei.toString()} base units)`,
-      paymentTxHash ? `for payment tx ${paymentTxHash}` : ""
+      `Attempting PATRON transfer`,
+      JSON.stringify({
+        to: address,
+        usdAmount: usdNum,
+        patronAmount,
+        amountWei: amountWei.toString(),
+        paymentTxId,
+      })
     );
 
-    // ---- Provider + signer ----
+    // -------- Provider + signer --------
     const provider = new ethers.JsonRpcProvider(RPC_URL);
     const signer = new ethers.Wallet(TREASURY_PRIVATE_KEY, provider);
 
     const patron = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI, signer);
 
-    // Optional sanity check: ensure treasury has enough PATRON
-    const treasuryAddress = await signer.getAddress();
-    const treasuryBal = await patron.balanceOf(treasuryAddress);
-
-    if (treasuryBal < amountWei) {
-      console.error("Insufficient PATRON in treasury", {
-        treasury: treasuryAddress,
-        treasuryBal: treasuryBal.toString(),
-        needed: amountWei.toString(),
-      });
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          error: "Treasury lacks sufficient PATRON to fulfill purchase",
-        }),
-      };
-    }
-
-    // ---- Transfer PATRON from treasury/admin to buyer ----
+    // ❗ This will succeed ONLY if the signer wallet actually holds enough PATRON
+    // and TOKEN_ADDRESS is the correct ERC-20 contract.
     const tx = await patron.transfer(address, amountWei);
     console.log("PATRON transfer tx sent:", tx.hash);
+
     const receipt = await tx.wait();
-    console.log("PATRON transfer confirmed");
+    console.log("PATRON transfer confirmed:", receipt.transactionHash);
 
     return {
       statusCode: 200,

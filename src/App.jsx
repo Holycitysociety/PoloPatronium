@@ -8,7 +8,6 @@ import {
   useDisconnect,
   useWalletBalance,
   darkTheme,
-  useInvalidateBalances,        // 👈 NEW
 } from "thirdweb/react";
 import { createThirdwebClient, defineChain } from "thirdweb";
 import { inAppWallet } from "thirdweb/wallets";
@@ -117,9 +116,6 @@ export default function App() {
   const roadmapGateRef = useRef(null);
   const [hasTriggeredGate, setHasTriggeredGate] = useState(false);
 
-  // ✅ balance invalidator from thirdweb
-  const invalidateBalances = useInvalidateBalances();
-
   // Native ETH on Base (gas)
   const { data: baseBalance } = useWalletBalance({
     address: account?.address,
@@ -205,16 +201,6 @@ export default function App() {
       }
 
       console.log("mint-patron success:", data);
-
-      // 🔄 Ask thirdweb to re-fetch this wallet's balances on Base
-      try {
-        invalidateBalances({
-          address: account.address,
-          chainId: BASE.id,
-        });
-      } catch (e) {
-        console.error("Error invalidating balances:", e);
-      }
 
       alert(
         "Thank you — your patronage payment was received.\n\n" +
@@ -679,7 +665,7 @@ export default function App() {
                       client={client}
                       name={"POLO PATRONIUM"}
                       description={
-                        "U S P P A PATRONAGE TOKEN · 7̶7̶7̶ · COWBOY POLO CIRCUIT · THE POLO WAY · CHARLESTON POLO"
+                        "USPPA PATRONAGE UTILITY TOKEN · THREE SEVENS 7̶7̶7̶ REMUDA · COWBOY POLO CIRCUIT · THE POLO WAY · CHARLESTON POLO"
                       }
                       currency={"USD"}
                       chain={BASE}

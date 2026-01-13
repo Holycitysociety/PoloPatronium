@@ -8,6 +8,7 @@ import {
   useDisconnect,
   useWalletBalance,
   darkTheme,
+  useInvalidateBalances,        // 👈 NEW
 } from "thirdweb/react";
 import { createThirdwebClient, defineChain } from "thirdweb";
 import { inAppWallet } from "thirdweb/wallets";
@@ -116,13 +117,8 @@ export default function App() {
   const roadmapGateRef = useRef(null);
   const [hasTriggeredGate, setHasTriggeredGate] = useState(false);
 
-  // Local delta so Patron balance updates instantly after mint
-  const [localPatronDelta, setLocalPatronDelta] = useState(0);
-
-  // Reset local delta whenever the connected address changes
-  useEffect(() => {
-    setLocalPatronDelta(0);
-  }, [account?.address]);
+  // ✅ balance invalidator from thirdweb
+  const invalidateBalances = useInvalidateBalances();
 
   // Native ETH on Base (gas)
   const { data: baseBalance } = useWalletBalance({
@@ -146,16 +142,6 @@ export default function App() {
     client,
     tokenAddress: "0xD766a771887fFB6c528434d5710B406313CAe03A",
   });
-
-  // Derived display value for PATRON balance (on-chain + local delta)
-  const patronDisplayValue = (() => {
-    const baseVal = Number(patronBalance?.displayValue || "0");
-    if (Number.isNaN(baseVal)) {
-      return patronBalance?.displayValue || "0";
-    }
-    const total = baseVal + localPatronDelta;
-    return Number.isFinite(total) ? String(total) : String(baseVal);
-  })();
 
   const openWallet = () => setIsWalletOpen(true);
   const closeWallet = () => setIsWalletOpen(false);
@@ -220,8 +206,15 @@ export default function App() {
 
       console.log("mint-patron success:", data);
 
-      // 🔄 Optimistically bump the local Patron balance so UI updates immediately
-      setLocalPatronDelta((prev) => prev + Number(normalizedAmount || 0));
+      // 🔄 Ask thirdweb to re-fetch this wallet's balances on Base
+      try {
+        invalidateBalances({
+          address: account.address,
+          chainId: BASE.id,
+        });
+      } catch (e) {
+        console.error("Error invalidating balances:", e);
+      }
 
       alert(
         "Thank you — your patronage payment was received.\n\n" +
@@ -337,7 +330,7 @@ export default function App() {
             TOKEN SYMBOL &quot;PATRON&quot;
           </div>
 
-        <div className="hero-network">ON BASE NETWORK BY COINBASE</div>
+          <div className="hero-network">ON BASE NETWORK BY COINBASE</div>
           <div className="hero-contract">
             <span className="hero-contract-label">CA:</span>
             <span className="hero-contract-value">
@@ -600,7 +593,8 @@ export default function App() {
                         color: "#f5eedc",
                       }}
                     >
-                      {patronDisplayValue} {patronBalance?.symbol || "PATRON"}
+                      {patronBalance?.displayValue || "0"}{" "}
+                      {patronBalance?.symbol || "PATRON"}
                     </div>
                   </div>
 

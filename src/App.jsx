@@ -189,26 +189,29 @@ export default function App() {
         }),
       });
 
+      const data = await resp.json().catch(() => null);
+
       if (!resp.ok) {
-        const text = await resp.text();
-        console.error("mint-patron error:", text);
+        console.error("mint-patron error:", data || resp.statusText);
         alert(
-          "Payment succeeded, but we could not mint PATRON automatically.\n" +
-            "We’ll review your transaction and credit you manually if needed."
+          "Mint failed:\n" +
+            (data?.error || data?.message || resp.statusText || "Unknown error")
         );
         return;
       }
 
-      await resp.json();
+      console.log("mint-patron success:", data);
+
       alert(
         "Thank you — your patronage payment was received.\n\n" +
-          "PATRON is being credited to your wallet."
+          "PATRON is being credited to your wallet.\n\n" +
+          (data?.txHash ? `Tx: ${data.txHash}` : "")
       );
     } catch (err) {
       console.error("Error in handleCheckoutSuccess:", err);
       alert(
-        "Payment completed, but there was an error minting PATRON.\n" +
-          "We’ll review and fix this on our side."
+        "Payment completed, but there was an error calling the mint function.\n" +
+          (err?.message || String(err))
       );
     }
   };
@@ -666,7 +669,7 @@ export default function App() {
                       }
                       currency={"USD"}
                       chain={BASE}
-                      amount={normalizedAmount} // <-- now a clean string
+                      amount={normalizedAmount} // <-- clean string like "10"
                       tokenAddress={
                         "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
                       }

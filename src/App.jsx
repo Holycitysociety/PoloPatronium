@@ -72,6 +72,119 @@ const patronCheckoutTheme = darkTheme({
 });
 
 // ---------------------------------------------
+// Mini cross-site header (inline-styled)
+// ---------------------------------------------
+function GlobalHeaderNav() {
+  const [activeKey, setActiveKey] = useState("");
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const host = window.location.hostname.toLowerCase();
+
+    if (host.includes("polopatronium")) setActiveKey("patronium");
+    else if (host.includes("cowboypolo")) setActiveKey("cowboy");
+    else if (host.includes("uspolopatrons")) setActiveKey("usppa");
+    else if (host.includes("thepoloway")) setActiveKey("poloway");
+    else if (host.includes("charlestonpolo")) setActiveKey("charleston");
+  }, []);
+
+  const shellStyle = {
+    position: "sticky",
+    top: 0,
+    zIndex: 1000,
+    background:
+      "radial-gradient(circle at top, #15100b 0, #050505 48%, #000000 100%)",
+    borderBottom: "1px solid #3a2b16",
+  };
+
+  const navStyle = {
+    display: "flex",
+    gap: "16px",
+    padding: "6px 14px",
+    overflowX: "auto",
+  };
+
+  const linkBase = {
+    fontFamily:
+      '"Cinzel", "EB Garamond", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", serif',
+    fontSize: "10px",
+    letterSpacing: "0.18em",
+    textTransform: "uppercase",
+    textDecoration: "none",
+    whiteSpace: "nowrap",
+    color: "#9f8a64",
+    padding: "4px 6px 3px",
+    borderRadius: "999px",
+    border: "1px solid transparent",
+    transition:
+      "color 140ms ease, border-color 140ms ease, background 140ms ease",
+  };
+
+  const activeLink = {
+    color: "#111111",
+    background: "#e3bf72",
+    borderColor: "#e3bf72",
+  };
+
+  const hoverStyle = {
+    color: "#f5eedc",
+    borderColor: "#3a2b16",
+    background: "rgba(227, 191, 114, 0.06)",
+  };
+
+  const makeLinkProps = (key) => {
+    const isActive = activeKey === key;
+    const style = {
+      ...linkBase,
+      ...(isActive ? activeLink : null),
+    };
+
+    return {
+      style,
+      onMouseEnter: (e) => {
+        if (isActive) return;
+        Object.assign(e.currentTarget.style, hoverStyle);
+      },
+      onMouseLeave: (e) => {
+        if (isActive) {
+          Object.assign(e.currentTarget.style, activeLink);
+        } else {
+          Object.assign(e.currentTarget.style, linkBase);
+        }
+      },
+    };
+  };
+
+  return (
+    <div style={shellStyle}>
+      <nav style={navStyle}>
+        <a
+          href="https://polopatronium.com"
+          {...makeLinkProps("patronium")}
+        >
+          POLO&nbsp;PATRONIUM
+        </a>
+        <a href="https://cowboypolo.com" {...makeLinkProps("cowboy")}>
+          COWBOY&nbsp;POLO
+        </a>
+        <a href="https://uspolopatrons.org" {...makeLinkProps("usppa")}>
+          U.S. POLO&nbsp;PATRONS
+        </a>
+        <a href="https://thepoloway.com" {...makeLinkProps("poloway")}>
+          THE&nbsp;POLO&nbsp;WAY
+        </a>
+        <a
+          href="https://charlestonpolo.com"
+          {...makeLinkProps("charleston")}
+        >
+          CHARLESTON&nbsp;POLO
+        </a>
+      </nav>
+    </div>
+  );
+}
+
+// ---------------------------------------------
 // Simple error boundary for CheckoutWidget
 // ---------------------------------------------
 class CheckoutBoundary extends React.Component {
@@ -272,6 +385,9 @@ export default function App() {
 
   return (
     <div className="page">
+      {/* Global cross-site nav */}
+      <GlobalHeaderNav />
+
       {/* Top-right Patron Wallet button */}
       <header
         style={{

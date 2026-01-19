@@ -72,7 +72,7 @@ const patronCheckoutTheme = darkTheme({
 });
 
 // ---------------------------------------------
-// Mini cross-site header (inline-styled)
+// Mini cross-site header (file-tab style)
 // ---------------------------------------------
 function GlobalHeaderNav() {
   const [activeKey, setActiveKey] = useState("");
@@ -81,9 +81,9 @@ function GlobalHeaderNav() {
     if (typeof window === "undefined") return;
     const host = window.location.hostname.toLowerCase();
 
-    if (host.includes("polopatronium")) setActiveKey("patronium");
+    if (host.includes("uspolopatrons")) setActiveKey("usppa");
+    else if (host.includes("polopatronium")) setActiveKey("patronium");
     else if (host.includes("cowboypolo")) setActiveKey("cowboy");
-    else if (host.includes("uspolopatrons")) setActiveKey("usppa");
     else if (host.includes("thepoloway")) setActiveKey("poloway");
     else if (host.includes("charlestonpolo")) setActiveKey("charleston");
   }, []);
@@ -92,16 +92,18 @@ function GlobalHeaderNav() {
     position: "sticky",
     top: 0,
     zIndex: 1000,
-    background:
-      "radial-gradient(circle at top, #15100b 0, #050505 48%, #000000 100%)",
-    borderBottom: "1px solid #3a2b16",
+    backdropFilter: "blur(6px)",
+    WebkitBackdropFilter: "blur(6px)",
+    background: "rgba(0,0,0,0.28)", // translucent so hero shows through
+    borderBottom: "1px solid rgba(58,43,22,0.7)",
   };
 
   const navStyle = {
     display: "flex",
-    gap: "16px",
+    gap: "10px",
     padding: "6px 14px",
     overflowX: "auto",
+    alignItems: "flex-end",
   };
 
   const linkBase = {
@@ -113,44 +115,50 @@ function GlobalHeaderNav() {
     textDecoration: "none",
     whiteSpace: "nowrap",
     color: "#9f8a64",
-    padding: "4px 6px 3px",
-    borderRadius: "999px",
-    border: "1px solid transparent",
+    padding: "6px 10px 5px",
+    borderRadius: "10px 10px 0 0",
+    borderTop: "1px solid rgba(199,176,138,0.6)",
+    borderLeft: "1px solid rgba(199,176,138,0.6)",
+    borderRight: "1px solid rgba(199,176,138,0.6)",
+    borderBottom: "none",
+    background: "rgba(5,5,5,0.15)",
+    marginBottom: "-1px",
     transition:
-      "color 140ms ease, border-color 140ms ease, background 140ms ease",
+      "color 140ms ease, border-color 140ms ease, background 140ms ease, transform 140ms ease",
   };
 
   const activeLink = {
-    color: "#111111",
     background: "#e3bf72",
-    borderColor: "#e3bf72",
+    color: "#111111",
+    borderTop: "1px solid #e3bf72",
+    borderLeft: "1px solid #e3bf72",
+    borderRight: "1px solid #e3bf72",
+    transform: "translateY(1px)", // sits slightly “into” the content, like a folder tab
   };
 
   const hoverStyle = {
+    background: "rgba(227,191,114,0.16)",
     color: "#f5eedc",
-    borderColor: "#3a2b16",
-    background: "rgba(227, 191, 114, 0.06)",
+    borderTop: "1px solid rgba(227,191,114,0.7)",
+    borderLeft: "1px solid rgba(227,191,114,0.7)",
+    borderRight: "1px solid rgba(227,191,114,0.7)",
   };
 
   const makeLinkProps = (key) => {
     const isActive = activeKey === key;
-    const style = {
+    const baseStyle = {
       ...linkBase,
       ...(isActive ? activeLink : null),
     };
 
     return {
-      style,
+      style: baseStyle,
       onMouseEnter: (e) => {
         if (isActive) return;
-        Object.assign(e.currentTarget.style, hoverStyle);
+        Object.assign(e.currentTarget.style, baseStyle, hoverStyle);
       },
       onMouseLeave: (e) => {
-        if (isActive) {
-          Object.assign(e.currentTarget.style, activeLink);
-        } else {
-          Object.assign(e.currentTarget.style, linkBase);
-        }
+        Object.assign(e.currentTarget.style, baseStyle);
       },
     };
   };
@@ -158,6 +166,9 @@ function GlobalHeaderNav() {
   return (
     <div style={shellStyle}>
       <nav style={navStyle}>
+        <a href="https://uspolopatrons.org" {...makeLinkProps("usppa")}>
+          U.S. POLO&nbsp;PATRONS
+        </a>
         <a
           href="https://polopatronium.com"
           {...makeLinkProps("patronium")}
@@ -165,10 +176,7 @@ function GlobalHeaderNav() {
           POLO&nbsp;PATRONIUM
         </a>
         <a href="https://cowboypolo.com" {...makeLinkProps("cowboy")}>
-          COWBOY&nbsp;POLO
-        </a>
-        <a href="https://uspolopatrons.org" {...makeLinkProps("usppa")}>
-          U.S. POLO&nbsp;PATRONS
+          COWBOY&nbsp;POLO&nbsp;CIRCUIT
         </a>
         <a href="https://thepoloway.com" {...makeLinkProps("poloway")}>
           THE&nbsp;POLO&nbsp;WAY
@@ -855,7 +863,7 @@ export default function App() {
           </div>
 
           <div className="brand-grid">
-            {/* ✅ SWAPPED ORDER: COWBOY POLO CIRCUIT FIRST */}
+            {/* COWBOY POLO CIRCUIT */}
             <div className="logo-block">
               <div
                 className="logo-cowboy-polo-circuit"
@@ -874,7 +882,7 @@ export default function App() {
               </p>
             </div>
 
-            {/* ✅ SWAPPED ORDER: 777 WORDMARK SECOND */}
+            {/* THREE SEVENS REMUDA */}
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
                 {/* Central bar: THREE · 7̶7̶7̶ · SEVENS */}
@@ -959,7 +967,7 @@ export default function App() {
               </p>
             </div>
 
-            {/* THE POLO WAY with gold "THE" */}
+            {/* THE POLO WAY */}
             <div className="logo-block">
               <div className="logo-the-polo-way">
                 <span
@@ -979,7 +987,7 @@ export default function App() {
               </p>
             </div>
 
-            {/* CHARLESTON POLO with gold "CHARLESTON" + line */}
+            {/* CHARLESTON POLO */}
             <div className="logo-block">
               <div
                 className="logo-charleston-polo"

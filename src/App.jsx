@@ -1,4 +1,4 @@
-// App.jsx
+// src/App.jsx
 import React, { useEffect, useRef, useState } from "react";
 import {
   CheckoutWidget,
@@ -120,7 +120,7 @@ function GlobalHeaderNav() {
     zIndex: 1000,
     background: "transparent",
     borderBottom: "1px solid rgba(58,43,22,0.7)",
-    marginBottom: 12, // extra space before Patron Wallet header
+    marginBottom: 12,
   };
 
   const navStyle = {
@@ -146,7 +146,7 @@ function GlobalHeaderNav() {
     borderLeft: "1px solid rgba(199,176,138,0.5)",
     borderRight: "1px solid rgba(199,176,138,0.5)",
     borderBottom: "none",
-    background: "transparent", // transparent fill
+    background: "transparent",
     marginBottom: "-1px",
     transition:
       "color 140ms ease, border-color 140ms ease, transform 140ms ease",
@@ -189,10 +189,7 @@ function GlobalHeaderNav() {
         <a href="https://uspolopatrons.org" {...makeLinkProps("usppa")}>
           U.S. POLO&nbsp;PATRONS
         </a>
-        <a
-          href="https://polopatronium.com"
-          {...makeLinkProps("patronium")}
-        >
+        <a href="https://polopatronium.com" {...makeLinkProps("patronium")}>
           POLO&nbsp;PATRONIUM
         </a>
         <a href="https://cowboypolo.com" {...makeLinkProps("cowboy")}>
@@ -201,10 +198,7 @@ function GlobalHeaderNav() {
         <a href="https://thepoloway.com" {...makeLinkProps("poloway")}>
           THE&nbsp;POLO&nbsp;WAY
         </a>
-        <a
-          href="https://charlestonpolo.com"
-          {...makeLinkProps("charleston")}
-        >
+        <a href="https://charlestonpolo.com" {...makeLinkProps("charleston")}>
           CHARLESTON&nbsp;POLO
         </a>
       </nav>
@@ -286,49 +280,15 @@ export default function App() {
   const normalizedAmount =
     usdAmount && Number(usdAmount) > 0 ? String(Number(usdAmount)) : "1";
 
-  const handleCheckoutSuccess = async (result) => {
-    try {
-      if (!account?.address) return;
-
-      const resp = await fetch("/.netlify/functions/mint-patron", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          address: account.address,
-          usdAmount: normalizedAmount,
-          checkout: {
-            id: result?.id,
-            amountPaid: result?.amountPaid ?? normalizedAmount,
-            currency: result?.currency ?? "USD",
-          },
-        }),
-      });
-
-      const data = await resp.json().catch(() => null);
-
-      if (!resp.ok) {
-        console.error("mint-patron error:", data || resp.statusText);
-        alert(
-          "Mint failed:\n" +
-            (data?.error || data?.message || resp.statusText || "Unknown error")
-        );
-        return;
-      }
-
-      console.log("mint-patron success:", data);
-
-      alert(
-        "Thank you — your patronage payment was received.\n\n" +
-          "PATRON is being credited to your wallet.\n\n" +
-          (data?.txHash ? `Tx: ${data.txHash}` : "")
-      );
-    } catch (err) {
-      console.error("Error in handleCheckoutSuccess:", err);
-      alert(
-        "Payment completed, but there was an error calling the mint function.\n" +
-          (err?.message || String(err))
-      );
-    }
+  // ✅ Now we rely entirely on the thirdweb webhook for fulfillment
+  const handleCheckoutSuccess = (result) => {
+    console.log("Checkout success:", result);
+    alert(
+      "Thank you — your payment was received.\n\n" +
+        "PATRON will be credited to your Patron Wallet automatically " +
+        "once the payment is confirmed on-chain.\n\n" +
+        "If you do not see it shortly, contact support with your wallet address."
+    );
   };
 
   // Lock background scroll when modal open
@@ -396,7 +356,7 @@ export default function App() {
           display: "flex",
           justifyContent: "flex-end",
           alignItems: "center",
-          padding: "12px 0", // slightly more space below tabs
+          padding: "12px 0",
         }}
       >
         <button
@@ -448,7 +408,6 @@ export default function App() {
             BUY PATRON
           </button>
 
-          {/* ✅ Opens email draft */}
           <a
             className="btn btn-outline"
             href={
@@ -524,7 +483,6 @@ export default function App() {
                   gap: 3,
                 }}
               >
-                {/* Line 1: USPPA (wide spaced) */}
                 <div
                   style={{
                     fontSize: "10px",
@@ -537,7 +495,6 @@ export default function App() {
                   U&nbsp;S&nbsp;P&nbsp;P&nbsp;A
                 </div>
 
-                {/* Line 2: Polo Patronium */}
                 <div
                   style={{
                     fontSize: "15px",
@@ -550,7 +507,6 @@ export default function App() {
                   Polo Patronium
                 </div>
 
-                {/* Line 3: Patron Wallet */}
                 <div
                   style={{
                     fontSize: "12px",
@@ -787,13 +743,15 @@ export default function App() {
                       }
                       currency={"USD"}
                       chain={BASE}
-                      amount={normalizedAmount} // <-- clean string like "10"
+                      amount={normalizedAmount}
                       tokenAddress={
                         "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
-                      }
+                      } // USDC on Base
                       seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
                       buttonLabel={"BUY PATRON (USDC on Base)"}
                       theme={patronCheckoutTheme}
+                      // CRITICAL: pass buyer wallet through to the webhook
+                      purchaseData={{ walletAddress: account?.address }}
                       onSuccess={handleCheckoutSuccess}
                       onError={(err) => {
                         console.error("Checkout error:", err);
@@ -812,7 +770,6 @@ export default function App() {
       <main>
         {/* Roadmap (scroll trigger) */}
         <section className="brand-row" id="brands" ref={roadmapGateRef}>
-          {/* INITIATIVE ROADMAP as a proper wordmark */}
           <div
             className="roadmap-title"
             style={{
@@ -841,8 +798,6 @@ export default function App() {
             >
               ROADMAP
             </div>
-
-            {/* subtle spacer / rule under the wordmark */}
             <div
               style={{
                 marginTop: "10px",
@@ -857,7 +812,6 @@ export default function App() {
           </div>
 
           <div className="brand-grid">
-            {/* ✅ SWAPPED ORDER: COWBOY POLO CIRCUIT FIRST */}
             <div className="logo-block">
               <div
                 className="logo-cowboy-polo-circuit"
@@ -876,10 +830,8 @@ export default function App() {
               </p>
             </div>
 
-            {/* ✅ SWAPPED ORDER: 777 WORDMARK SECOND */}
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
-                {/* Central bar: THREE · 7̶7̶7̶ · SEVENS */}
                 <div
                   style={{
                     display: "inline-flex",
@@ -939,7 +891,6 @@ export default function App() {
                   </span>
                 </div>
 
-                {/* Base caption: STRING REMUDA */}
                 <div
                   style={{
                     marginTop: "6px",
@@ -961,7 +912,6 @@ export default function App() {
               </p>
             </div>
 
-            {/* THE POLO WAY with gold "THE" */}
             <div className="logo-block">
               <div className="logo-the-polo-way">
                 <span
@@ -981,7 +931,6 @@ export default function App() {
               </p>
             </div>
 
-            {/* CHARLESTON POLO with gold "CHARLESTON" + line */}
             <div className="logo-block">
               <div
                 className="logo-charleston-polo"
@@ -1092,7 +1041,8 @@ export default function App() {
               </div>
             )}
 
-            {/* Actual content (visible only when connected, but always rendered) */}
+            <div aria-hidden={!isConnected && true}>
+                {/* Actual content (visible only when connected, but always rendered) */}
             <div aria-hidden={!isConnected && true}>
               <div className="copy-block">
                 <h3>Patronium — Polo Patronage Perfected</h3>

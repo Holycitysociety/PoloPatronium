@@ -276,11 +276,11 @@ export default function App() {
     }
   };
 
-  // ✅ CheckoutWidget `amount` expects a CLEAN STRING (e.g. "10")
+  // CheckoutWidget `amount` expects a CLEAN STRING (e.g. "10")
   const normalizedAmount =
     usdAmount && Number(usdAmount) > 0 ? String(Number(usdAmount)) : "1";
 
-  // ✅ Now we rely entirely on the thirdweb webhook for fulfillment
+  // We rely entirely on the thirdweb webhook for fulfillment
   const handleCheckoutSuccess = (result) => {
     console.log("Checkout success:", result);
     alert(
@@ -1041,8 +1041,7 @@ export default function App() {
               </div>
             )}
 
-            <div aria-hidden={!isConnected && true}>
-                {/* Actual content (visible only when connected, but always rendered) */}
+            {/* Actual content (visible only when connected, but always rendered) */}
             <div aria-hidden={!isConnected && true}>
               <div className="copy-block">
                 <h3>Patronium — Polo Patronage Perfected</h3>

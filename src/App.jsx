@@ -10,7 +10,6 @@ import {
 } from "thirdweb/react";
 import { createThirdwebClient, defineChain } from "thirdweb";
 import { inAppWallet } from "thirdweb/wallets";
-import "./App.css";
 
 // ---------------------------------------------
 // Thirdweb client + chain

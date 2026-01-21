@@ -1,7 +1,7 @@
 // App.jsx
 import React, { useEffect, useRef, useState } from "react";
 import {
-  CheckoutWidget,
+  // CheckoutWidget, // removed
   ConnectEmbed,
   useActiveAccount,
   useActiveWallet,
@@ -31,7 +31,7 @@ const wallets = [
 ];
 
 // ---------------------------------------------
-// Themed checkout to match main page
+// Themed checkout / wallet to match main page
 // ---------------------------------------------
 const patronCheckoutTheme = darkTheme({
   fontFamily:
@@ -72,30 +72,30 @@ const patronCheckoutTheme = darkTheme({
 });
 
 // ---------------------------------------------
-// Simple error boundary for CheckoutWidget
+// (CheckoutBoundary removed – no CheckoutWidget)
 // ---------------------------------------------
-class CheckoutBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-  componentDidCatch(error, info) {
-    console.error("CheckoutWidget crashed:", error, info);
-  }
-  render() {
-    if (this.state.hasError) {
-      return (
-        <p style={{ color: "#e3bf72", marginTop: "12px" }}>
-          Checkout temporarily unavailable. Please try again later.
-        </p>
-      );
-    }
-    return this.props.children;
-  }
-}
+// class CheckoutBoundary extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = { hasError: false };
+//   }
+//   static getDerivedStateFromError() {
+//     return { hasError: true };
+//   }
+//   componentDidCatch(error, info) {
+//     console.error("CheckoutWidget crashed:", error, info);
+//   }
+//   render() {
+//     if (this.state.hasError) {
+//       return (
+//         <p style={{ color: "#e3bf72", marginTop: "12px" }}>
+//           Checkout temporarily unavailable. Please try again later.
+//         </p>
+//       );
+//     }
+//     return this.props.children;
+//   }
+// }
 
 // ---------------------------------------------
 // Main App
@@ -103,7 +103,7 @@ class CheckoutBoundary extends React.Component {
 export default function App() {
   const year = new Date().getFullYear();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
-  const [usdAmount, setUsdAmount] = useState("1");
+  // const [usdAmount, setUsdAmount] = useState("1"); // no longer needed
 
   const account = useActiveAccount();
   const activeWallet = useActiveWallet();
@@ -167,54 +167,54 @@ export default function App() {
     }
   };
 
-  // ✅ CheckoutWidget `amount` expects a CLEAN STRING (e.g. "10")
-  const normalizedAmount =
-    usdAmount && Number(usdAmount) > 0 ? String(Number(usdAmount)) : "1";
+  // // ✅ CheckoutWidget `amount` expects a CLEAN STRING (e.g. "10")
+  // const normalizedAmount =
+  //   usdAmount && Number(usdAmount) > 0 ? String(Number(usdAmount)) : "1";
 
-  const handleCheckoutSuccess = async (result) => {
-    try {
-      if (!account?.address) return;
-
-      const resp = await fetch("/.netlify/functions/mint-patron", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          address: account.address,
-          usdAmount: normalizedAmount,
-          checkout: {
-            id: result?.id,
-            amountPaid: result?.amountPaid ?? normalizedAmount,
-            currency: result?.currency ?? "USD",
-          },
-        }),
-      });
-
-      const data = await resp.json().catch(() => null);
-
-      if (!resp.ok) {
-        console.error("mint-patron error:", data || resp.statusText);
-        alert(
-          "Mint failed:\n" +
-            (data?.error || data?.message || resp.statusText || "Unknown error")
-        );
-        return;
-      }
-
-      console.log("mint-patron success:", data);
-
-      alert(
-        "Thank you — your patronage payment was received.\n\n" +
-          "PATRON is being credited to your wallet.\n\n" +
-          (data?.txHash ? `Tx: ${data.txHash}` : "")
-      );
-    } catch (err) {
-      console.error("Error in handleCheckoutSuccess:", err);
-      alert(
-        "Payment completed, but there was an error calling the mint function.\n" +
-          (err?.message || String(err))
-      );
-    }
-  };
+  // const handleCheckoutSuccess = async (result) => {
+  //   try {
+  //     if (!account?.address) return;
+  //
+  //     const resp = await fetch("/.netlify/functions/mint-patron", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         address: account.address,
+  //         usdAmount: normalizedAmount,
+  //         checkout: {
+  //           id: result?.id,
+  //           amountPaid: result?.amountPaid ?? normalizedAmount,
+  //           currency: result?.currency ?? "USD",
+  //         },
+  //       }),
+  //     });
+  //
+  //     const data = await resp.json().catch(() => null);
+  //
+  //     if (!resp.ok) {
+  //       console.error("mint-patron error:", data || resp.statusText);
+  //       alert(
+  //         "Mint failed:\n" +
+  //           (data?.error || data?.message || resp.statusText || "Unknown error")
+  //       );
+  //       return;
+  //     }
+  //
+  //     console.log("mint-patron success:", data);
+  //
+  //     alert(
+  //       "Thank you — your patronage payment was received.\n\n" +
+  //         "PATRON is being credited to your wallet.\n\n" +
+  //         (data?.txHash ? `Tx: ${data.txHash}` : "")
+  //     );
+  //   } catch (err) {
+  //     console.error("Error in handleCheckoutSuccess:", err);
+  //     alert(
+  //       "Payment completed, but there was an error calling the mint function.\n" +
+  //         (err?.message || String(err))
+  //     );
+  //   }
+  // };
 
   // Lock background scroll when modal open
   useEffect(() => {
@@ -272,7 +272,7 @@ export default function App() {
 
   return (
     <div className="page">
-      {/* Top-right Patron Wallet button */}
+      {/* Top-right Sign In / Sign Up button */}
       <header
         style={{
           display: "flex",
@@ -286,7 +286,7 @@ export default function App() {
           style={{ minWidth: "auto", padding: "6px 16px" }}
           onClick={openWallet}
         >
-          PATRON WALLET
+          Sign In / Sign Up
         </button>
       </header>
 
@@ -584,107 +584,63 @@ export default function App() {
                     </div>
                   </div>
 
-                  <button
-                    className="btn btn-outline"
+                  {/* NEW: Buy PATRON button linking to CowboyPolo.com */}
+                  <div
                     style={{
-                      minWidth: "auto",
-                      padding: "6px 18px",
-                      fontSize: "11px",
-                      letterSpacing: "0.12em",
-                      textTransform: "uppercase",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 8,
+                      alignItems: "center",
+                      marginBottom: 10,
                     }}
-                    onClick={handleSignOut}
                   >
-                    Sign Out
-                  </button>
+                    <a
+                      className="btn btn-primary"
+                      href="https://cowboypolo.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        width: "100%",
+                        justifyContent: "center",
+                      }}
+                    >
+                      Buy PATRON at CowboyPolo.com
+                    </a>
+
+                    <button
+                      className="btn btn-outline"
+                      style={{
+                        minWidth: "auto",
+                        padding: "6px 18px",
+                        fontSize: "11px",
+                        letterSpacing: "0.12em",
+                        textTransform: "uppercase",
+                      }}
+                      onClick={handleSignOut}
+                    >
+                      Sign Out
+                    </button>
+                  </div>
                 </div>
               )}
 
-              {/* Amount + Checkout */}
+              {/* Amount + Checkout REMOVED */}
+              {/* 
               <div style={{ position: "relative" }}>
                 {!isConnected && (
-                  <button
-                    type="button"
-                    onClick={closeWallet}
-                    aria-label="Close Patron Wallet"
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      background: "rgba(0,0,0,0.68)",
-                      zIndex: 10,
-                      borderRadius: "12px",
-                      border: "none",
-                      padding: 0,
-                      cursor: "pointer",
-                    }}
-                  />
+                  <button ... />
                 )}
-
-                <div
-                  style={{
-                    opacity: !isConnected ? 0.75 : 1,
-                    pointerEvents: isConnected ? "auto" : "none",
-                    transition: "opacity 160ms ease",
-                  }}
-                >
-                  <div style={{ marginBottom: "12px" }}>
-                    <label
-                      style={{
-                        display: "block",
-                        fontSize: "10px",
-                        letterSpacing: "0.12em",
-                        textTransform: "uppercase",
-                        color: "#c7b08a",
-                        marginBottom: "6px",
-                      }}
-                    >
-                      Choose Your Patronage (USD)
-                    </label>
-                    <input
-                      type="number"
-                      min="1"
-                      step="1"
-                      value={usdAmount}
-                      onChange={(e) => setUsdAmount(e.target.value)}
-                      style={{
-                        width: "100%",
-                        padding: "10px 12px",
-                        borderRadius: "10px",
-                        border: "1px solid #3a2b16",
-                        background: "#050505",
-                        color: "#f5eedc",
-                        fontSize: "16px",
-                        outline: "none",
-                        boxShadow: "0 10px 30px rgba(0,0,0,0.55)",
-                      }}
-                    />
+                <div ...>
+                  <div>
+                    <label>Choose Your Patronage (USD)</label>
+                    <input ... />
                   </div>
-
                   <CheckoutBoundary>
-                    <CheckoutWidget
-                      client={client}
-                      name={"POLO PATRONIUM"}
-                      description={
-                        "USPPA PATRONAGE UTILITY TOKEN · THREE SEVENS 7̶7̶7̶ REMUDA · COWBOY POLO CIRCUIT · THE POLO WAY · CHARLESTON POLO"
-                      }
-                      currency={"USD"}
-                      chain={BASE}
-                      amount={normalizedAmount} // <-- clean string like "10"
-                      tokenAddress={
-                        "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
-                      }
-                      seller={"0xfee3c75691e8c10ed4246b10635b19bfff06ce16"}
-                      buttonLabel={"BUY PATRON (USDC on Base)"}
-                      theme={patronCheckoutTheme}
-                      onSuccess={handleCheckoutSuccess}
-                      onError={(err) => {
-                        console.error("Checkout error:", err);
-                        alert(err?.message || String(err));
-                      }}
-                    />
+                    <CheckoutWidget ... />
                   </CheckoutBoundary>
                 </div>
               </div>
+              */}
             </div>
           </div>
         </div>
@@ -739,7 +695,7 @@ export default function App() {
           </div>
 
           <div className="brand-grid">
-            {/* ✅ SWAPPED ORDER: COWBOY POLO CIRCUIT FIRST */}
+            {/* COWBOY POLO CIRCUIT */}
             <div className="logo-block">
               <div
                 className="logo-cowboy-polo-circuit"
@@ -758,7 +714,7 @@ export default function App() {
               </p>
             </div>
 
-            {/* ✅ SWAPPED ORDER: 777 WORDMARK SECOND */}
+            {/* THREE SEVENS REMUDA */}
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
                 {/* Central bar: THREE · 7̶7̶7̶ · SEVENS */}
@@ -843,7 +799,7 @@ export default function App() {
               </p>
             </div>
 
-            {/* THE POLO WAY with gold "THE" */}
+            {/* THE POLO WAY */}
             <div className="logo-block">
               <div className="logo-the-polo-way">
                 <span
@@ -863,7 +819,7 @@ export default function App() {
               </p>
             </div>
 
-            {/* CHARLESTON POLO with gold "CHARLESTON" + line */}
+            {/* CHARLESTON POLO */}
             <div className="logo-block">
               <div
                 className="logo-charleston-polo"

@@ -72,32 +72,6 @@ const patronCheckoutTheme = darkTheme({
 });
 
 // ---------------------------------------------
-// (CheckoutBoundary removed – no CheckoutWidget)
-// ---------------------------------------------
-// class CheckoutBoundary extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = { hasError: false };
-//   }
-//   static getDerivedStateFromError() {
-//     return { hasError: true };
-//   }
-//   componentDidCatch(error, info) {
-//     console.error("CheckoutWidget crashed:", error, info);
-//   }
-//   render() {
-//     if (this.state.hasError) {
-//       return (
-//         <p style={{ color: "#e3bf72", marginTop: "12px" }}>
-//           Checkout temporarily unavailable. Please try again later.
-//         </p>
-//       );
-//     }
-//     return this.props.children;
-//   }
-// }
-
-// ---------------------------------------------
 // Main App
 // ---------------------------------------------
 export default function App() {
@@ -142,8 +116,6 @@ export default function App() {
   const openWallet = () => setIsWalletOpen(true);
   const closeWallet = () => setIsWalletOpen(false);
 
-  const handleBuyPatron = () => openWallet();
-
   const handleSignOut = () => {
     if (!activeWallet || !disconnect) return;
     try {
@@ -166,55 +138,6 @@ export default function App() {
       console.error("Clipboard error:", err);
     }
   };
-
-  // // ✅ CheckoutWidget `amount` expects a CLEAN STRING (e.g. "10")
-  // const normalizedAmount =
-  //   usdAmount && Number(usdAmount) > 0 ? String(Number(usdAmount)) : "1";
-
-  // const handleCheckoutSuccess = async (result) => {
-  //   try {
-  //     if (!account?.address) return;
-  //
-  //     const resp = await fetch("/.netlify/functions/mint-patron", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({
-  //         address: account.address,
-  //         usdAmount: normalizedAmount,
-  //         checkout: {
-  //           id: result?.id,
-  //           amountPaid: result?.amountPaid ?? normalizedAmount,
-  //           currency: result?.currency ?? "USD",
-  //         },
-  //       }),
-  //     });
-  //
-  //     const data = await resp.json().catch(() => null);
-  //
-  //     if (!resp.ok) {
-  //       console.error("mint-patron error:", data || resp.statusText);
-  //       alert(
-  //         "Mint failed:\n" +
-  //           (data?.error || data?.message || resp.statusText || "Unknown error")
-  //       );
-  //       return;
-  //     }
-  //
-  //     console.log("mint-patron success:", data);
-  //
-  //     alert(
-  //       "Thank you — your patronage payment was received.\n\n" +
-  //         "PATRON is being credited to your wallet.\n\n" +
-  //         (data?.txHash ? `Tx: ${data.txHash}` : "")
-  //     );
-  //   } catch (err) {
-  //     console.error("Error in handleCheckoutSuccess:", err);
-  //     alert(
-  //       "Payment completed, but there was an error calling the mint function.\n" +
-  //         (err?.message || String(err))
-  //     );
-  //   }
-  // };
 
   // Lock background scroll when modal open
   useEffect(() => {
@@ -272,7 +195,7 @@ export default function App() {
 
   return (
     <div className="page">
-      {/* Top-right Sign In / Sign Up button */}
+      {/* Top-right Patron Wallet button */}
       <header
         style={{
           display: "flex",
@@ -286,7 +209,7 @@ export default function App() {
           style={{ minWidth: "auto", padding: "6px 16px" }}
           onClick={openWallet}
         >
-          Sign In / Sign Up
+          PATRON WALLET
         </button>
       </header>
 
@@ -326,11 +249,17 @@ export default function App() {
         </div>
 
         <div className="hero-actions">
-          <button className="btn btn-primary" onClick={handleBuyPatron}>
+          {/* BUY PATRON → direct link to CowboyPolo.com */}
+          <a
+            className="btn btn-primary"
+            href="https://cowboypolo.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             BUY PATRON
-          </button>
+          </a>
 
-          {/* ✅ Opens email draft */}
+          {/* Opens email draft */}
           <a
             className="btn btn-outline"
             href={
@@ -584,7 +513,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* NEW: Buy PATRON button linking to CowboyPolo.com */}
+                  {/* Buy PATRON link + Sign Out */}
                   <div
                     style={{
                       display: "flex",
@@ -624,23 +553,7 @@ export default function App() {
                 </div>
               )}
 
-              {/* Amount + Checkout REMOVED */}
-              {/* 
-              <div style={{ position: "relative" }}>
-                {!isConnected && (
-                  <button ... />
-                )}
-                <div ...>
-                  <div>
-                    <label>Choose Your Patronage (USD)</label>
-                    <input ... />
-                  </div>
-                  <CheckoutBoundary>
-                    <CheckoutWidget ... />
-                  </CheckoutBoundary>
-                </div>
-              </div>
-              */}
+              {/* Checkout / amount block removed */}
             </div>
           </div>
         </div>

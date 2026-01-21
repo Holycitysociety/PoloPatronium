@@ -1,7 +1,7 @@
 // App.jsx
 import React, { useEffect, useRef, useState } from "react";
 import {
-  // CheckoutWidget, // removed – no onsite buy flow here
+  // CheckoutWidget, // removed
   ConnectEmbed,
   useActiveAccount,
   useActiveWallet,
@@ -31,7 +31,7 @@ const wallets = [
 ];
 
 // ---------------------------------------------
-// Wallet theme to match main page
+// Themed checkout / wallet to match main page
 // ---------------------------------------------
 const patronCheckoutTheme = darkTheme({
   fontFamily:
@@ -77,6 +77,7 @@ const patronCheckoutTheme = darkTheme({
 export default function App() {
   const year = new Date().getFullYear();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
+  // const [usdAmount, setUsdAmount] = useState("1"); // no longer needed
 
   const account = useActiveAccount();
   const activeWallet = useActiveWallet();
@@ -88,40 +89,6 @@ export default function App() {
   // Roadmap section – used as scroll trigger
   const roadmapGateRef = useRef(null);
   const [hasTriggeredGate, setHasTriggeredGate] = useState(false);
-
-  // ---------- GLOBAL TAB MENU STATE ----------
-  const [activeSite, setActiveSite] = useState("");
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const host = window.location.hostname.toLowerCase();
-    if (host.includes("uspolopatrons")) setActiveSite("usppa");
-    else if (host.includes("polopatronium")) setActiveSite("patronium");
-    else if (host.includes("cowboypolo")) setActiveSite("cowboy");
-    else if (host.includes("thepoloway")) setActiveSite("poloway");
-    else if (host.includes("charlestonpolo")) setActiveSite("charleston");
-  }, []);
-
-  const navTabs = [
-    { id: "usppa", label: "USPPA", href: "https://uspolopatrons.org" },
-    {
-      id: "patronium",
-      label: "Polo Patronium",
-      href: "https://polopatronium.com",
-    },
-    {
-      id: "cowboy",
-      label: "Cowboy Polo Circuit",
-      href: "https://cowboypolo.com",
-    },
-    { id: "poloway", label: "The Polo Way", href: "https://thepoloway.com" },
-    {
-      id: "charleston",
-      label: "Charleston Polo",
-      href: "https://charlestonpolo.com",
-    },
-  ];
-  // ------------------------------------------
 
   // Native ETH on Base (gas)
   const { data: baseBalance } = useWalletBalance({
@@ -228,37 +195,6 @@ export default function App() {
 
   return (
     <div className="page">
-      {/* ---------- GLOBAL TAB STRIP (same as USPPA) ---------- */}
-      <div
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 9000,
-          padding: "6px 10px 0",
-          background: "transparent",
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
-        }}
-      >
-        <nav
-          aria-label="USPPA family sites"
-          className="site-tabs" // expects .site-tabs CSS (horizontal scroll + hidden scrollbar)
-        >
-          {navTabs.map((tab) => {
-            const isActive = tab.id === activeSite;
-            const cls =
-              "site-tab " +
-              (isActive ? "site-tab--active" : "site-tab--inactive");
-            return (
-              <a key={tab.id} href={tab.href} className={cls}>
-                {tab.label}
-              </a>
-            );
-          })}
-        </nav>
-      </div>
-      {/* ----------------------------------------------------- */}
-
       {/* Top-right Patron Wallet button */}
       <header
         style={{
@@ -617,7 +553,7 @@ export default function App() {
                 </div>
               )}
 
-              {/* No checkout widget / amount block here – purchase is offloaded to CowboyPolo.com */}
+              {/* Checkout / amount block removed */}
             </div>
           </div>
         </div>

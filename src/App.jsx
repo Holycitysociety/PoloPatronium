@@ -1,6 +1,7 @@
 // App.jsx
 import React, { useEffect, useRef, useState } from "react";
 import {
+  // CheckoutWidget,
   ConnectEmbed,
   useActiveAccount,
   useActiveWallet,
@@ -30,7 +31,7 @@ const wallets = [
 ];
 
 // ---------------------------------------------
-// Themed wallet to match main page
+// Themed checkout / wallet to match main page
 // ---------------------------------------------
 const patronCheckoutTheme = darkTheme({
   fontFamily:
@@ -75,9 +76,7 @@ const patronCheckoutTheme = darkTheme({
 // ---------------------------------------------
 export default function App() {
   const year = new Date().getFullYear();
-
   const [isWalletOpen, setIsWalletOpen] = useState(false);
-  const [activeSite, setActiveSite] = useState("");
 
   const account = useActiveAccount();
   const activeWallet = useActiveWallet();
@@ -85,8 +84,13 @@ export default function App() {
   const isConnected = !!account;
 
   const walletScrollRef = useRef(null);
+
+  // Roadmap section – used as scroll trigger
   const roadmapGateRef = useRef(null);
   const [hasTriggeredGate, setHasTriggeredGate] = useState(false);
+
+  // Shared site tab state
+  const [activeSite, setActiveSite] = useState("");
 
   // Native ETH on Base (gas)
   const { data: baseBalance } = useWalletBalance({
@@ -179,7 +183,7 @@ export default function App() {
       if (!el) return;
 
       const rect = el.getBoundingClientRect();
-      const triggerY = 96;
+      const triggerY = 96; // px from top of viewport
 
       if (rect.bottom <= triggerY) {
         setHasTriggeredGate(true);
@@ -222,527 +226,399 @@ export default function App() {
     },
   ];
 
-  // Base styles for the layout so the page still looks correct without external CSS
-  const pageStyle = {
-    minHeight: "100vh",
-    background: "#050505",
-    color: "#f5eedc",
-    fontFamily: '"EB Garamond", serif',
-    fontSize: 17,
-    lineHeight: 1.7,
-    WebkitFontSmoothing: "antialiased",
-  };
-
-  const heroTitleStyle = {
-    fontFamily: '"Cinzel", serif',
-    margin: "0 0 0.6em",
-    textAlign: "center",
-    textTransform: "uppercase",
-    letterSpacing: "0.24em",
-    fontSize: "1.7rem",
-  };
-
-  const heroHeaderStyle = {
-    padding: "0 22px 2.5rem",
-    maxWidth: 760,
-    margin: "0 auto",
-  };
-
-  const heroSymbolStyle = {
-    border: "1px solid #3a2b16",
-    borderRadius: 18,
-    padding: "14px 16px",
-    margin: "0 auto 16px",
-    maxWidth: 480,
-    textAlign: "center",
-    background:
-      "radial-gradient(circle at top, rgba(255,255,255,0.08), rgba(5,5,5,0.9))",
-    boxShadow: "0 18px 55px rgba(0,0,0,0.85)",
-  };
-
-  const heroSymbolMainStyle = {
-    fontFamily: '"Cinzel", serif',
-    fontSize: 12,
-    letterSpacing: "0.18em",
-    textTransform: "uppercase",
-    marginBottom: 8,
-    color: "#e3bf72",
-  };
-
-  const heroNetworkStyle = {
-    fontSize: 11,
-    letterSpacing: "0.2em",
-    textTransform: "uppercase",
-    color: "#c7b08a",
-    marginBottom: 6,
-  };
-
-  const heroContractStyle = {
-    fontSize: 11,
-    fontFamily: "monospace",
-    color: "#f5eedc",
-    wordBreak: "break-all",
-  };
-
-  const heroActionsRowStyle = {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    gap: 12,
-    marginTop: 12,
-  };
-
-  const btnBaseStyle = {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "8px 22px",
-    borderRadius: 999,
-    fontFamily: '"Cinzel", serif',
-    fontSize: 12,
-    letterSpacing: "0.16em",
-    textTransform: "uppercase",
-    border: "1px solid #e3bf72",
-    cursor: "pointer",
-    textDecoration: "none",
-    whiteSpace: "nowrap",
-  };
-
-  const btnPrimaryStyle = {
-    ...btnBaseStyle,
-    background: "#e3bf72",
-    color: "#181210",
-    boxShadow: "0 10px 35px rgba(0,0,0,0.7)",
-  };
-
-  const btnOutlineStyle = {
-    ...btnBaseStyle,
-    background: "transparent",
-    color: "#f5eedc",
-    boxShadow: "0 8px 26px rgba(0,0,0,0.65)",
-  };
-
-  const topHeaderShellStyle = {
-    textAlign: "center",
-    padding: "4.5rem 1.5rem 3rem",
-    background:
-      "radial-gradient(circle at top center, rgba(255,255,255,0.26) 0, rgba(255,255,255,0.16) 18%, rgba(255,255,255,0.04) 38%, rgba(0,0,0,0) 68%), #050505",
-  };
-
-  const mastheadTitleStyle = {
-    margin: 0,
-    textTransform: "uppercase",
-    letterSpacing: "0.14em",
-    fontWeight: 600,
-    lineHeight: 1.28,
-    fontSize: "min(6vw, 2.3rem)",
-  };
-
-  const mastheadLineStyle = {
-    display: "block",
-    maxWidth: "100%",
-    margin: "0 auto",
-    whiteSpace: "nowrap",
-  };
-
-  const estStyle = {
-    fontFamily: '"Cinzel", serif',
-    fontSize: "0.9rem",
-    letterSpacing: "0.22em",
-    textTransform: "uppercase",
-    marginTop: "1.2rem",
-    color: "#c7b08a",
-  };
-
-  const containerStyle = {
-    maxWidth: 760,
-    padding: "0 22px 4rem",
-    margin: "0 auto",
-  };
-
-  const ruleStyle = {
-    border: "none",
-    borderTop: "1px solid #2b2419",
-    margin: "2.4rem 0",
-  };
-
-  const ruleSpacedStyle = {
-    ...ruleStyle,
-    margin: "3.1rem 0 2.7rem",
-  };
-
-  const scHeadingStyle = {
-    fontFamily: '"Cinzel", serif',
-    fontVariant: "small-caps",
-    letterSpacing: "0.18em",
-    textTransform: "lowercase",
-    fontSize: "0.95rem",
-    margin: "0 0 0.6em",
-  };
-
-  const roadmapHeadStyle = {
-    marginBottom: "2.1rem",
-    textAlign: "center",
-  };
-
-  const roadmapKickerStyle = {
-    fontFamily: '"Cinzel", serif',
-    fontSize: "0.75rem",
-    letterSpacing: "0.24em",
-    textTransform: "uppercase",
-    color: "#b89f78",
-    marginBottom: "0.45rem",
-  };
-
-  const roadmapTitleStyle = {
-    fontFamily: '"Cinzel", serif',
-    letterSpacing: "0.22em",
-    textTransform: "uppercase",
-    fontSize: "1rem",
-  };
-
-  const initiativeStyle = {
-    marginBottom: "2.9rem",
-    textAlign: "center",
-  };
-
-  const wmBaseStyle = {
-    textTransform: "uppercase",
-    letterSpacing: "0.2em",
-    marginBottom: "1.2rem",
-  };
-
-  const wmTopStyle = {
-    fontSize: "0.68rem",
-    color: "#b89f78",
-    marginBottom: "0.35rem",
-  };
-
-  const wmMainStyle = {
-    fontFamily: '"Cinzel", serif',
-    fontSize: "1.05rem",
-    letterSpacing: "0.26em",
-  };
-
-  const wmSubStyle = {
-    marginTop: "0.35rem",
-    fontSize: "0.72rem",
-    letterSpacing: "0.18em",
-    color: "#a89a80",
-  };
-
-  const wmRuleStyle = {
-    height: 1,
-    width: "70%",
-    margin: "0.55rem auto 0.4rem",
-    background: "linear-gradient(to right, transparent, #3a2b16, transparent)",
-  };
-
-  const initiativeTextStyle = {
-    maxWidth: "32rem",
-    margin: "0 auto 1.3rem",
-    fontSize: "0.96rem",
-    color: "#e4dcc3",
-  };
-
-  const ctaRowStyle = {
-    display: "flex",
-    justifyContent: "center",
-    marginBottom: "1.6rem",
-  };
-
-  const dividerStyle = {
-    height: 1,
-    width: "64%",
-    margin: "0 auto",
-    background: "linear-gradient(to right, transparent, #262018, transparent)",
-  };
-
-  const roadmapFootnoteStyle = {
-    margin: "1.7rem auto 0",
-    maxWidth: "32rem",
-    fontSize: "0.88rem",
-    color: "#b7aa8b",
-    textAlign: "center",
-  };
-
-  const gateZoneStyle = {
-    position: "relative",
-    marginTop: "3.4rem",
-  };
-
-  const gateOverlayStyle = {
-    position: "absolute",
-    inset: 0,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    paddingTop: "1.6rem",
-    pointerEvents: "auto",
-    background:
-      "linear-gradient(to bottom, rgba(5,5,5,0.02) 0%, rgba(5,5,5,0.13) 40%, rgba(5,5,5,0.28) 100%)",
-    backdropFilter: "blur(3px)",
-    WebkitBackdropFilter: "blur(3px)",
-  };
-
-  const gateCardStyle = {
-    maxWidth: 540,
-    width: "90%",
-    borderRadius: 22,
-    border: "1px solid #3a2b16",
-    padding: "1.7rem 1.4rem 1.5rem",
-    background:
-      "radial-gradient(circle at top center, rgba(255,255,255,0.06) 0, transparent 55%), rgba(5,5,5,0.94)",
-    boxShadow: "0 18px 60px rgba(0,0,0,0.9)",
-    textAlign: "center",
-  };
-
-  const gateKickerStyle = {
-    fontFamily: '"Cinzel", serif',
-    fontSize: "0.7rem",
-    letterSpacing: "0.22em",
-    textTransform: "uppercase",
-    color: "#b89f78",
-    marginBottom: "0.45rem",
-  };
-
-  const gateTitleStyle = {
-    fontFamily: '"Cinzel", serif',
-    fontSize: "1.2rem",
-    letterSpacing: "0.22em",
-    textTransform: "uppercase",
-    marginBottom: "0.8rem",
-  };
-
-  const gateCopyStyle = {
-    fontSize: "0.95rem",
-    marginBottom: "0.9rem",
-    color: "#e5ddc4",
-  };
-
-  const mottoStyle = {
-    textAlign: "center",
-    fontStyle: "italic",
-    margin: "3rem auto 2rem",
-    fontSize: "1.1rem",
-    maxWidth: "34rem",
-    color: "#e4dcc3",
-  };
-
-  const footerStyle = {
-    textAlign: "center",
-    fontSize: "0.78rem",
-    color: "#7c705a",
-    padding: "2.5rem 1.5rem 2.1rem",
-    borderTop: "1px solid #221a12",
-    marginTop: "3rem",
-  };
-
-  // Global tab strip styles (inline version)
-  const tabStripContainerStyle = {
-    position: "sticky",
-    top: 0,
-    zIndex: 9000,
-    padding: "6px 10px 0",
-    background: "transparent",
-    backdropFilter: "blur(8px)",
-    WebkitBackdropFilter: "blur(8px)",
-  };
-
-  const tabStripStyle = {
-    display: "flex",
-    gap: 4,
-    maxWidth: 680,
-    margin: "0 auto",
-    padding: "0 10px 4px",
-    overflowX: "auto",
-    whiteSpace: "nowrap",
-    WebkitOverflowScrolling: "touch",
-    scrollbarWidth: "none", // Firefox
-    msOverflowStyle: "none", // IE/Edge
-  };
-
-  const baseTabStyle = {
-    textDecoration: "none",
-    fontSize: 10,
-    letterSpacing: "0.2em",
-    textTransform: "uppercase",
-    padding: "6px 12px 4px",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    borderLeft: "1px solid #3a2b16",
-    borderRight: "1px solid #3a2b16",
-    borderTop: "1px solid #3a2b16",
-    background: "transparent",
-    whiteSpace: "nowrap",
-    flexShrink: 0,
-  };
-
-  const footerLineStyle = {
-    fontSize: "0.78rem",
-    marginBottom: 4,
-  };
-
-  const copySectionTitleStyle = {
-    fontFamily: '"Cinzel", serif',
-    fontSize: "0.9rem",
-    letterSpacing: "0.28em",
-    textTransform: "uppercase",
-    marginTop: "3rem",
-    textAlign: "center",
-  };
-
-  const copyBlockStyle = {
-    marginTop: "1.8rem",
-    fontSize: "0.96rem",
-  };
-
-  const copyBlockHeadingStyle = {
-    fontFamily: '"Cinzel", serif',
-    fontSize: "1.05rem",
-    margin: "0 0 0.6rem",
-  };
-
-  const copyBlockListStyle = {
-    marginTop: "0.4rem",
-    paddingLeft: "1.2rem",
-  };
-
   return (
-    <div style={pageStyle}>
-      {/* SHARED TAB HEADER (global nav) */}
-      <div style={tabStripContainerStyle}>
-        <div
-          style={tabStripStyle}
+    <div
+      className="page"
+      style={{
+        minHeight: "100vh",
+        background: "#050505",
+        color: "#f5eedc",
+        fontFamily: '"EB Garamond", serif',
+      }}
+    >
+      {/* SHARED TAB HEADER */}
+      <div
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 9000,
+          padding: "6px 10px 0",
+          background: "rgba(5,5,5,0.96)",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+        }}
+      >
+        <nav
           aria-label="USPPA family sites"
+          style={{
+            display: "flex",
+            gap: 4,
+            maxWidth: 680,
+            margin: "0 auto",
+            paddingBottom: 4,
+            overflowX: "auto",
+            whiteSpace: "nowrap",
+            WebkitOverflowScrolling: "touch",
+          }}
         >
           {navTabs.map((tab) => {
             const isActive = tab.id === activeSite;
-            const activeStyle = isActive
-              ? {
-                  color: "#f5eedc",
-                  borderBottom: "1px solid transparent",
-                }
-              : {
-                  color: "#c7b08a",
-                  borderBottom: "1px solid #3a2b16",
-                };
             return (
               <a
                 key={tab.id}
                 href={tab.href}
                 style={{
-                  ...baseTabStyle,
-                  ...activeStyle,
+                  textDecoration: "none",
+                  fontSize: 10,
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  padding: "6px 12px 4px",
+                  borderTopLeftRadius: 10,
+                  borderTopRightRadius: 10,
+                  borderLeft: "1px solid #3a2b16",
+                  borderRight: "1px solid #3a2b16",
+                  borderTop: "1px solid #3a2b16",
+                  borderBottom: isActive
+                    ? "1px solid transparent"
+                    : "1px solid #3a2b16",
+                  color: isActive ? "#f5eedc" : "#c7b08a",
+                  background: "transparent",
+                  whiteSpace: "nowrap",
+                  flex: "0 0 auto",
                 }}
               >
                 {tab.label}
               </a>
             );
           })}
+        </nav>
+      </div>
+
+      {/* Top-right Patron Wallet button */}
+      <header
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          padding: "8px 22px 0",
+        }}
+      >
+        <button
+          className="btn btn-outline"
+          style={{
+            minWidth: "auto",
+            padding: "6px 16px",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 999,
+            fontFamily: '"Cinzel", serif',
+            fontSize: "0.8rem",
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            border: "1px solid #e3bf72",
+            background: "transparent",
+            color: "#f5eedc",
+            cursor: "pointer",
+            boxShadow: "0 8px 26px rgba(0,0,0,0.65)",
+          }}
+          onClick={openWallet}
+        >
+          PATRON WALLET
+        </button>
+      </header>
+
+      {/* Masthead */}
+      <div
+        className="masthead"
+        style={{
+          textAlign: "center",
+          padding: "3.5rem 1.5rem 2rem",
+          background:
+            "radial-gradient(circle at top center, rgba(255,255,255,0.26) 0, rgba(255,255,255,0.16) 18%, rgba(255,255,255,0.04) 38%, rgba(0,0,0,0) 68%), #050505",
+        }}
+      >
+        <div className="masthead-inner">
+          <div
+            className="masthead-line-1"
+            style={{
+              marginBottom: "0.8rem",
+            }}
+          >
+            <span
+              style={{
+                display: "block",
+                textTransform: "uppercase",
+                letterSpacing: "0.14em",
+                fontWeight: 600,
+                lineHeight: 1.28,
+                fontSize: "min(6vw, 2.1rem)",
+              }}
+            >
+              UNITED STATES POLO
+            </span>
+            <span
+              style={{
+                display: "block",
+                textTransform: "uppercase",
+                letterSpacing: "0.14em",
+                fontWeight: 600,
+                lineHeight: 1.28,
+                fontSize: "min(6vw, 2.1rem)",
+              }}
+            >
+              PATRONS ASSOCIATION
+            </span>
+          </div>
+          <div
+            className="masthead-rule"
+            style={{
+              height: 1,
+              width: "64%",
+              margin: "0.6rem auto 0.8rem",
+              background:
+                "linear-gradient(to right, transparent, #3a2b16, transparent)",
+            }}
+          ></div>
+          <div
+            className="masthead-line-2 masthead-presents"
+            style={{
+              fontFamily: '"Cinzel", serif',
+              fontSize: "0.8rem",
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: "#c7b08a",
+              marginBottom: "0.2rem",
+            }}
+          >
+            PRESENTS THE
+          </div>
+          <div
+            className="masthead-line-2 masthead-stewardship"
+            style={{
+              fontFamily: '"Cinzel", serif',
+              fontSize: "0.8rem",
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: "#f5eedc",
+            }}
+          >
+            OFFICIAL POLO PATRONAGE TOKEN
+          </div>
         </div>
       </div>
 
-      {/* Top header + PATRON WALLET button */}
-      <header style={topHeaderShellStyle}>
-        <div
-          style={{
-            marginBottom: "2.1rem",
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-        >
-          <button
-            style={{ ...btnOutlineStyle, minWidth: "auto", padding: "6px 16px" }}
-            onClick={openWallet}
-          >
-            PATRON WALLET
-          </button>
-        </div>
-
-        <h1 style={mastheadTitleStyle}>
-          <span style={mastheadLineStyle}>United States Polo</span>
-          <span style={mastheadLineStyle}>Patrons Association</span>
-        </h1>
-
-        <p style={estStyle}>
-          FOUNDING<span style={{ padding: "0 0.4em" }}>·</span>AD MMXXVI · 2026
-        </p>
-      </header>
-
       {/* Hero */}
-      <header style={heroHeaderStyle}>
-        <h1 style={heroTitleStyle}>POLO PATRONIUM</h1>
+      <main
+        style={{
+          maxWidth: 760,
+          padding: "0 22px 4rem",
+          margin: "0 auto",
+        }}
+      >
+        <header>
+          <h1
+            className="hero-title"
+            style={{
+              fontFamily: '"Cinzel", serif',
+              margin: "2.2rem 0 1rem",
+              textAlign: "center",
+              fontSize: "2.1rem",
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+            }}
+          >
+            POLO PATRONIUM
+          </h1>
 
-        <div style={heroSymbolStyle}>
-          <div style={heroSymbolMainStyle}>
-            ERC-777 V0 → ERC-20 V1
-            <br />
-            TOKEN SYMBOL &quot;PATRON&quot;
+          <div
+            className="hero-symbol"
+            style={{
+              textAlign: "center",
+              marginBottom: "1.8rem",
+            }}
+          >
+            <div
+              className="hero-symbol-main"
+              style={{
+                fontSize: "0.9rem",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                marginBottom: "0.35rem",
+                color: "#e4dcc3",
+              }}
+            >
+              ERC-777 V0 → ERC-20 V1
+              <br />
+              TOKEN SYMBOL &quot;PATRON&quot;
+            </div>
+
+            <div
+              className="hero-network"
+              style={{
+                fontSize: "0.8rem",
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "#c7b08a",
+                marginBottom: "0.4rem",
+              }}
+            >
+              ON BASE NETWORK BY COINBASE
+            </div>
+            <div
+              className="hero-contract"
+              style={{
+                fontSize: "0.78rem",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "#b7aa8b",
+              }}
+            >
+              <span
+                className="hero-contract-label"
+                style={{ color: "#c7b08a", marginRight: 6 }}
+              >
+                CA:
+              </span>
+              <span
+                className="hero-contract-value"
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "0.78rem",
+                }}
+              >
+                0xD766a771887fFB6c528434d5710B406313CAe03A
+              </span>
+            </div>
           </div>
 
-          <div style={heroNetworkStyle}>ON BASE NETWORK BY COINBASE</div>
-          <div style={heroContractStyle}>
-            <span style={{ opacity: 0.7, marginRight: 4 }}>CA:</span>
-            <span>
-              0xD766a771887fFB6c528434d5710B406313CAe03A
-            </span>
+          <div
+            className="hero-actions"
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: 12,
+              marginBottom: "2.4rem",
+            }}
+          >
+            {/* BUY PATRON → direct link to CowboyPolo.com */}
+            <a
+              className="btn btn-primary"
+              href="https://cowboypolo.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "0.55rem 1.9rem",
+                borderRadius: 999,
+                fontFamily: '"Cinzel", serif',
+                fontSize: "0.8rem",
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                border: "1px solid #e3bf72",
+                background: "#e3bf72",
+                color: "#181210",
+                boxShadow: "0 10px 35px rgba(0,0,0,0.7)",
+                textDecoration: "none",
+                whiteSpace: "nowrap",
+                cursor: "pointer",
+              }}
+            >
+              BUY PATRON
+            </a>
+
+            {/* Opens email draft */}
+            <a
+              className="btn btn-outline"
+              href={
+                "mailto:CharlestonPoloinfo@gmail.com" +
+                "?subject=" +
+                encodeURIComponent("Founding Patron Inquiry") +
+                "&body=" +
+                encodeURIComponent(
+                  "Hello Charleston Polo,\n\n" +
+                    "I’m interested in becoming a Founding Patron.\n\n" +
+                    "Name:\n" +
+                    "Phone:\n" +
+                    "City/State:\n" +
+                    "Interest (capital / horses / land / facilities):\n" +
+                    "Notes:\n\n" +
+                    "Thank you,\n"
+                )
+              }
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "0.55rem 1.9rem",
+                borderRadius: 999,
+                fontFamily: '"Cinzel", serif',
+                fontSize: "0.8rem",
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                border: "1px solid #e3bf72",
+                background: "transparent",
+                color: "#f5eedc",
+                boxShadow: "0 8px 26px rgba(0,0,0,0.65)",
+                textDecoration: "none",
+                whiteSpace: "nowrap",
+                cursor: "pointer",
+              }}
+            >
+              PATRON INQUIRIES
+            </a>
           </div>
-        </div>
+        </header>
 
-        <div style={heroActionsRowStyle}>
-          {/* BUY PATRON → direct link to CowboyPolo.com */}
-          <a
-            href="https://cowboypolo.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={btnPrimaryStyle}
-          >
-            BUY PATRON
-          </a>
-
-          {/* Patron inquiries via mailto */}
-          <a
-            style={btnOutlineStyle}
-            href={
-              "mailto:CharlestonPoloinfo@gmail.com" +
-              "?subject=" +
-              encodeURIComponent("Founding Patron Inquiry") +
-              "&body=" +
-              encodeURIComponent(
-                "Hello Charleston Polo,\n\n" +
-                  "I’m interested in becoming a Founding Patron.\n\n" +
-                  "Name:\n" +
-                  "Phone:\n" +
-                  "City/State:\n" +
-                  "Interest (capital / horses / land / facilities):\n" +
-                  "Notes:\n\n" +
-                  "Thank you,\n"
-              )
-            }
-          >
-            PATRON INQUIRIES
-          </a>
-        </div>
-      </header>
-
-      {/* Brand / roadmap + copy sections */}
-      <main>
+        {/* Brand / roadmap + copy sections */}
         {/* Roadmap (scroll trigger) */}
         <section
+          className="brand-row"
           id="brands"
           ref={roadmapGateRef}
-          style={containerStyle}
+          style={{ marginTop: "2.2rem" }}
         >
-          <div style={roadmapHeadStyle}>
-            <div style={roadmapKickerStyle}>INITIATIVE</div>
-            <div style={roadmapTitleStyle}>ROADMAP</div>
+          {/* INITIATIVE ROADMAP as a proper wordmark */}
+          <div
+            className="roadmap-title"
+            style={{
+              textAlign: "center",
+              marginBottom: "34px",
+            }}
+          >
             <div
               style={{
-                marginTop: 10,
-                height: 1,
-                width: 80,
+                fontSize: "11px",
+                letterSpacing: "0.28em",
+                textTransform: "uppercase",
+                color: "#9f8a64",
+                marginBottom: "4px",
+                fontFamily: '"Cinzel", serif',
+              }}
+            >
+              INITIATIVE
+            </div>
+            <div
+              style={{
+                fontSize: "20px",
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                color: "#f5eedc",
+                fontFamily: '"Cinzel", serif',
+              }}
+            >
+              ROADMAP
+            </div>
+
+            {/* subtle spacer / rule under the wordmark */}
+            <div
+              style={{
+                marginTop: "10px",
+                height: "1px",
+                width: "80px",
                 marginLeft: "auto",
                 marginRight: "auto",
                 background: "#3a2b16",
@@ -751,203 +627,311 @@ export default function App() {
             />
           </div>
 
-          {/* COWBOY POLO CIRCUIT */}
-          <div style={initiativeStyle}>
-            <div style={wmBaseStyle}>
-              <div style={wmTopStyle}>American Development Pipeline</div>
-              <div style={{ ...wmMainStyle, fontSize: "1.09rem" }}>
-                COWBOY&nbsp;POLO&nbsp;CIRCUIT
-              </div>
-            </div>
-            <p style={initiativeTextStyle}>
-              An American endeavour to broaden Polo&apos;s reach, nurture
-              emerging talent, and encourage the next generation of American
-              players — where riders not only learn to play, but learn to make
-              the horses of the 7̶7̶7̶ (String Three Sevens) Remuda.
-            </p>
-          </div>
-
-          {/* THREE SEVENS REMUDA */}
-          <div style={initiativeStyle}>
-            <div style={wmBaseStyle}>
-              <div style={{ ...wmTopStyle, marginBottom: "0.5rem" }}>Remuda</div>
+          <div
+            className="brand-grid"
+            style={{
+              display: "grid",
+              gap: "2.4rem",
+            }}
+          >
+            {/* COWBOY POLO CIRCUIT */}
+            <div className="logo-block">
               <div
+                className="logo-cowboy-polo-circuit"
                 style={{
-                  display: "inline-flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: 2,
+                  border: "1px solid #c7b08a",
+                  padding: "0.75rem 1.2rem",
+                  textAlign: "center",
+                  marginBottom: "0.9rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.22em",
+                  fontFamily: '"Cinzel", serif',
+                  fontSize: "0.9rem",
+                  color: "#f5eedc",
                 }}
               >
+                <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
+              </div>
+              <p
+                className="initiative-text"
+                style={{
+                  maxWidth: "32rem",
+                  margin: "0 auto 1.3rem",
+                  fontSize: "0.96rem",
+                  color: "#e4dcc3",
+                }}
+              >
+                An American endeavour to broaden Polo&apos;s reach, nurture
+                emerging talent, and encourage the next generation of American
+                players — where riders not only learn to play, but learn to make
+                the horses of the 7̶7̶7̶ (String Three Sevens) Remuda.
+              </p>
+            </div>
+
+            {/* THREE SEVENS REMUDA */}
+            <div className="logo-block">
+              <div
+                className="logo-usp-string-remuda"
+                style={{ textAlign: "center", marginBottom: "0.9rem" }}
+              >
+                {/* Central bar: THREE · 7̶7̶7̶ · SEVENS */}
                 <div
                   style={{
-                    fontFamily: '"Cinzel", serif',
-                    fontSize: "1.15rem",
-                    letterSpacing: "0.3em",
-                    textTransform: "uppercase",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "0.5em",
+                    padding: "8px 16px 6px",
+                    borderTop: "1px solid #c7b08a",
+                    borderBottom: "1px solid #c7b08a",
                   }}
                 >
-                  7̶7̶7̶
+                  <span
+                    style={{
+                      fontSize: "10px",
+                      letterSpacing: "0.22em",
+                      textTransform: "uppercase",
+                      color: "#c7b08a",
+                      fontFamily: '"Cinzel", serif',
+                    }}
+                  >
+                    THREE
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      color: "#c7b08a",
+                    }}
+                  >
+                    ·
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "32px",
+                      letterSpacing: "0.22em",
+                      color: "#f5eedc",
+                      lineHeight: 1,
+                      fontFamily: '"Cinzel", serif',
+                    }}
+                  >
+                    7̶7̶7̶
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      color: "#c7b08a",
+                    }}
+                  >
+                    ·
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "10px",
+                      letterSpacing: "0.22em",
+                      textTransform: "uppercase",
+                      color: "#c7b08a",
+                      fontFamily: '"Cinzel", serif',
+                    }}
+                  >
+                    SEVENS
+                  </span>
                 </div>
+
+                {/* Base caption: REMUDA */}
                 <div
                   style={{
+                    marginTop: "6px",
+                    fontSize: "9px",
+                    letterSpacing: "0.32em",
+                    textTransform: "uppercase",
+                    color: "#9f8a64",
                     fontFamily: '"Cinzel", serif',
+                  }}
+                >
+                  REMUDA
+                </div>
+              </div>
+
+              <p
+                className="initiative-text"
+                style={{
+                  maxWidth: "32rem",
+                  margin: "0 auto 1.3rem",
+                  fontSize: "0.96rem",
+                  color: "#e4dcc3",
+                }}
+              >
+                Our managed herd of USPPA horses — consigned or owned by the
+                Association, assigned to operating patrons, trainers and local
+                players, and developed for play, exhibition and training across
+                our programmes.
+              </p>
+            </div>
+
+            {/* THE POLO WAY */}
+            <div className="logo-block">
+              <div
+                className="logo-the-polo-way"
+                style={{
+                  textAlign: "center",
+                  marginBottom: "0.9rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.26em",
+                  fontFamily: '"Cinzel", serif',
+                }}
+              >
+                <span
+                  className="top"
+                  style={{
+                    display: "block",
                     fontSize: "0.7rem",
+                    color: "#c7b08a",
+                    marginBottom: 3,
+                  }}
+                >
+                  THE
+                </span>
+                <span
+                  className="main"
+                  style={{
+                    fontSize: "1rem",
+                  }}
+                >
+                  POLO WAY
+                </span>
+              </div>
+              <p
+                className="initiative-text"
+                style={{
+                  maxWidth: "32rem",
+                  margin: "0 auto 1.3rem",
+                  fontSize: "0.96rem",
+                  color: "#e4dcc3",
+                }}
+              >
+                A platform dedicated to presenting the elegance and traditions
+                of polo to new audiences in the digital age — following our
+                horses, patrons, and players across the Cowboy Polo Circuit.
+              </p>
+            </div>
+
+            {/* CHARLESTON POLO */}
+            <div className="logo-block">
+              <div
+                className="logo-charleston-polo"
+                style={{
+                  textAlign: "center",
+                  marginBottom: "0.9rem",
+                  border: "1px solid #c7b08a",
+                  padding: "0.75rem 1.2rem",
+                }}
+              >
+                <span
+                  className="top"
+                  style={{
+                    display: "block",
+                    fontSize: "0.72rem",
+                    letterSpacing: "0.22em",
+                    textTransform: "uppercase",
+                    color: "#c7b08a",
+                    fontFamily: '"Cinzel", serif',
+                    marginBottom: 4,
+                  }}
+                >
+                  CHARLESTON
+                </span>
+                <span
+                  className="main"
+                  style={{
+                    display: "block",
+                    fontSize: "0.96rem",
                     letterSpacing: "0.26em",
                     textTransform: "uppercase",
-                    color: "#b89f78",
+                    fontFamily: '"Cinzel", serif',
                   }}
                 >
-                  THREE SEVENS
-                </div>
+                  P  O  L  O
+                </span>
               </div>
-            </div>
-            <p style={initiativeTextStyle}>
-              Our managed herd of USPPA horses — consigned or owned by the
-              Association, assigned to operating patrons, trainers and local
-              players, and developed for play, exhibition and training across
-              our programmes.
-            </p>
-          </div>
-
-          {/* THE POLO WAY */}
-          <div style={initiativeStyle}>
-            <div style={wmBaseStyle}>
-              <div style={wmTopStyle}>Media</div>
-              <div
+              <p
+                className="initiative-text"
                 style={{
-                  ...wmMainStyle,
-                  fontSize: "1rem",
-                  display: "inline-flex",
-                  gap: 6,
-                  alignItems: "baseline",
+                  maxWidth: "32rem",
+                  margin: "0 auto 1.3rem",
+                  fontSize: "0.96rem",
+                  color: "#e4dcc3",
                 }}
               >
-                <span style={{ color: "#c7b08a" }}>THE</span>
-                <span>POLO WAY</span>
-              </div>
-              <div style={wmSubStyle}>
-                Stories · Horses · Players · Chapters
-              </div>
+                The renewal of Charleston, South Carolina&apos;s polo tradition
+                — our flagship USPPA Chapter and living test model for the Polo
+                Incubator system. Horses are gathered, pasture secured,
+                instruction established, and the public welcomed to learn and
+                play. Once an Incubator achieves steady operations, sound
+                horsemanship, and visible community benefit, it is received as a
+                standing Chapter of the Association.
+                <br />
+                <br />
+                Each USPPA Chapter is a fully integrated programme operating
+                under the Association&apos;s standards. Charleston Polo, as the
+                flagship Chapter, serves as the organisational hub for the
+                Cowboy Polo Circuit — coordinating local Cowboy Polo clinics,
+                sanctioned chukkers at member barns and arenas, and the first
+                pool of Chapter horses.
+                <br />
+                <br />
+                In its early life, a Chapter begins as a Polo Incubator: a local
+                startup where the “bring your own horse” model allows riders and
+                stables to join the Circuit quickly, while a shared remuda is
+                trained for exhibitions, league play, and new riders. Once an
+                Incubator demonstrates steady operations, sound horsemanship,
+                and visible benefit to the community, it is recognised as a
+                standing Chapter of the USPPA.
+              </p>
             </div>
-            <p style={initiativeTextStyle}>
-              A platform dedicated to presenting the elegance and traditions of
-              polo to new audiences in the digital age — following our horses,
-              patrons, and players across the Cowboy Polo Circuit.
-            </p>
           </div>
 
-          {/* CHARLESTON POLO */}
-          <div style={initiativeStyle}>
-            <div style={wmBaseStyle}>
-              <div style={wmTopStyle}>Flagship Chapter</div>
-              <div
-                style={{
-                  ...wmMainStyle,
-                  fontSize: "1rem",
-                  borderTop: "1px solid #c7b08a",
-                  borderBottom: "1px solid #c7b08a",
-                  padding: "4px 10px",
-                  display: "inline-block",
-                }}
-              >
-                CHARLESTON&nbsp;P&nbsp;O&nbsp;L&nbsp;O
-              </div>
-              <div style={wmSubStyle}>USPPA Chapter Test Model</div>
-            </div>
-            <p style={initiativeTextStyle}>
-              The renewal of Charleston, South Carolina&apos;s polo tradition —
-              our flagship USPPA Chapter and living test model for the Polo
-              Incubator system. Horses are gathered, pasture secured,
-              instruction established, and the public welcomed to learn and
-              play. Once an Incubator achieves steady operations, sound
-              horsemanship, and visible community benefit, it is received as a
-              standing Chapter of the Association.
-              <br />
-              <br />
-              Each USPPA Chapter is a fully integrated programme operating
-              under the Association&apos;s standards. Charleston Polo, as the
-              flagship Chapter, serves as the organisational hub for the Cowboy
-              Polo Circuit — coordinating local Cowboy Polo clinics, sanctioned
-              chukkers at member barns and arenas, and the first pool of Chapter
-              horses.
-              <br />
-              <br />
-              In its early life, a Chapter begins as a Polo Incubator: a local
-              startup where the “bring your own horse” model allows riders and
-              stables to join the Circuit quickly, while a shared remuda is
-              trained for exhibitions, league play, and new riders. Once an
-              Incubator demonstrates steady operations, sound horsemanship, and
-              visible benefit to the community, it is recognised as a standing
-              Chapter of the USPPA.
-            </p>
-          </div>
-
-          <p style={roadmapFootnoteStyle}>
+          <p
+            className="roadmap-footnote"
+            style={{
+              margin: "1.7rem auto 0",
+              maxWidth: "32rem",
+              fontSize: "0.88rem",
+              color: "#b7aa8b",
+            }}
+          >
             All of these initiatives are coordinated and supported through Polo
             Patronium, the living token of patronage within the United States
             Polo Patrons Association, uniting patrons, players, and clubs in a
             shared Polo ecosystem.
           </p>
-
-          <hr style={ruleSpacedStyle} />
-
-          {/* GATED ZONE */}
-          <div
-            id="patronium-polo-patronage"
-            ref={roadmapGateRef}
-            style={gateZoneStyle}
-          >
-            {!isConnected && (
-              <div
-                style={gateOverlayStyle}
-                onClick={openWallet}
-                role="button"
-                aria-label="Sign in required"
-              >
-                <div style={gateCardStyle}>
-                  <div style={gateKickerStyle}>Patron Wallet Required</div>
-                  <div style={gateTitleStyle}>Sign in to continue</div>
-                  <div style={gateCopyStyle}>
-                    This section and everything below is reserved for signed-in
-                    patrons. Tap here or scroll into this section to open the
-                    USPPA Patron Wallet.
-                  </div>
-                  <div style={{ marginTop: 14 }}>
-                    <button
-                      type="button"
-                      onClick={openWallet}
-                      style={btnOutlineStyle}
-                    >
-                      Open Patron Wallet
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            <h2 style={scHeadingStyle}>Patronium — Polo Patronage Perfected</h2>
-            <p>
-              Patronium is the living token of patronage within the United
-              States Polo Patrons Association. It is the medium through which
-              honourable support is recognised and shared — not through
-              speculation, but through participation.
-            </p>
-
-            <blockquote style={mottoStyle}>
-              “In honour, in sport, in fellowship.”
-            </blockquote>
-          </div>
         </section>
 
         {/* Patronium Framework (tokenomics) – blurred overlay until connected */}
         <section
+          className="copy-section"
           id="patronium-framework"
-          style={containerStyle}
+          style={{ marginTop: "3rem" }}
         >
-          <div style={copySectionTitleStyle}>THE PATRONIUM FRAMEWORK</div>
+          <div
+            className="copy-section-title"
+            style={{
+              fontFamily: '"Cinzel", serif',
+              fontSize: "0.9rem",
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: "#c7b08a",
+              marginBottom: "0.9rem",
+            }}
+          >
+            THE PATRONIUM FRAMEWORK
+          </div>
 
-          <div style={{ position: "relative", marginTop: 8 }}>
+          <div
+            style={{
+              position: "relative",
+              marginTop: "8px",
+            }}
+          >
             {!isConnected && (
               <div
                 onClick={openWallet}
@@ -962,7 +946,7 @@ export default function App() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  padding: 22,
+                  padding: "22px",
                   textAlign: "center",
                 }}
                 aria-label="Sign in required to view Patronium Framework"
@@ -971,18 +955,19 @@ export default function App() {
                 <div>
                   <div
                     style={{
-                      fontSize: 11,
+                      fontSize: "11px",
                       letterSpacing: "0.22em",
                       textTransform: "uppercase",
                       color: "#c7b08a",
-                      marginBottom: 8,
+                      marginBottom: "8px",
+                      fontFamily: '"Cinzel", serif',
                     }}
                   >
                     PATRONIUM FRAMEWORK
                   </div>
                   <div
                     style={{
-                      fontSize: 13,
+                      fontSize: "13px",
                       lineHeight: 1.6,
                       color: "#f5eedc",
                     }}
@@ -994,9 +979,15 @@ export default function App() {
               </div>
             )}
 
+            {/* Actual content (visible only when connected, but always rendered) */}
             <div aria-hidden={!isConnected && true}>
-              <div style={copyBlockStyle}>
-                <h3 style={copyBlockHeadingStyle}>
+              <div className="copy-block" style={{ marginBottom: "1.8rem" }}>
+                <h3
+                  style={{
+                    fontFamily: '"Cinzel", serif',
+                    margin: "0 0 0.6rem",
+                  }}
+                >
                   Patronium — Polo Patronage Perfected
                 </h3>
                 <p>
@@ -1009,16 +1000,21 @@ export default function App() {
                 </p>
                 <p>
                   It serves as the bridge between patron and player: a clear
-                  record of contribution and belonging within a high-trust,
-                  mission-driven community. When a Chapter prospers, it offers
+                  record of contribution and belonging within a high-trust
+                  mission driven community. When a Chapter prospers, it offers
                   tribute to those whose support made that prosperity possible.
                   This is the essence of Patronium — recognition earned through
                   genuine patronage and service to the field.
                 </p>
               </div>
 
-              <div style={copyBlockStyle}>
-                <h3 style={copyBlockHeadingStyle}>
+              <div className="copy-block" style={{ marginBottom: "1.8rem" }}>
+                <h3
+                  style={{
+                    fontFamily: '"Cinzel", serif',
+                    margin: "0 0 0.6rem",
+                  }}
+                >
                   Charleston Polo — The USPPA Chapter Test Model
                 </h3>
                 <p>
@@ -1035,8 +1031,13 @@ export default function App() {
                 </p>
               </div>
 
-              <div style={copyBlockStyle}>
-                <h3 style={copyBlockHeadingStyle}>
+              <div className="copy-block" style={{ marginBottom: "1.8rem" }}>
+                <h3
+                  style={{
+                    fontFamily: '"Cinzel", serif',
+                    margin: "0 0 0.6rem",
+                  }}
+                >
                   Founding, Operating, and USPPA Patrons
                 </h3>
                 <p>There are three forms of Patronium holder.</p>
@@ -1060,14 +1061,21 @@ export default function App() {
                 </p>
               </div>
 
-              <div style={copyBlockStyle}>
-                <h3 style={copyBlockHeadingStyle}>The Tribute Framework</h3>
+              <div className="copy-block" style={{ marginBottom: "1.8rem" }}>
+                <h3
+                  style={{
+                    fontFamily: '"Cinzel", serif',
+                    margin: "0 0 0.6rem",
+                  }}
+                >
+                   The Tribute Framework
+                </h3>
                 <p>
                   Each Chapter follows a principle of balanced and transparent
                   patronage. From its net revenue (gross revenue less
                   operational costs), a Chapter aims to follow this allocation:
                 </p>
-                <ul style={copyBlockListStyle}>
+                <ul>
                   <li>
                     51%+ retained for reinvestment — horses, pasture, equipment,
                     and operations.
@@ -1087,9 +1095,16 @@ export default function App() {
                 </p>
               </div>
 
-              <div style={copyBlockStyle}>
-                <h3 style={copyBlockHeadingStyle}>Participation</h3>
-                <ul style={copyBlockListStyle}>
+              <div className="copy-block" style={{ marginBottom: "1.8rem" }}>
+                <h3
+                  style={{
+                    fontFamily: '"Cinzel", serif',
+                    margin: "0 0 0.6rem",
+                  }}
+                >
+                  Participation
+                </h3>
+                <ul>
                   <li>
                     Become a Founding Patron — assist in launching a new Chapter
                     through contribution of capital, horses, or facilities.
@@ -1109,8 +1124,15 @@ export default function App() {
                 </ul>
               </div>
 
-              <div style={copyBlockStyle}>
-                <h3 style={copyBlockHeadingStyle}>In Plain Terms</h3>
+              <div className="copy-block" style={{ marginBottom: "1.8rem" }}>
+                <h3
+                  style={{
+                    fontFamily: '"Cinzel", serif',
+                    margin: "0 0 0.6rem",
+                  }}
+                >
+                  In Plain Terms
+                </h3>
                 <p>
                   The Association seeks not to monetise polo, but to stabilise
                   and decentralise it — to bring clarity, fairness, and
@@ -1125,8 +1147,13 @@ export default function App() {
                 </p>
               </div>
 
-              <div style={copyBlockStyle}>
-                <h3 style={copyBlockHeadingStyle}>
+              <div className="copy-block" style={{ marginBottom: "1.8rem" }}>
+                <h3
+                  style={{
+                    fontFamily: '"Cinzel", serif',
+                    margin: "0 0 0.6rem",
+                  }}
+                >
                   An Invitation to Patrons and Partners
                 </h3>
                 <p>
@@ -1154,19 +1181,28 @@ export default function App() {
             </div>
           </div>
         </section>
-      </main>
 
-      {/* Footer */}
-      <footer style={footerStyle}>
-        <div style={footerLineStyle}>
-          © {year} US POLO PATRONS ASSOCIATION — POLO PATRONIUM
-        </div>
-        <div>BUILT ON BASE BY COINBASE</div>
-      </footer>
+        <footer
+          style={{
+            textAlign: "center",
+            fontSize: "0.78rem",
+            color: "#7c705a",
+            padding: "2.5rem 1.5rem 2.1rem",
+            borderTop: "1px solid #221a12",
+            marginTop: "3rem",
+          }}
+        >
+          <div style={{ marginBottom: 4 }}>
+            © {year} US POLO PATRONS ASSOCIATION — POLO PATRONIUM
+          </div>
+          <div>BUILT ON BASE BY COINBASE</div>
+        </footer>
+      </main>
 
       {/* Patron Wallet modal */}
       {isWalletOpen && (
         <div
+          className="wallet-modal-backdrop"
           onClick={closeWallet}
           style={{
             position: "fixed",
@@ -1176,10 +1212,10 @@ export default function App() {
             justifyContent: "center",
             alignItems: "center",
             zIndex: 9999,
-            padding: 14,
+            padding: "14px",
           }}
         >
-          <div style={{ width: "100%", maxWidth: 380 }}>
+          <div style={{ width: "100%", maxWidth: "380px" }}>
             <div
               ref={walletScrollRef}
               onClick={(e) => e.stopPropagation()}
@@ -1188,35 +1224,36 @@ export default function App() {
                 maxHeight: "90vh",
                 overflowY: "auto",
                 border: "1px solid #3a2b16",
-                borderRadius: 14,
-                padding: 16,
-                paddingTop: 26,
+                borderRadius: "14px",
+                padding: "16px",
+                paddingTop: "26px",
                 background: "#050505",
                 boxShadow: "0 18px 60px rgba(0,0,0,0.85)",
                 fontFamily:
                   '"Cinzel", "EB Garamond", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", serif',
                 color: "#f5eedc",
-                fontSize: 13,
+                fontSize: "13px",
                 position: "relative",
               }}
             >
-              {/* Wallet header */}
+              {/* Header */}
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginBottom: 12,
+                  marginBottom: "12px",
                   position: "relative",
-                  paddingTop: 4,
+                  paddingTop: "4px",
                   textAlign: "center",
                   flexDirection: "column",
                   gap: 3,
                 }}
               >
+                {/* Line 1: USPPA (wide spaced) */}
                 <div
                   style={{
-                    fontSize: 10,
+                    fontSize: "10px",
                     letterSpacing: "0.24em",
                     textTransform: "uppercase",
                     color: "#9f8a64",
@@ -1225,9 +1262,11 @@ export default function App() {
                 >
                   U&nbsp;S&nbsp;P&nbsp;P&nbsp;A
                 </div>
+
+                {/* Line 2: Polo Patronium */}
                 <div
                   style={{
-                    fontSize: 15,
+                    fontSize: "15px",
                     letterSpacing: "0.18em",
                     textTransform: "uppercase",
                     color: "#c7b08a",
@@ -1236,9 +1275,11 @@ export default function App() {
                 >
                   Polo Patronium
                 </div>
+
+                {/* Line 3: Patron Wallet */}
                 <div
                   style={{
-                    fontSize: 12,
+                    fontSize: "12px",
                     letterSpacing: "0.16em",
                     textTransform: "uppercase",
                     color: "#f5eedc",
@@ -1247,6 +1288,7 @@ export default function App() {
                 >
                   Patron Wallet
                 </div>
+
                 <button
                   onClick={closeWallet}
                   aria-label="Close wallet"
@@ -1256,12 +1298,12 @@ export default function App() {
                     right: 0,
                     top: "50%",
                     transform: "translateY(-50%)",
-                    width: 56,
-                    height: 56,
+                    width: "56px",
+                    height: "56px",
                     border: "none",
                     background: "transparent",
                     color: "#e3bf72",
-                    fontSize: 38,
+                    fontSize: "38px",
                     lineHeight: 1,
                     cursor: "pointer",
                     padding: 0,
@@ -1272,31 +1314,18 @@ export default function App() {
                 </button>
               </div>
 
+              {/* Connect / Account */}
               {!account ? (
-                <>
-                  <p
-                    style={{
-                      fontSize: 13,
-                      textAlign: "center",
-                      marginBottom: 14,
-                      color: "#f5eedc",
-                      fontFamily: '"EB Garamond", serif',
-                    }}
-                  >
-                    Sign in or create your Patron Wallet using email. This is
-                    the same wallet used on Polo Patronium and Cowboy Polo.
-                  </p>
-                  <div style={{ marginBottom: 14 }}>
-                    <ConnectEmbed
-                      client={client}
-                      wallets={wallets}
-                      chain={BASE}
-                      theme={patronCheckoutTheme}
-                    />
-                  </div>
-                </>
+                <div style={{ marginBottom: "14px" }}>
+                  <ConnectEmbed
+                    client={client}
+                    wallets={wallets}
+                    chain={BASE}
+                    theme={patronCheckoutTheme}
+                  />
+                </div>
               ) : (
-                <div style={{ marginBottom: 14, textAlign: "center" }}>
+                <div style={{ marginBottom: "14px", textAlign: "center" }}>
                   {/* Address + copy */}
                   <div
                     style={{
@@ -1304,11 +1333,11 @@ export default function App() {
                       justifyContent: "center",
                       alignItems: "center",
                       gap: 8,
-                      marginBottom: 10,
-                      marginTop: 2,
+                      marginBottom: "10px",
+                      marginTop: "2px",
                     }}
                   >
-                    <div style={{ fontFamily: "monospace", fontSize: 13 }}>
+                    <div style={{ fontFamily: "monospace", fontSize: "13px" }}>
                       {shortAddress}
                     </div>
                     <button
@@ -1319,7 +1348,7 @@ export default function App() {
                         background: "transparent",
                         color: "#e3bf72",
                         cursor: "pointer",
-                        fontSize: 14,
+                        fontSize: "14px",
                       }}
                       aria-label="Copy Patron Wallet address"
                     >
@@ -1327,29 +1356,29 @@ export default function App() {
                     </button>
                   </div>
 
-                  {/* Gas + USDC */}
+                  {/* Gas + USDC (smaller) */}
                   <div
                     style={{
                       display: "flex",
                       justifyContent: "center",
-                      gap: 28,
-                      marginBottom: 10,
+                      gap: "28px",
+                      marginBottom: "10px",
                       flexWrap: "wrap",
                     }}
                   >
                     <div>
                       <div
                         style={{
-                          fontSize: 10,
+                          fontSize: "10px",
                           letterSpacing: "0.14em",
                           textTransform: "uppercase",
                           color: "#9f8a64",
-                          marginBottom: 2,
+                          marginBottom: "2px",
                         }}
                       >
                         Gas
                       </div>
-                      <div style={{ color: "#f5eedc", fontSize: 13 }}>
+                      <div style={{ color: "#f5eedc", fontSize: "13px" }}>
                         {baseBalance?.displayValue || "0"}{" "}
                         {baseBalance?.symbol || "ETH"}
                       </div>
@@ -1358,38 +1387,38 @@ export default function App() {
                     <div>
                       <div
                         style={{
-                          fontSize: 10,
+                          fontSize: "10px",
                           letterSpacing: "0.14em",
                           textTransform: "uppercase",
                           color: "#9f8a64",
-                          marginBottom: 2,
+                          marginBottom: "2px",
                         }}
                       >
                         USDC
                       </div>
-                      <div style={{ color: "#f5eedc", fontSize: 13 }}>
+                      <div style={{ color: "#f5eedc", fontSize: "13px" }}>
                         {usdcBalance?.displayValue || "0"}{" "}
                         {usdcBalance?.symbol || "USDC"}
                       </div>
                     </div>
                   </div>
 
-                  {/* Patron balance */}
-                  <div style={{ marginBottom: 12 }}>
+                  {/* Patron balance (bigger, own line) */}
+                  <div style={{ marginBottom: "12px" }}>
                     <div
                       style={{
-                        fontSize: 10,
+                        fontSize: "10px",
                         letterSpacing: "0.18em",
                         textTransform: "uppercase",
                         color: "#c7b08a",
-                        marginBottom: 4,
+                        marginBottom: "4px",
                       }}
                     >
                       Patronium Balance
                     </div>
                     <div
                       style={{
-                        fontSize: 18,
+                        fontSize: "18px",
                         letterSpacing: "0.02em",
                         color: "#f5eedc",
                       }}
@@ -1399,37 +1428,58 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Buy PATRON + Sign Out actions */}
+                  {/* Buy PATRON link + Sign Out */}
                   <div
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      alignItems: "center",
                       gap: 8,
+                      alignItems: "center",
                       marginBottom: 10,
                     }}
                   >
                     <a
+                      className="btn btn-primary"
                       href="https://cowboypolo.com"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
-                        ...btnPrimaryStyle,
                         width: "100%",
                         justifyContent: "center",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        padding: "6px 18px",
+                        borderRadius: 999,
+                        fontFamily: '"Cinzel", serif',
+                        fontSize: "0.8rem",
+                        letterSpacing: "0.16em",
+                        textTransform: "uppercase",
+                        border: "1px solid #e3bf72",
+                        background: "#e3bf72",
+                        color: "#181210",
+                        boxShadow: "0 10px 35px rgba(0,0,0,0.7)",
+                        textDecoration: "none",
+                        cursor: "pointer",
                       }}
                     >
                       Buy PATRON at CowboyPolo.com
                     </a>
 
                     <button
+                      className="btn btn-outline"
                       style={{
-                        ...btnOutlineStyle,
                         minWidth: "auto",
                         padding: "6px 18px",
-                        fontSize: 11,
+                        fontSize: "11px",
                         letterSpacing: "0.12em",
                         textTransform: "uppercase",
+                        borderRadius: 999,
+                        fontFamily: '"Cinzel", serif',
+                        border: "1px solid #e3bf72",
+                        background: "transparent",
+                        color: "#f5eedc",
+                        boxShadow: "0 8px 26px rgba(0,0,0,0.65)",
+                        cursor: "pointer",
                       }}
                       onClick={handleSignOut}
                     >
@@ -1438,6 +1488,8 @@ export default function App() {
                   </div>
                 </div>
               )}
+
+              {/* Checkout / amount block removed */}
             </div>
           </div>
         </div>

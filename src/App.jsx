@@ -90,7 +90,7 @@ export default function App() {
   const roadmapGateRef = useRef(null);
   const [hasTriggeredGate, setHasTriggeredGate] = useState(false);
 
-  // NEW: shared site tab state
+  // Shared site tab state
   const [activeSite, setActiveSite] = useState("");
 
   // Native ETH on Base (gas)
@@ -196,7 +196,7 @@ export default function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isConnected, hasTriggeredGate]);
 
-  // NEW: determine active tab from hostname
+  // Determine active tab from hostname
   useEffect(() => {
     if (typeof window === "undefined") return;
     const host = window.location.hostname.toLowerCase();
@@ -207,7 +207,6 @@ export default function App() {
     else if (host.includes("charlestonpolo")) setActiveSite("charleston");
   }, []);
 
-  // NEW: shared nav tabs
   const navTabs = [
     { id: "usppa", label: "USPPA", href: "https://uspolopatrons.org" },
     {
@@ -237,9 +236,10 @@ export default function App() {
           top: 0,
           zIndex: 9000,
           padding: "6px 10px 0",
-          background: "rgba(5,5,5,0.96)",
+          // background: "rgba(5,5,5,0.96)", // removed to make fully transparent
           backdropFilter: "blur(8px)",
           WebkitBackdropFilter: "blur(8px)",
+          marginBottom: 6, // small spacer above the Patron Wallet button
         }}
       >
         <nav
@@ -626,7 +626,7 @@ export default function App() {
                         justifyContent: "center",
                       }}
                     >
-                      BUY PATRON
+                      Buy PATRON at CowboyPolo.com
                     </a>
 
                     <button

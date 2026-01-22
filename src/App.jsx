@@ -323,7 +323,7 @@ export default function App() {
 
       {/* Hero */}
       <header>
-        <h1 className="hero-title">POLO PATRONIUM</h1>
+        <h1 className="hero-title"> PATRONIUM</h1>
 
         <div className="hero-symbol">
           <div className="hero-symbol-main">

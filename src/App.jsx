@@ -1,7 +1,7 @@
 // App.jsx
 import React, { useEffect, useRef, useState } from "react";
 import {
-  // CheckoutWidget, // removed
+  // CheckoutWidget,
   ConnectEmbed,
   useActiveAccount,
   useActiveWallet,
@@ -11,6 +11,7 @@ import {
 } from "thirdweb/react";
 import { createThirdwebClient, defineChain } from "thirdweb";
 import { inAppWallet } from "thirdweb/wallets";
+import "./App.css";
 
 // ---------------------------------------------
 // Thirdweb client + chain
@@ -77,7 +78,6 @@ const patronCheckoutTheme = darkTheme({
 export default function App() {
   const year = new Date().getFullYear();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
-  // const [usdAmount, setUsdAmount] = useState("1"); // no longer needed
 
   const account = useActiveAccount();
   const activeWallet = useActiveWallet();
@@ -89,6 +89,9 @@ export default function App() {
   // Roadmap section – used as scroll trigger
   const roadmapGateRef = useRef(null);
   const [hasTriggeredGate, setHasTriggeredGate] = useState(false);
+
+  // Shared site tab state (global header)
+  const [activeSite, setActiveSite] = useState("");
 
   // Native ETH on Base (gas)
   const { data: baseBalance } = useWalletBalance({
@@ -193,9 +196,71 @@ export default function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isConnected, hasTriggeredGate]);
 
+  // Determine active tab from hostname (global menu)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const host = window.location.hostname.toLowerCase();
+    if (host.includes("uspolopatrons")) setActiveSite("usppa");
+    else if (host.includes("polopatronium")) setActiveSite("patronium");
+    else if (host.includes("cowboypolo")) setActiveSite("cowboy");
+    else if (host.includes("thepoloway")) setActiveSite("poloway");
+    else if (host.includes("charlestonpolo")) setActiveSite("charleston");
+  }, []);
+
+  const navTabs = [
+    { id: "usppa", label: "USPPA", href: "https://uspolopatrons.org" },
+    {
+      id: "patronium",
+      label: "Polo Patronium",
+      href: "https://polopatronium.com",
+    },
+    {
+      id: "cowboy",
+      label: "Cowboy Polo Circuit",
+      href: "https://cowboypolo.com",
+    },
+    { id: "poloway", label: "The Polo Way", href: "https://thepoloway.com" },
+    {
+      id: "charleston",
+      label: "Charleston Polo",
+      href: "https://charlestonpolo.com",
+    },
+  ];
+
   return (
     <div className="page">
-      {/* Top-right Patron Wallet button */}
+      {/* SHARED TAB HEADER (global menu, horizontal scroll, no wrapping) */}
+      <div
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 9000,
+          padding: "6px 10px 0",
+          background: "transparent",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+        }}
+      >
+        <div className="site-tabs" aria-label="USPPA family sites">
+          {navTabs.map((tab) => {
+            const isActive = tab.id === activeSite;
+            return (
+              <a
+                key={tab.id}
+                href={tab.href}
+                className={
+                  "site-tab " +
+                  (isActive ? "site-tab--active" : "site-tab--inactive")
+                }
+              >
+                {tab.label}
+              </a>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Top-right Patron Wallet button (page-local header) */}
       <header
         style={{
           display: "flex",
@@ -552,8 +617,6 @@ export default function App() {
                   </div>
                 </div>
               )}
-
-              {/* Checkout / amount block removed */}
             </div>
           </div>
         </div>

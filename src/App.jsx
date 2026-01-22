@@ -626,7 +626,7 @@ export default function App() {
                         justifyContent: "center",
                       }}
                     >
-                      Buy PATRON at CowboyPolo.com
+                      BUY PATRON
                     </a>
 
                     <button

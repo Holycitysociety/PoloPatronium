@@ -428,18 +428,21 @@ export default function App() {
               <p>
                 Patronium is the living token of patronage within the United
                 States Polo Patrons Association. It is the medium through which
-                honourable support is recognised and shared — not through
+                honourable support is recognised and directed — not through
                 speculation, but through participation. Every token of Patronium
                 represents a place within the fellowship of those who uphold the
                 game, its horses, and its players.
               </p>
               <p>
-                It serves as the bridge between patron and player: a clear
-                record of contribution and belonging within a high-trust mission
-                driven community. When a Chapter prospers, it offers tribute to
-                those whose support made that prosperity possible. This is the
-                essence of Patronium — recognition earned through genuine
-                patronage and service to the field.
+                It serves as a bridge between patron and player: a clear record
+                of contribution and belonging within a high-trust, mission
+                driven community. Patrons may use Patronium to engage with
+                initiatives, access opportunities, and designate support within
+                the Association. Patron support may be acknowledged through
+                discretionary patron recognition determined in light of the
+                needs of the Association. This is the essence of Patronium —
+                recognition earned through genuine patronage and service to the
+                field.
               </p>
             </div>
 
@@ -453,8 +456,8 @@ export default function App() {
                 public welcomed to learn and play.
               </p>
               <p>
-                Once an Incubator achieves steady operations, sound
-                horsemanship, and visible community benefit, it becomes a
+                As a Chapter becomes established through steady operations,
+                sound horsemanship, and visible community benefit, it becomes a
                 standing Chapter of the Association.
               </p>
             </div>
@@ -465,16 +468,16 @@ export default function App() {
               <p>
                 Founding Patrons are the first to support the birth of a new
                 Chapter. They provide the initial horses, pasture, and capital
-                that make it possible for a Polo Incubator to begin. During this
-                founding period, their Patronium receives the full measure of
-                available tribute — a reflection of their patronage in helping
-                to seed the future of Polo.
+                that make it possible for a Polo Incubator to begin. Founding
+                Patrons may receive special recognition for helping establish a
+                Chapter at its earliest stage, reflecting the importance of
+                their early patronage in helping seed the future of Polo.
               </p>
               <p>
                 Operating Patrons are the active stewards responsible for the
-                management of each Chapter. They receive a base salary during
-                the incubator period and an operating share of tribute once the
-                incubator transitions to a full Chapter.
+                management of each Chapter. They are charged with overseeing the
+                daily life, health, continuity, and long-term stewardship of the
+                Chapter in service to the Association&apos;s mission.
               </p>
               <p>
                 USPPA Patrons are the ongoing supporters who sustain and
@@ -483,29 +486,25 @@ export default function App() {
             </div>
 
             <div className="copy-block">
-              <h3> The Tribute Framework</h3>
+              <h3> The Patronage Framework</h3>
               <p>
                 Each Chapter follows a principle of balanced and transparent
-                patronage. From its net revenue (gross revenue less operational
-                costs), a Chapter aims to follow this allocation:
+                patronage. Resources are directed first toward the health,
+                continuity, and responsible stewardship of the Association&apos;s
+                horses, land, equipment, operations, and local programmes.
               </p>
-              <ul>
-                <li>
-                  51%+ retained for reinvestment — horses, pasture, equipment,
-                  and operations.
-                </li>
-                <li>
-                  49% max. available to the Patronium Tribute Pool, from which
-                  holders are recognised for their continued patronage.
-                </li>
-              </ul>
               <p>
-                During the Polo Incubator period, the Founding Patrons are
-                whitelisted for direct proportional tribute from the Polo
-                Incubators they support (49% of tribute). After the first year,
-                or when the Incubator can support itself, it transitions to a
-                full Chapter and the tribute returns to the standard USPPA
-                Patron tribute.
+                Any patron-facing benefits or recognitions are determined
+                discretionarily by the Association in light of operational
+                needs, long-term stewardship, and the good of the broader
+                mission.
+              </p>
+              <p>
+                During the Polo Incubator period, Founding Patrons may receive
+                special recognition connected to the Chapters they helped bring
+                into being. As a Chapter becomes established, patron recognition
+                remains subject to the mission, needs, and responsible judgment
+                of the Association.
               </p>
             </div>
 
@@ -521,12 +520,16 @@ export default function App() {
                   Chapter and its players.
                 </li>
                 <li>
-                  Become a USPPA Patron — support the national network and share
-                  in ongoing tribute cycles.
+                  Become a USPPA Patron — support the national network and take
+                  part in the ongoing life of the Association.
                 </li>
                 <li>
                   Provide Horses or Land — supply the physical foundation of
                   Polo under insured, transparent, and fair agreements.
+                </li>
+                <li>
+                  Use Patronium to engage with initiatives, access
+                  opportunities, and designate support within the Association.
                 </li>
               </ul>
             </div>
@@ -541,7 +544,7 @@ export default function App() {
                 framework for the game&apos;s renewal across America.
               </p>
               <p>
-                This is how the USPPA will grow the next American 10-Goal
+                This is how the USPPA will help grow the next American 10-Goal
                 player.
               </p>
             </div>
@@ -552,22 +555,23 @@ export default function App() {
                 The Association welcomes discerning patrons, landholders, and
                 professionals who wish to take part in the restoration of polo
                 as a sustainable, American-bred enterprise. Each Chapter is a
-                living investment in horses, land, and people — structured not
-                for speculation, but for legacy.
+                long-term patronage model for horses, land, and people —
+                structured not for speculation, but for legacy.
               </p>
               <p>
                 Patronium ensures every act of patronage — whether a horse
                 consigned, a pasture opened, or a field sponsored — is
                 recognised and recorded within a transparent, honourable system
-                that rewards those who build American Polo. Your contribution
-                does not vanish into expense; it lives on in horses trained,
-                players formed, and fields maintained.
+                that acknowledges those who help sustain American Polo. Your
+                contribution does not vanish into expense; it lives on in horses
+                trained, players formed, and fields maintained.
               </p>
               <p>
-                Those who have carried the game through their own time know: it
-                survives only by the strength of its patrons. The USPPA now
+                Those who have carried the game through their own time know:
+                it survives only by the strength of its patrons. The USPPA now
                 offers a new way to hold that legacy — a means to see your
-                support endure in the form of living tribute.
+                support endure through participation, recognition, and the
+                continued life of the Association.
               </p>
             </div>
           </div>

@@ -77,7 +77,6 @@ const patronCheckoutTheme = darkTheme({
 export default function App() {
   const year = new Date().getFullYear();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
-  // const [usdAmount, setUsdAmount] = useState("1"); // no longer needed
 
   const account = useActiveAccount();
   const activeWallet = useActiveWallet();
@@ -236,10 +235,9 @@ export default function App() {
           top: 0,
           zIndex: 9000,
           padding: "6px 10px 0",
-          // background: "rgba(5,5,5,0.96)", // removed to make fully transparent
           backdropFilter: "blur(8px)",
           WebkitBackdropFilter: "blur(8px)",
-          marginBottom: 6, // small spacer above the Patron Wallet button
+          marginBottom: 6,
         }}
       >
         <nav
@@ -323,7 +321,7 @@ export default function App() {
 
       {/* Hero */}
       <header>
-        <h1 className="hero-title"> PATRONIUM</h1>
+        <h1 className="hero-title">PATRONIUM</h1>
 
         <div className="hero-symbol">
           <div className="hero-symbol-main">
@@ -342,7 +340,6 @@ export default function App() {
         </div>
 
         <div className="hero-actions">
-          {/* BUY PATRON → direct link to CowboyPolo.com */}
           <a
             className="btn btn-primary"
             href="https://cowboypolo.com"
@@ -352,7 +349,6 @@ export default function App() {
             BUY PATRON
           </a>
 
-          {/* Opens email draft */}
           <a
             className="btn btn-outline"
             href={
@@ -428,7 +424,6 @@ export default function App() {
                   gap: 3,
                 }}
               >
-                {/* Line 1: USPPA (wide spaced) */}
                 <div
                   style={{
                     fontSize: "10px",
@@ -441,7 +436,6 @@ export default function App() {
                   U&nbsp;S&nbsp;P&nbsp;P&nbsp;A
                 </div>
 
-                {/* Line 2: Polo Patronium */}
                 <div
                   style={{
                     fontSize: "15px",
@@ -454,7 +448,6 @@ export default function App() {
                   Polo Patronium
                 </div>
 
-                {/* Line 3: Patron Wallet */}
                 <div
                   style={{
                     fontSize: "12px",
@@ -606,7 +599,11 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Buy PATRON link + Sign Out */}
+                  {/* Primary action: route users to the full Cowboy Polo wallet experience.
+                      We are intentionally keeping USPPA's local wallet capability in place,
+                      but hiding any separate USPPA member-area button for now.
+                      Re-enable a secondary "USPPA Member Area" button here later when that
+                      area has real content worth unlocking locally. */}
                   <div
                     style={{
                       display: "flex",
@@ -618,7 +615,7 @@ export default function App() {
                   >
                     <a
                       className="btn btn-primary"
-                      href="https://cowboypolo.com"
+                      href="https://cowboypolo.com/#/wallet"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
@@ -626,7 +623,7 @@ export default function App() {
                         justifyContent: "center",
                       }}
                     >
-                      Buy PATRON at CowboyPolo.com
+                      Open Full Patron Wallet
                     </a>
 
                     <button
@@ -642,6 +639,24 @@ export default function App() {
                     >
                       Sign Out
                     </button>
+
+                    {/*
+                      FUTURE USPPA MEMBER-AREA BUTTON:
+                      Restore this when USPPA has its own local gated/member destination.
+
+                      <button
+                        className="btn btn-outline"
+                        style={{
+                          width: "100%",
+                          justifyContent: "center",
+                        }}
+                        onClick={() => {
+                          // Future local USPPA member-area flow
+                        }}
+                      >
+                        Enter USPPA Member Area
+                      </button>
+                    */}
                   </div>
                 </div>
               )}
@@ -686,7 +701,6 @@ export default function App() {
               ROADMAP
             </div>
 
-            {/* subtle spacer / rule under the wordmark */}
             <div
               style={{
                 marginTop: "10px",
@@ -723,7 +737,6 @@ export default function App() {
             {/* THREE SEVENS REMUDA */}
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
-                {/* Central bar: THREE · 7̶7̶7̶ · SEVENS */}
                 <div
                   style={{
                     display: "inline-flex",
@@ -783,7 +796,6 @@ export default function App() {
                   </span>
                 </div>
 
-                {/* Base caption: REMUDA */}
                 <div
                   style={{
                     marginTop: "6px",
@@ -936,7 +948,6 @@ export default function App() {
               </div>
             )}
 
-            {/* Actual content (visible only when connected, but always rendered) */}
             <div aria-hidden={!isConnected && true}>
               <div className="copy-block">
                 <h3>Patronium — Polo Patronage Perfected</h3>
@@ -998,7 +1009,7 @@ export default function App() {
               </div>
 
               <div className="copy-block">
-                <h3> The Tribute Framework</h3>
+                <h3>The Tribute Framework</h3>
                 <p>
                   Each Chapter follows a principle of balanced and transparent
                   patronage. From its net revenue (gross revenue less

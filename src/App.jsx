@@ -379,35 +379,29 @@ export default function App() {
                 — our flagship USPPA Chapter and living test model for the Polo
                 Incubator system. Horses are gathered, pasture secured,
                 instruction established, and the public welcomed to learn and
-                play. Once an Incubator achieves steady operations, sound
-                horsemanship, and visible community benefit, it is received as a
-                standing Chapter of the Association.
+                play.
                 <br />
                 <br />
-                Each USPPA Chapter is a fully integrated programme operating
-                under the Association&apos;s standards. Charleston Polo, as the
-                flagship Chapter, serves as the organisational hub for the
-                Cowboy Polo Circuit — coordinating local Cowboy Polo clinics,
-                sanctioned chukkers at member barns and arenas, and the first
-                pool of Chapter horses.
+                Charleston Polo serves as the first chapter test model for the
+                broader USPPA framework. In the early stage, a chapter may
+                operate through multiple partner locations rather than a single
+                permanent club. Over time, as horse supply, patronage, and event
+                structure become stable, that chapter can grow into a more
+                permanent and fully integrated node of the Association.
                 <br />
                 <br />
-                In its early life, a Chapter begins as a Polo Incubator: a local
-                startup where the “bring your own horse” model allows riders and
-                stables to join the Circuit quickly, while a shared remuda is
-                trained for exhibitions, league play, and new riders. Once an
-                Incubator demonstrates steady operations, sound horsemanship,
-                and visible benefit to the community, it is recognised as a
-                standing Chapter of the USPPA.
+                The goal is not simply to stage occasional polo activity, but to
+                build a repeatable local structure where players, ponies,
+                patrons, and hosts are tied together in a practical ecosystem.
               </p>
             </div>
           </div>
 
           <p className="roadmap-footnote">
             All of these initiatives are coordinated and supported through Polo
-            Patronium, the living token of patronage within the United States
-            Polo Patrons Association, uniting patrons, players, and clubs in a
-            shared Polo ecosystem.
+            Patronium, the patronage token of the United States Polo Patrons
+            Association, uniting patrons, players, and clubs in a shared Polo
+            ecosystem.
           </p>
         </section>
 
@@ -422,155 +416,253 @@ export default function App() {
             }}
           >
             <div className="copy-block">
-              <h3>Patronium — Polo Patronage Perfected</h3>
+              <h3>Patronium — The Patron Token of the USPPA</h3>
               <p>
-                Patronium is the living token of patronage within the United
-                States Polo Patrons Association. It is the medium through which
-                honourable support is recognised and directed — not through
-                speculation, but through participation. Every token of Patronium
-                represents a place within the fellowship of those who uphold the
-                game, its horses, and its players.
+                Patronium is the patronage token of the United States Polo
+                Patrons Association.
               </p>
               <p>
-                It serves as a bridge between patron and player: a clear record
-                of contribution and belonging within a high-trust, mission
-                driven community. Patrons may use Patronium to engage with
-                initiatives, access opportunities, and designate support within
-                the Association. Patron support may be acknowledged through
-                discretionary patron recognition determined in light of the
-                needs of the Association. This is the essence of Patronium —
-                recognition earned through genuine patronage and service to the
-                field.
-              </p>
-            </div>
-
-            <div className="copy-block">
-              <h3>Charleston Polo — The USPPA Chapter Test Model</h3>
-              <p>
-                Each USPPA Chapter is a fully integrated polo programme
-                operating under the Association&apos;s standards. A Chapter
-                begins as a Polo Incubator — a local startup where horses are
-                gathered, pasture secured, instruction established, and the
-                public welcomed to learn and play.
+                It is not built around speculation. It is built to give patrons
+                a clear way to enter the ecosystem, participate in real
+                initiatives, and direct support where it is needed most —
+                horses, teams, chapters, events, and long-term infrastructure.
               </p>
               <p>
-                As a Chapter becomes established through steady operations,
-                sound horsemanship, and visible community benefit, it becomes a
-                standing Chapter of the Association.
+                Patronium is the utility layer of the Association. Patrons
+                acquire PATRON, then use that position to engage with the life
+                of the sport: supporting initiatives, accessing opportunities,
+                and helping build the next American polo pipeline.
+              </p>
+              <p>
+                Patron recognition, tribute, and other benefits remain
+                discretionary and are determined in light of the needs of the
+                Association, the strength of a given initiative, and the
+                long-term good of the mission.
+              </p>
+              <p>
+                In plain terms, Patronium is the medium through which patronage
+                becomes organized, visible, and durable.
               </p>
             </div>
 
             <div className="copy-block">
-              <h3>Founding, Operating, and USPPA Patrons</h3>
-              <p>There are three forms of Patronium holder.</p>
+              <h3>Charleston Polo — The Chapter Test Model</h3>
               <p>
-                Founding Patrons are the first to support the birth of a new
-                Chapter. They provide the initial horses, pasture, and capital
-                that make it possible for a Polo Incubator to begin. Founding
-                Patrons may receive special recognition for helping establish a
-                Chapter at its earliest stage, reflecting the importance of
-                their early patronage in helping seed the future of Polo.
+                Charleston Polo serves as the first chapter test model for the
+                broader USPPA framework.
               </p>
               <p>
-                Operating Patrons are the active stewards responsible for the
-                management of each Chapter. They are charged with overseeing the
-                daily life, health, continuity, and long-term stewardship of the
-                Chapter in service to the Association&apos;s mission.
+                A chapter begins by organizing the real foundations of polo in
+                one place: horses, host properties, instruction, patrons, and
+                public-facing events.
               </p>
               <p>
-                USPPA Patrons are the ongoing supporters who sustain and
-                strengthen a Chapter once it is established.
-              </p>
-            </div>
-
-            <div className="copy-block">
-              <h3> The Patronage Framework</h3>
-              <p>
-                Each Chapter follows a principle of balanced and transparent
-                patronage. Resources are directed first toward the health,
-                continuity, and responsible stewardship of the Association&apos;s
-                horses, land, equipment, operations, and local programmes.
+                In the early stage, a chapter may operate through multiple
+                partner locations rather than a single permanent club. Over
+                time, as horse supply, patronage, and event structure become
+                stable, that chapter can grow into a more permanent and fully
+                integrated node of the Association.
               </p>
               <p>
-                Any patron-facing benefits or recognitions are determined
-                discretionarily by the Association in light of operational
-                needs, long-term stewardship, and the good of the broader
-                mission.
-              </p>
-              <p>
-                During the Polo Incubator period, Founding Patrons may receive
-                special recognition connected to the Chapters they helped bring
-                into being. As a Chapter becomes established, patron recognition
-                remains subject to the mission, needs, and responsible judgment
-                of the Association.
+                The goal is not simply to stage occasional polo activity, but to
+                build a repeatable local structure where players, ponies,
+                patrons, and hosts are tied together in a practical ecosystem.
               </p>
             </div>
 
             <div className="copy-block">
-              <h3>Participation</h3>
+              <h3>How Patronium Works</h3>
+              <p>
+                Patronium begins at the association level, then flows toward
+                specific initiatives.
+              </p>
+              <p>
+                A patron may use PATRON to support:
+              </p>
               <ul>
+                <li>a chapter,</li>
+                <li>a team,</li>
+                <li>a horse syndicate,</li>
+                <li>an event,</li>
+                <li>a training property,</li>
+                <li>a clubhouse initiative,</li>
+                <li>or another approved project within the Association.</li>
+              </ul>
+              <p>
+                This creates a cleaner model than one-time donations or vague
+                sponsorships. Support can be directed toward a real purpose,
+                tracked over time, and connected to the people, horses, and
+                infrastructure it helps bring into being.
+              </p>
+            </div>
+
+            <div className="copy-block">
+              <h3>Horse Syndicates and the Association Remuda</h3>
+              <p>
+                One of the most important uses of the system is the creation of
+                dedicated association horses and a managed remuda.
+              </p>
+              <p>
+                Rather than leaving new players to navigate the sport through
+                overpriced horse sales, fragmented advice, or one-off
+                arrangements, the Association can build and manage its own horse
+                structure through dedicated syndicates and association-backed
+                mounts. That creates a cleaner and more trustworthy entry into
+                the sport, with sound horses, clearer financial pathways, and a
+                less painful early experience for new players.
+              </p>
+              <p>
+                This allows the Association to support the full ladder of the
+                game. At the entry level, it helps provide reliable horses for
+                lessons, practices, and early development. At the higher end, it
+                supports the maintenance of stronger strings for exhibitions,
+                featured events, and tournament play.
+              </p>
+              <p>
+                Each horse may have its own digital record and participation
+                structure, allowing support to remain tied to that horse over
+                the course of its career. This makes it possible to:
+              </p>
+              <ul>
+                <li>organize horse-specific support,</li>
+                <li>preserve the history of who helped bring a horse along,</li>
+                <li>direct any later horse-related tribute or recognition,</li>
                 <li>
-                  Become a Founding Patron — assist in launching a new Chapter
-                  through contribution of capital, horses, or facilities.
-                </li>
-                <li>
-                  Become an Operating Patron — oversee the daily life of a
-                  Chapter and its players.
-                </li>
-                <li>
-                  Become a USPPA Patron — support the national network and take
-                  part in the ongoing life of the Association.
-                </li>
-                <li>
-                  Provide Horses or Land — supply the physical foundation of
-                  Polo under insured, transparent, and fair agreements.
-                </li>
-                <li>
-                  Use Patronium to engage with initiatives, access
-                  opportunities, and designate support within the Association.
+                  and reserve funds for old age, turnout, and retirement care.
                 </li>
               </ul>
+              <p>
+                The goal is not to treat horses as disposable expenses or
+                one-time transactions, but to create a more stable and enduring
+                relationship between horses, patrons, players, and the
+                Association itself.
+              </p>
+            </div>
+
+            <div className="copy-block">
+              <h3>Forms of Participation</h3>
+              <p>There are several ways to participate in the system.</p>
+              <ul>
+                <li>
+                  <strong>Founding Patron</strong> — supports the early
+                  formation of a chapter, horse syndicate, team, or major
+                  initiative.
+                </li>
+                <li>
+                  <strong>Operating Patron</strong> — helps sustain the ongoing
+                  life of the Association through recurring support,
+                  organization, hosting, or stewardship.
+                </li>
+                <li>
+                  <strong>Horse or Land Partner</strong> — provides horses,
+                  pasture, arenas, or facilities under clear and fair
+                  agreements.
+                </li>
+                <li>
+                  <strong>Team or Event Patron</strong> — supports a development
+                  team, social chukker series, luncheon, launch, or other
+                  chapter-facing event.
+                </li>
+                <li>
+                  <strong>National Patron</strong> — supports the broader USPPA
+                  network and its long-term growth.
+                </li>
+              </ul>
+              <p>
+                These are not separate token classes. They are different ways
+                patronage can take shape inside the same ecosystem.
+              </p>
+            </div>
+
+            <div className="copy-block">
+              <h3>The Patronage Model</h3>
+              <p>
+                Resources are directed first toward the real needs of the
+                mission:
+              </p>
+              <ul>
+                <li>horses,</li>
+                <li>land,</li>
+                <li>equipment,</li>
+                <li>instruction,</li>
+                <li>operations,</li>
+                <li>chapter development,</li>
+                <li>and long-term infrastructure.</li>
+              </ul>
+              <p>
+                Any patron-facing tribute, recognition, or programmatic benefit
+                is discretionary. It is determined by the Association according
+                to actual need, actual contribution, and responsible
+                stewardship.
+              </p>
+              <p>
+                This allows the system to remain flexible, mission-aligned, and
+                operationally honest.
+              </p>
             </div>
 
             <div className="copy-block">
               <h3>In Plain Terms</h3>
               <p>
-                The Association seeks not to monetise polo, but to stabilise and
-                decentralise it — to bring clarity, fairness, and longevity to
-                the way it is taught, funded, and shared. Patronium and the Polo
-                Incubator model together create a living, self-sustaining
-                framework for the game&apos;s renewal across America.
+                The purpose of Patronium is not to financialize polo.
               </p>
               <p>
-                This is how the USPPA will help grow the next American 10-Goal
-                player.
+                The purpose is to organize patronage in a cleaner, more durable
+                way.
+              </p>
+              <p>
+                Patronium makes it possible to:
+              </p>
+              <ul>
+                <li>bring people into the sport through a single utility layer,</li>
+                <li>direct support toward real initiatives,</li>
+                <li>build dedicated horses and teams,</li>
+                <li>develop local chapters,</li>
+                <li>
+                  and eventually create the larger infrastructure polo needs in
+                  order to grow.
+                </li>
+              </ul>
+              <p>
+                This includes not only lessons and horses, but also social
+                hosting, patron events, team launches, clubhouses, training
+                properties, and the wider ecosystem that allows polo to function
+                as both a sport and a philanthropic platform.
+              </p>
+              <p>
+                In that sense, the system is designed not just to support
+                individual causes, but to build the underlying structure through
+                which many future causes can be supported.
               </p>
             </div>
 
             <div className="copy-block">
               <h3>An Invitation to Patrons and Partners</h3>
               <p>
-                The Association welcomes discerning patrons, landholders, and
-                professionals who wish to take part in the restoration of polo
-                as a sustainable, American-bred enterprise. Each Chapter is a
-                long-term patronage model for horses, land, and people —
-                structured not for speculation, but for legacy.
+                The USPPA welcomes patrons, horsemen, landholders, hosts, and
+                professionals who want to help build a more stable American polo
+                future.
               </p>
               <p>
-                Patronium ensures every act of patronage — whether a horse
-                consigned, a pasture opened, or a field sponsored — is
-                recognised and recorded within a transparent, honourable system
-                that acknowledges those who help sustain American Polo. Your
-                contribution does not vanish into expense; it lives on in horses
-                trained, players formed, and fields maintained.
+                Support may take the form of:
               </p>
+              <ul>
+                <li>patronage,</li>
+                <li>horses,</li>
+                <li>host properties,</li>
+                <li>team backing,</li>
+                <li>event sponsorship,</li>
+                <li>chapter partnership,</li>
+                <li>or strategic infrastructure support.</li>
+              </ul>
               <p>
-                Those who have carried the game through their own time know:
-                it survives only by the strength of its patrons. The USPPA now
-                offers a new way to hold that legacy — a means to see your
-                support endure through participation, recognition, and the
-                continued life of the Association.
+                Every act of patronage should be visible, intelligible, and
+                connected to something real. Whether that means helping launch a
+                chapter, support a horse, back a team, or create a permanent
+                social node for the sport, the aim is the same: to restore a
+                stronger and more durable framework for American polo.
               </p>
+              <p>Patronium is the tool that helps make that possible.</p>
             </div>
           </div>
         </section>
@@ -578,7 +670,7 @@ export default function App() {
 
       <footer>
         <div>© {year} US POLO PATRONS ASSOCIATION — POLO PATRONIUM</div>
-        <div>BUILT ON BASE BY COINBASE</div>
+        <div>BUILT ON BASE</div>
       </footer>
     </div>
   );

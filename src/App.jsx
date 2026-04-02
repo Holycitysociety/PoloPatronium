@@ -40,7 +40,7 @@ export default function App() {
     {
       id: "charleston",
       label: "Charleston Polo",
-      href: "https://charlestonpolo.com",
+      href: "https://charlestonpoloclub.com",
     },
   ];
 

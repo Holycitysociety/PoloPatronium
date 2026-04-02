@@ -159,8 +159,6 @@ export default function App() {
           <a
             className="btn btn-primary"
             href="https://cowboypolo.com/#/wallet"
-            target="_blank"
-            rel="noopener noreferrer"
           >
             BUY PATRON
           </a>

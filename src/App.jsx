@@ -429,13 +429,16 @@ export default function App() {
               </p>
               <p>
                 Patronium is the utility layer of the Association. Patrons
-                acquire PATRON, then use that position to support the parts of
-                the sport they want to help build.
+                acquire PATRON, then use that position to engage with
+                initiatives, access opportunities, and designate support within
+                the Association.
               </p>
               <p>
-                Patron recognition, tribute, and related benefits remain
-                discretionary and are determined in light of the needs of the
-                Association and the long-term good of the mission.
+                Patron support may be acknowledged through discretionary patron
+                recognition determined in light of the needs of the Association.
+                Any patron-facing benefits, tribute, or related recognitions
+                remain discretionary and are determined in light of operational
+                needs, long-term stewardship, and the good of the mission.
               </p>
             </div>
 
@@ -445,6 +448,168 @@ export default function App() {
                 One of the most important uses of the system is the creation of
                 dedicated association horses and a managed remuda.
               </p>
+
+              {/* Inline digital baseball-card style prospect NFT display */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  margin: "18px 0 22px",
+                }}
+              >
+                <div
+                  style={{
+                    width: "100%",
+                    maxWidth: "340px",
+                    border: "1px solid #3a2b16",
+                    borderRadius: "18px",
+                    padding: "14px",
+                    background:
+                      "linear-gradient(180deg, rgba(199,176,138,0.10), rgba(0,0,0,0.22)), #050505",
+                    boxShadow: "0 14px 36px rgba(0,0,0,0.36)",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "9px",
+                      letterSpacing: "0.28em",
+                      textTransform: "uppercase",
+                      color: "#9f8a64",
+                      textAlign: "center",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    THREE SEVENS REMUDA
+                  </div>
+
+                  <div
+                    style={{
+                      border: "1px solid rgba(199,176,138,0.25)",
+                      borderRadius: "12px",
+                      minHeight: "180px",
+                      background:
+                        "radial-gradient(circle at top, rgba(227,191,114,0.10), rgba(0,0,0,0.10) 45%, rgba(0,0,0,0.25) 100%)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginBottom: "12px",
+                      position: "relative",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        left: "12px",
+                        fontSize: "9px",
+                        letterSpacing: "0.18em",
+                        textTransform: "uppercase",
+                        color: "#c7b08a",
+                      }}
+                    >
+                      Prospect Series
+                    </div>
+
+                    <div
+                      style={{
+                        textAlign: "center",
+                        padding: "20px 14px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: "12px",
+                          letterSpacing: "0.16em",
+                          textTransform: "uppercase",
+                          color: "#c7b08a",
+                          marginBottom: "8px",
+                        }}
+                      >
+                        Cowboy Polo Prospect
+                      </div>
+
+                      <div
+                        style={{
+                          fontSize: "24px",
+                          letterSpacing: "0.14em",
+                          textTransform: "uppercase",
+                          color: "#f5eedc",
+                          lineHeight: 1.1,
+                          marginBottom: "10px",
+                        }}
+                      >
+                        Horse NFT
+                      </div>
+
+                      <div
+                        style={{
+                          fontSize: "10px",
+                          letterSpacing: "0.20em",
+                          textTransform: "uppercase",
+                          color: "#9f8a64",
+                        }}
+                      >
+                        Association Prospect Card
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: "10px",
+                    }}
+                  >
+                    <div>
+                      <div
+                        style={{
+                          fontSize: "9px",
+                          letterSpacing: "0.18em",
+                          textTransform: "uppercase",
+                          color: "#9f8a64",
+                          marginBottom: "4px",
+                        }}
+                      >
+                        Standard
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "14px",
+                          letterSpacing: "0.16em",
+                          textTransform: "uppercase",
+                          color: "#f5eedc",
+                        }}
+                      >
+                        ERC-1155
+                      </div>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "6px 12px 5px",
+                        border: "1px solid #c7b08a",
+                        borderRadius: "999px",
+                        fontSize: "10px",
+                        letterSpacing: "0.22em",
+                        textTransform: "uppercase",
+                        color: "#181210",
+                        background:
+                          "linear-gradient(180deg, #e3bf72, #b89047)",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      1155
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <p>
                 Rather than leaving new players to navigate the sport through
                 overpriced horse sales, fragmented advice, or one-off
@@ -491,6 +656,10 @@ export default function App() {
               <p>
                 This allows support to be directed toward a defined purpose and
                 tracked over time.
+              </p>
+              <p>
+                Direct allocation is a utility action within the ecosystem,
+                similar to governance or designation, not a claim on proceeds.
               </p>
             </div>
 

@@ -303,7 +303,6 @@ export default function App() {
                     style={{
                       fontSize: "24px",
                       letterSpacing: "0.24em",
-                      textTransform: "uppercase",
                       color: "#f5eedc",
                       lineHeight: 1.25,
                     }}
@@ -458,7 +457,6 @@ export default function App() {
                     style={{
                       fontSize: "10px",
                       letterSpacing: "0.28em",
-                      textTransform: "uppercase",
                       color: "#c7b08a",
                       textAlign: "center",
                       marginBottom: "12px",
@@ -492,7 +490,6 @@ export default function App() {
                         style={{
                           fontSize: "11px",
                           letterSpacing: "0.18em",
-                          textTransform: "uppercase",
                           color: "#c7b08a",
                           marginBottom: "10px",
                         }}
@@ -504,7 +501,6 @@ export default function App() {
                         style={{
                           fontSize: "26px",
                           letterSpacing: "0.14em",
-                          textTransform: "uppercase",
                           color: "#f5eedc",
                           lineHeight: 1.1,
                           marginBottom: "10px",
@@ -517,7 +513,6 @@ export default function App() {
                         style={{
                           fontSize: "10px",
                           letterSpacing: "0.22em",
-                          textTransform: "uppercase",
                           color: "#9f8a64",
                         }}
                       >
@@ -539,7 +534,6 @@ export default function App() {
                         style={{
                           fontSize: "9px",
                           letterSpacing: "0.18em",
-                          textTransform: "uppercase",
                           color: "#9f8a64",
                           marginBottom: "4px",
                         }}
@@ -550,7 +544,6 @@ export default function App() {
                         style={{
                           fontSize: "14px",
                           letterSpacing: "0.16em",
-                          textTransform: "uppercase",
                           color: "#f5eedc",
                         }}
                       >
@@ -568,7 +561,6 @@ export default function App() {
                         borderRadius: "999px",
                         fontSize: "10px",
                         letterSpacing: "0.18em",
-                        textTransform: "uppercase",
                         color: "#181210",
                         background:
                           "linear-gradient(180deg, #e3bf72, #b89047)",

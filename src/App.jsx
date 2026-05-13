@@ -249,15 +249,15 @@ export default function App() {
                 An American endeavour to broaden Polo&apos;s reach, nurture
                 emerging talent, and encourage the next generation of American
                 players — where riders not only learn to play, but learn to make
-                the horses of the PoloBred Registry &amp; Stringpool.
+                the horses of the PoloBred Stringpool &amp; Registry.
               </p>
             </div>
 
-            {/* POLOBRED REGISTRY & STRINGPOOL */}
+            {/* POLOBRED STRINGPOOL & REGISTRY */}
             <div className="logo-block">
               <div
                 className="logo-usp-string-remuda"
-                aria-label="The PoloBred Registry and Stringpool wordmark"
+                aria-label="The PoloBred Stringpool and Registry wordmark"
                 style={{
                   textAlign: "center",
                 }}
@@ -286,7 +286,7 @@ export default function App() {
                       whiteSpace: "normal",
                     }}
                   >
-                    the PoloBred Registry
+                    the PoloBred Stringpool
                   </div>
 
                   <div
@@ -308,16 +308,16 @@ export default function App() {
                       lineHeight: 1.25,
                     }}
                   >
-                    &amp; Stringpool
+                    &amp; Registry
                   </div>
                 </div>
               </div>
 
               <p className="initiative-text">
-                Our managed pool of PPA horses — consigned or owned by the
-                Association, assigned to operating patrons, trainers and local
-                players, and developed for play, exhibition and training across
-                our programmes.
+                Our managed pool and registry of PPA horses — consigned or owned
+                by the Association, assigned to operating patrons, trainers and
+                local players, and developed for play, exhibition and training
+                across our programmes.
               </p>
             </div>
 
@@ -427,11 +427,11 @@ export default function App() {
             </div>
 
             <div className="copy-block">
-              <h3>Horse Syndicates and the PoloBred Registry &amp; Stringpool</h3>
+              <h3>Horse Syndicates and the PoloBred Stringpool &amp; Registry</h3>
               <p>
                 One of the most important uses of the system is the creation of
-                dedicated association horses and a managed PoloBred Registry
-                &amp; Stringpool.
+                dedicated association horses through a managed PoloBred
+                Stringpool &amp; Registry.
               </p>
 
               {/* Simplified branded horse card */}
@@ -464,7 +464,7 @@ export default function App() {
                       marginBottom: "12px",
                     }}
                   >
-                    PoloBred Registry &amp; Stringpool
+                    PoloBred Stringpool &amp; Registry
                   </div>
 
                   <div

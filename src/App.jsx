@@ -279,15 +279,14 @@ export default function App() {
 
                   <div
                     style={{
-                      fontSize: "19px",
-                      letterSpacing: "0.22em",
-                      textTransform: "uppercase",
-                      color: "#f5eedc",
-                      lineHeight: 1.35,
+                      fontSize: "15px",
+                      letterSpacing: "0.15em",
+                      color: "#c7b08a",
+                      lineHeight: 1.45,
                       whiteSpace: "normal",
                     }}
                   >
-                    The PoloBred Registry
+                    the PoloBred Registry
                   </div>
 
                   <div

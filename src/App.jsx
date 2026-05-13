@@ -249,15 +249,15 @@ export default function App() {
                 An American endeavour to broaden Polo&apos;s reach, nurture
                 emerging talent, and encourage the next generation of American
                 players — where riders not only learn to play, but learn to make
-                the horses of the PoloBred Registry &amp; PPA Stringpool.
+                the horses of the PoloBred Registry &amp; Stringpool.
               </p>
             </div>
 
-            {/* POLOBRED REGISTRY & PPA STRINGPOOL */}
+            {/* POLOBRED REGISTRY & STRINGPOOL */}
             <div className="logo-block">
               <div
                 className="logo-usp-string-remuda"
-                aria-label="The PoloBred Registry and PPA Stringpool wordmark"
+                aria-label="The PoloBred Registry and Stringpool wordmark"
                 style={{
                   textAlign: "center",
                 }}
@@ -270,8 +270,17 @@ export default function App() {
                 >
                   <div
                     style={{
-                      fontSize: "21px",
-                      letterSpacing: "0.17em",
+                      height: "1px",
+                      background: "#c7b08a",
+                      opacity: 0.9,
+                      marginBottom: "16px",
+                    }}
+                  />
+
+                  <div
+                    style={{
+                      fontSize: "15px",
+                      letterSpacing: "0.15em",
                       color: "#c7b08a",
                       lineHeight: 1.45,
                       whiteSpace: "normal",
@@ -282,15 +291,24 @@ export default function App() {
 
                   <div
                     style={{
+                      height: "1px",
+                      background: "#c7b08a",
+                      opacity: 0.9,
+                      marginTop: "16px",
+                      marginBottom: "14px",
+                    }}
+                  />
+
+                  <div
+                    style={{
                       fontSize: "24px",
                       letterSpacing: "0.24em",
                       textTransform: "uppercase",
                       color: "#f5eedc",
                       lineHeight: 1.25,
-                      marginTop: "18px",
                     }}
                   >
-                    &amp; PPA Stringpool
+                    &amp; Stringpool
                   </div>
                 </div>
               </div>
@@ -409,13 +427,11 @@ export default function App() {
             </div>
 
             <div className="copy-block">
-              <h3>
-                Horse Syndicates and the PoloBred Registry &amp; PPA Stringpool
-              </h3>
+              <h3>Horse Syndicates and the PoloBred Registry &amp; Stringpool</h3>
               <p>
                 One of the most important uses of the system is the creation of
                 dedicated association horses and a managed PoloBred Registry
-                &amp; PPA Stringpool.
+                &amp; Stringpool.
               </p>
 
               {/* Simplified branded horse card */}
@@ -448,7 +464,7 @@ export default function App() {
                       marginBottom: "12px",
                     }}
                   >
-                    PoloBred Registry &amp; PPA Stringpool
+                    PoloBred Registry &amp; Stringpool
                   </div>
 
                   <div

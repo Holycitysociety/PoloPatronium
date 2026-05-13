@@ -330,7 +330,7 @@ export default function App() {
                         textTransform: "uppercase",
                       }}
                     >
-                      <span>Registry</span>
+                      <span>Registry &</span>
                       <span>Stringpool</span>
                     </span>
                   </div>

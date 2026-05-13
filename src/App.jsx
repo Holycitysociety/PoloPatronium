@@ -264,7 +264,7 @@ export default function App() {
               >
                 <div
                   style={{
-                    maxWidth: "560px",
+                    maxWidth: "620px",
                     margin: "0 auto",
                   }}
                 >
@@ -282,13 +282,13 @@ export default function App() {
                       display: "inline-flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      gap: "0.7em",
+                      gap: "0.72em",
                       whiteSpace: "nowrap",
                     }}
                   >
                     <span
                       style={{
-                        fontSize: "15px",
+                        fontSize: "16px",
                         letterSpacing: "0.12em",
                         color: "#c7b08a",
                         lineHeight: 1,
@@ -300,11 +300,17 @@ export default function App() {
 
                     <span
                       style={{
-                        fontSize: "30px",
-                        letterSpacing: "0.16em",
+                        display: "inline-block",
+                        fontFamily:
+                          '"Cormorant Garamond", "EB Garamond", Garamond, serif',
+                        fontSize: "42px",
+                        fontWeight: 500,
+                        letterSpacing: "0.10em",
                         color: "#f5eedc",
-                        lineHeight: 1,
+                        lineHeight: 0.95,
                         textTransform: "uppercase",
+                        transform: "scaleX(0.82)",
+                        transformOrigin: "center",
                       }}
                     >
                       PoloBred
@@ -316,11 +322,11 @@ export default function App() {
                         flexDirection: "column",
                         alignItems: "flex-start",
                         justifyContent: "center",
-                        gap: "5px",
-                        fontSize: "10px",
-                        letterSpacing: "0.22em",
+                        gap: "7px",
+                        fontSize: "20px",
+                        letterSpacing: "0.12em",
                         color: "#c7b08a",
-                        lineHeight: 1,
+                        lineHeight: 0.9,
                         textTransform: "uppercase",
                       }}
                     >

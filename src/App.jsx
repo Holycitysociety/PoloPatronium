@@ -279,11 +279,11 @@ export default function App() {
 
                   <div
                     style={{
-                      fontSize: "24px",
-                      letterSpacing: "0.24em",
+                      fontSize: "19px",
+                      letterSpacing: "0.22em",
                       textTransform: "uppercase",
                       color: "#f5eedc",
-                      lineHeight: 1.25,
+                      lineHeight: 1.35,
                       whiteSpace: "normal",
                     }}
                   >

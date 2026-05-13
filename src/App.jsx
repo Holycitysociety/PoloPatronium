@@ -257,7 +257,7 @@ export default function App() {
             <div className="logo-block">
               <div
                 className="logo-usp-string-remuda"
-                aria-label="The PoloBred Registry and Stringpool wordmark"
+                aria-label="The POLOBRED Registry and Stringpool wordmark"
                 style={{
                   textAlign: "center",
                   textTransform: "none",

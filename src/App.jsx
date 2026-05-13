@@ -257,15 +257,17 @@ export default function App() {
             <div className="logo-block">
               <div
                 className="logo-usp-string-remuda"
-                aria-label="The PoloBred Registry and Stringpool wordmark"
+                aria-label="the PoloBred Registry and Stringpool wordmark"
                 style={{
                   textAlign: "center",
+                  textTransform: "none",
                 }}
               >
                 <div
                   style={{
                     maxWidth: "560px",
                     margin: "0 auto",
+                    textTransform: "none",
                   }}
                 >
                   <div
@@ -279,11 +281,12 @@ export default function App() {
 
                   <div
                     style={{
-                      fontSize: "15px",
-                      letterSpacing: "0.15em",
+                      fontSize: "14px",
+                      letterSpacing: "0.12em",
                       color: "#c7b08a",
                       lineHeight: 1.45,
                       whiteSpace: "normal",
+                      textTransform: "none",
                     }}
                   >
                     the PoloBred Registry
@@ -305,6 +308,7 @@ export default function App() {
                       letterSpacing: "0.24em",
                       color: "#f5eedc",
                       lineHeight: 1.25,
+                      textTransform: "none",
                     }}
                   >
                     &amp; Stringpool
@@ -460,6 +464,7 @@ export default function App() {
                       color: "#c7b08a",
                       textAlign: "center",
                       marginBottom: "12px",
+                      textTransform: "none",
                     }}
                   >
                     PoloBred Registry &amp; Stringpool
@@ -484,6 +489,7 @@ export default function App() {
                       style={{
                         textAlign: "center",
                         padding: "20px 14px",
+                        textTransform: "none",
                       }}
                     >
                       <div
@@ -492,6 +498,7 @@ export default function App() {
                           letterSpacing: "0.18em",
                           color: "#c7b08a",
                           marginBottom: "10px",
+                          textTransform: "none",
                         }}
                       >
                         Association Horse
@@ -504,6 +511,7 @@ export default function App() {
                           color: "#f5eedc",
                           lineHeight: 1.1,
                           marginBottom: "10px",
+                          textTransform: "none",
                         }}
                       >
                         Horse ID
@@ -514,6 +522,7 @@ export default function App() {
                           fontSize: "10px",
                           letterSpacing: "0.22em",
                           color: "#9f8a64",
+                          textTransform: "none",
                         }}
                       >
                         PoloBred Registry Record
@@ -527,6 +536,7 @@ export default function App() {
                       justifyContent: "space-between",
                       alignItems: "center",
                       gap: "10px",
+                      textTransform: "none",
                     }}
                   >
                     <div>
@@ -536,6 +546,7 @@ export default function App() {
                           letterSpacing: "0.18em",
                           color: "#9f8a64",
                           marginBottom: "4px",
+                          textTransform: "none",
                         }}
                       >
                         Standard
@@ -545,6 +556,7 @@ export default function App() {
                           fontSize: "14px",
                           letterSpacing: "0.16em",
                           color: "#f5eedc",
+                          textTransform: "none",
                         }}
                       >
                         ERC-1155
@@ -565,6 +577,7 @@ export default function App() {
                         background:
                           "linear-gradient(180deg, #e3bf72, #b89047)",
                         whiteSpace: "nowrap",
+                        textTransform: "none",
                       }}
                     >
                       Horse Card

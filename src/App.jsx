@@ -249,15 +249,15 @@ export default function App() {
                 An American endeavour to broaden Polo&apos;s reach, nurture
                 emerging talent, and encourage the next generation of American
                 players — where riders not only learn to play, but learn to make
-                the horses of the PoloBred Stringpool &amp; Registry.
+                the horses of the PoloBred Registry and Stringpool.
               </p>
             </div>
 
-            {/* POLOBRED STRINGPOOL & REGISTRY */}
+            {/* POLOBRED REGISTRY / STRINGPOOL */}
             <div className="logo-block">
               <div
                 className="logo-usp-string-remuda"
-                aria-label="The PoloBred Stringpool and Registry wordmark"
+                aria-label="The PoloBred Registry and Stringpool wordmark"
                 style={{
                   textAlign: "center",
                 }}
@@ -273,20 +273,60 @@ export default function App() {
                       height: "1px",
                       background: "#c7b08a",
                       opacity: 0.9,
-                      marginBottom: "16px",
+                      marginBottom: "18px",
                     }}
                   />
 
                   <div
                     style={{
-                      fontSize: "15px",
-                      letterSpacing: "0.15em",
-                      color: "#c7b08a",
-                      lineHeight: 1.45,
-                      whiteSpace: "normal",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "0.7em",
+                      whiteSpace: "nowrap",
                     }}
                   >
-                    the PoloBred Stringpool
+                    <span
+                      style={{
+                        fontSize: "15px",
+                        letterSpacing: "0.12em",
+                        color: "#c7b08a",
+                        lineHeight: 1,
+                        textTransform: "none",
+                      }}
+                    >
+                      The
+                    </span>
+
+                    <span
+                      style={{
+                        fontSize: "30px",
+                        letterSpacing: "0.16em",
+                        color: "#f5eedc",
+                        lineHeight: 1,
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      PoloBred
+                    </span>
+
+                    <span
+                      style={{
+                        display: "inline-flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                        justifyContent: "center",
+                        gap: "5px",
+                        fontSize: "10px",
+                        letterSpacing: "0.22em",
+                        color: "#c7b08a",
+                        lineHeight: 1,
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      <span>Registry</span>
+                      <span>Stringpool</span>
+                    </span>
                   </div>
 
                   <div
@@ -294,22 +334,9 @@ export default function App() {
                       height: "1px",
                       background: "#c7b08a",
                       opacity: 0.9,
-                      marginTop: "16px",
-                      marginBottom: "14px",
+                      marginTop: "18px",
                     }}
                   />
-
-                  <div
-                    style={{
-                      fontSize: "24px",
-                      letterSpacing: "0.24em",
-                      textTransform: "uppercase",
-                      color: "#f5eedc",
-                      lineHeight: 1.25,
-                    }}
-                  >
-                    &amp; Registry
-                  </div>
                 </div>
               </div>
 
@@ -427,11 +454,11 @@ export default function App() {
             </div>
 
             <div className="copy-block">
-              <h3>Horse Syndicates and the PoloBred Stringpool &amp; Registry</h3>
+              <h3>Horse Syndicates and the PoloBred Registry &amp; Stringpool</h3>
               <p>
                 One of the most important uses of the system is the creation of
-                dedicated association horses through a managed PoloBred
-                Stringpool &amp; Registry.
+                dedicated association horses through the PoloBred Registry and
+                Stringpool.
               </p>
 
               {/* Simplified branded horse card */}
@@ -464,7 +491,7 @@ export default function App() {
                       marginBottom: "12px",
                     }}
                   >
-                    PoloBred Stringpool &amp; Registry
+                    PoloBred Registry &amp; Stringpool
                   </div>
 
                   <div
@@ -521,7 +548,7 @@ export default function App() {
                           color: "#9f8a64",
                         }}
                       >
-                        PoloBred Registry Record
+                        Care &amp; Stewardship Record
                       </div>
                     </div>
                   </div>

@@ -308,7 +308,7 @@ export default function App() {
                       lineHeight: 1.25,
                     }}
                   >
-                    &amp; Stringpool
+                    &amp; PPA Stringpool
                   </div>
                 </div>
               </div>

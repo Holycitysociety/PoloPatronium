@@ -249,82 +249,98 @@ export default function App() {
                 An American endeavour to broaden Polo&apos;s reach, nurture
                 emerging talent, and encourage the next generation of American
                 players — where riders not only learn to play, but learn to make
-                the horses of the PoloBred STRINGPOOL.
+                the horses of the PoloBred Stringpool.
               </p>
             </div>
 
             {/* POLOBRED STRINGPOOL */}
             <div className="logo-block">
-              <div className="logo-usp-string-remuda">
+              <div
+                className="logo-usp-string-remuda"
+                aria-label="PoloBred Stringpool wordmark"
+                style={{
+                  textAlign: "center",
+                }}
+              >
                 <div
                   style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "0.5em",
-                    padding: "8px 16px 6px",
-                    borderTop: "1px solid #c7b08a",
-                    borderBottom: "1px solid #c7b08a",
+                    maxWidth: "440px",
+                    margin: "0 auto",
                   }}
                 >
-                  <span
+                  <div
                     style={{
-                      fontSize: "10px",
-                      letterSpacing: "0.22em",
-                      textTransform: "uppercase",
-                      color: "#c7b08a",
+                      height: "1px",
+                      background: "#c7b08a",
+                      opacity: 0.9,
+                      marginBottom: "14px",
                     }}
-                  >
-                    POLO
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      color: "#c7b08a",
-                    }}
-                  >
-                    ·
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "32px",
-                      letterSpacing: "0.18em",
-                      color: "#f5eedc",
-                      lineHeight: 1,
-                    }}
-                  >
-                    BRED
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      color: "#c7b08a",
-                    }}
-                  >
-                    ·
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "10px",
-                      letterSpacing: "0.22em",
-                      textTransform: "uppercase",
-                      color: "#c7b08a",
-                    }}
-                  >
-                    HORSES
-                  </span>
-                </div>
+                  />
 
-                <div
-                  style={{
-                    marginTop: "6px",
-                    fontSize: "9px",
-                    letterSpacing: "0.32em",
-                    textTransform: "uppercase",
-                    color: "#9f8a64",
-                  }}
-                >
-                  STRINGPOOL
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "baseline",
+                      gap: "14px",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: "10px",
+                        letterSpacing: "0.26em",
+                        textTransform: "uppercase",
+                        color: "#c7b08a",
+                      }}
+                    >
+                      Polo
+                    </span>
+
+                    <span
+                      style={{
+                        fontSize: "42px",
+                        letterSpacing: "0.14em",
+                        textTransform: "uppercase",
+                        color: "#f5eedc",
+                        lineHeight: 1,
+                      }}
+                    >
+                      Bred
+                    </span>
+
+                    <span
+                      style={{
+                        fontSize: "10px",
+                        letterSpacing: "0.26em",
+                        textTransform: "uppercase",
+                        color: "#c7b08a",
+                      }}
+                    >
+                      Horses
+                    </span>
+                  </div>
+
+                  <div
+                    style={{
+                      height: "1px",
+                      background: "#c7b08a",
+                      opacity: 0.9,
+                      marginTop: "14px",
+                      marginBottom: "12px",
+                    }}
+                  />
+
+                  <div
+                    style={{
+                      fontSize: "11px",
+                      letterSpacing: "0.34em",
+                      textTransform: "uppercase",
+                      color: "#c7b08a",
+                    }}
+                  >
+                    Stringpool
+                  </div>
                 </div>
               </div>
 
@@ -442,13 +458,13 @@ export default function App() {
             </div>
 
             <div className="copy-block">
-              <h3>Horse Syndicates and the Association STRINGPOOL</h3>
+              <h3>Horse Syndicates and the Association Stringpool</h3>
               <p>
                 One of the most important uses of the system is the creation of
-                dedicated association horses and a managed STRINGPOOL.
+                dedicated association horses and a managed Stringpool.
               </p>
 
-              {/* Inline digital baseball-card style prospect NFT display */}
+              {/* Simplified branded horse card */}
               <div
                 style={{
                   display: "flex",
@@ -470,15 +486,15 @@ export default function App() {
                 >
                   <div
                     style={{
-                      fontSize: "9px",
+                      fontSize: "10px",
                       letterSpacing: "0.28em",
                       textTransform: "uppercase",
-                      color: "#9f8a64",
+                      color: "#c7b08a",
                       textAlign: "center",
-                      marginBottom: "10px",
+                      marginBottom: "12px",
                     }}
                   >
-                    POLOBRED STRINGPOOL
+                    PoloBred Stringpool
                   </div>
 
                   <div
@@ -498,39 +514,25 @@ export default function App() {
                   >
                     <div
                       style={{
-                        position: "absolute",
-                        top: "10px",
-                        left: "12px",
-                        fontSize: "9px",
-                        letterSpacing: "0.18em",
-                        textTransform: "uppercase",
-                        color: "#c7b08a",
-                      }}
-                    >
-                      Prospect Series
-                    </div>
-
-                    <div
-                      style={{
                         textAlign: "center",
                         padding: "20px 14px",
                       }}
                     >
                       <div
                         style={{
-                          fontSize: "12px",
-                          letterSpacing: "0.16em",
+                          fontSize: "11px",
+                          letterSpacing: "0.18em",
                           textTransform: "uppercase",
                           color: "#c7b08a",
-                          marginBottom: "8px",
+                          marginBottom: "10px",
                         }}
                       >
-                        Cowboy Polo Prospect
+                        Association Horse
                       </div>
 
                       <div
                         style={{
-                          fontSize: "24px",
+                          fontSize: "26px",
                           letterSpacing: "0.14em",
                           textTransform: "uppercase",
                           color: "#f5eedc",
@@ -538,18 +540,18 @@ export default function App() {
                           marginBottom: "10px",
                         }}
                       >
-                        Horse NFT
+                        Horse ID
                       </div>
 
                       <div
                         style={{
                           fontSize: "10px",
-                          letterSpacing: "0.20em",
+                          letterSpacing: "0.22em",
                           textTransform: "uppercase",
                           color: "#9f8a64",
                         }}
                       >
-                        Association Prospect Card
+                        PoloBred Stringpool Record
                       </div>
                     </div>
                   </div>
@@ -591,11 +593,11 @@ export default function App() {
                         display: "inline-flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        padding: "6px 12px 5px",
+                        padding: "6px 14px 5px",
                         border: "1px solid #c7b08a",
                         borderRadius: "999px",
                         fontSize: "10px",
-                        letterSpacing: "0.22em",
+                        letterSpacing: "0.18em",
                         textTransform: "uppercase",
                         color: "#181210",
                         background:
@@ -603,7 +605,7 @@ export default function App() {
                         whiteSpace: "nowrap",
                       }}
                     >
-                      1155
+                      Horse Card
                     </div>
                   </div>
                 </div>

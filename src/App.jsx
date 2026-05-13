@@ -270,6 +270,15 @@ export default function App() {
                 >
                   <div
                     style={{
+                      height: "1px",
+                      background: "#c7b08a",
+                      opacity: 0.9,
+                      marginBottom: "18px",
+                    }}
+                  />
+
+                  <div
+                    style={{
                       display: "inline-flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -325,6 +334,15 @@ export default function App() {
                       <span>Stringpool</span>
                     </span>
                   </div>
+
+                  <div
+                    style={{
+                      height: "1px",
+                      background: "#c7b08a",
+                      opacity: 0.9,
+                      marginTop: "18px",
+                    }}
+                  />
                 </div>
               </div>
 

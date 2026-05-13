@@ -264,7 +264,7 @@ export default function App() {
               >
                 <div
                   style={{
-                    maxWidth: "440px",
+                    maxWidth: "520px",
                     margin: "0 auto",
                   }}
                 >
@@ -273,7 +273,7 @@ export default function App() {
                       height: "1px",
                       background: "#c7b08a",
                       opacity: 0.9,
-                      marginBottom: "14px",
+                      marginBottom: "16px",
                     }}
                   />
 
@@ -281,17 +281,19 @@ export default function App() {
                     style={{
                       display: "flex",
                       justifyContent: "center",
-                      alignItems: "baseline",
-                      gap: "14px",
-                      flexWrap: "wrap",
+                      alignItems: "center",
+                      gap: "0.55em",
+                      flexWrap: "nowrap",
+                      whiteSpace: "nowrap",
                     }}
                   >
                     <span
                       style={{
-                        fontSize: "10px",
-                        letterSpacing: "0.26em",
+                        fontSize: "22px",
+                        letterSpacing: "0.24em",
                         textTransform: "uppercase",
-                        color: "#c7b08a",
+                        color: "#f5eedc",
+                        lineHeight: 1,
                       }}
                     >
                       Polo
@@ -299,8 +301,8 @@ export default function App() {
 
                     <span
                       style={{
-                        fontSize: "42px",
-                        letterSpacing: "0.14em",
+                        fontSize: "22px",
+                        letterSpacing: "0.24em",
                         textTransform: "uppercase",
                         color: "#f5eedc",
                         lineHeight: 1,
@@ -311,10 +313,11 @@ export default function App() {
 
                     <span
                       style={{
-                        fontSize: "10px",
-                        letterSpacing: "0.26em",
+                        fontSize: "22px",
+                        letterSpacing: "0.24em",
                         textTransform: "uppercase",
-                        color: "#c7b08a",
+                        color: "#f5eedc",
+                        lineHeight: 1,
                       }}
                     >
                       Horses
@@ -326,7 +329,7 @@ export default function App() {
                       height: "1px",
                       background: "#c7b08a",
                       opacity: 0.9,
-                      marginTop: "14px",
+                      marginTop: "16px",
                       marginBottom: "12px",
                     }}
                   />

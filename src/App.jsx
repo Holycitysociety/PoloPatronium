@@ -286,7 +286,7 @@ export default function App() {
                       whiteSpace: "normal",
                     }}
                   >
-                    the PoloBred Registry
+                    the PoloBred Registry &
                   </div>
 
                   <div

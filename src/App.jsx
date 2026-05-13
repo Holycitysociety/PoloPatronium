@@ -257,7 +257,7 @@ export default function App() {
             <div className="logo-block">
               <div
                 className="logo-usp-string-remuda"
-                aria-label="the PoloBred Registry and Stringpool wordmark"
+                aria-label="The PoloBred Registry and Stringpool wordmark"
                 style={{
                   textAlign: "center",
                   textTransform: "none",
@@ -526,6 +526,41 @@ export default function App() {
                         }}
                       >
                         PoloBred Registry Record
+                      </div>
+
+                      <div
+                        style={{
+                          marginTop: "16px",
+                          display: "grid",
+                          gridTemplateColumns: "1fr",
+                          gap: "8px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            borderTop: "1px solid rgba(199,176,138,0.22)",
+                            paddingTop: "8px",
+                            fontSize: "10px",
+                            letterSpacing: "0.18em",
+                            color: "#c7b08a",
+                            textTransform: "none",
+                          }}
+                        >
+                          Patron Tribute
+                        </div>
+
+                        <div
+                          style={{
+                            borderTop: "1px solid rgba(199,176,138,0.22)",
+                            paddingTop: "8px",
+                            fontSize: "10px",
+                            letterSpacing: "0.18em",
+                            color: "#c7b08a",
+                            textTransform: "none",
+                          }}
+                        >
+                          Retirement Turnout Fund
+                        </div>
                       </div>
                     </div>
                   </div>

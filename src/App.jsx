@@ -25,7 +25,7 @@ export default function App() {
   }, []);
 
   const navTabs = [
-    { id: "usppa", label: "USPPA", href: "https://uspolopatrons.org" },
+    { id: "usppa", label: "PPA", href: "https://uspolopatrons.org" },
     {
       id: "patronium",
       label: "Polo Patronium",
@@ -59,7 +59,7 @@ export default function App() {
         }}
       >
         <nav
-          aria-label="USPPA family sites"
+          aria-label="PPA family sites"
           style={{
             display: "flex",
             gap: 4,
@@ -126,7 +126,7 @@ export default function App() {
       <div className="masthead">
         <div className="masthead-inner">
           <div className="masthead-line-1">
-            <span>UNITED STATES POLO</span>
+            <span>POLO</span>
             <span>PATRONS ASSOCIATION</span>
           </div>
           <div className="masthead-rule"></div>
@@ -249,11 +249,11 @@ export default function App() {
                 An American endeavour to broaden Polo&apos;s reach, nurture
                 emerging talent, and encourage the next generation of American
                 players — where riders not only learn to play, but learn to make
-                the horses of the 7̶7̶7̶ ( Three Sevens) Remuda.
+                the horses of the PoloBred STRINGPOOL.
               </p>
             </div>
 
-            {/* THREE SEVENS REMUDA */}
+            {/* POLOBRED STRINGPOOL */}
             <div className="logo-block">
               <div className="logo-usp-string-remuda">
                 <div
@@ -275,7 +275,7 @@ export default function App() {
                       color: "#c7b08a",
                     }}
                   >
-                    THREE
+                    POLO
                   </span>
                   <span
                     style={{
@@ -288,12 +288,12 @@ export default function App() {
                   <span
                     style={{
                       fontSize: "32px",
-                      letterSpacing: "0.22em",
+                      letterSpacing: "0.18em",
                       color: "#f5eedc",
                       lineHeight: 1,
                     }}
                   >
-                    7̶7̶7̶
+                    BRED
                   </span>
                   <span
                     style={{
@@ -311,7 +311,7 @@ export default function App() {
                       color: "#c7b08a",
                     }}
                   >
-                    SEVENS
+                    HORSES
                   </span>
                 </div>
 
@@ -324,12 +324,12 @@ export default function App() {
                     color: "#9f8a64",
                   }}
                 >
-                  REMUDA
+                  STRINGPOOL
                 </div>
               </div>
 
               <p className="initiative-text">
-                Our managed herd of USPPA horses — consigned or owned by the
+                Our managed pool of PPA horses — consigned or owned by the
                 Association, assigned to operating patrons, trainers and local
                 players, and developed for play, exhibition and training across
                 our programmes.
@@ -376,15 +376,15 @@ export default function App() {
               </div>
               <p className="initiative-text">
                 The renewal of Charleston, South Carolina&apos;s polo tradition
-                — our flagship USPPA Chapter and living test model for the Polo
+                — our flagship PPA Chapter and living test model for the Polo
                 Incubator system. Horses are gathered, pasture secured,
                 instruction established, and the public welcomed to learn and
                 play.
                 <br />
                 <br />
                 Charleston Polo serves as the first chapter test model for the
-                broader USPPA framework. In the early stage, a chapter may
-                operate through multiple partner locations rather than a single
+                broader PPA framework. In the early stage, a chapter may operate
+                through multiple partner locations rather than a single
                 permanent club. Over time, as horse supply, patronage, and event
                 structure become stable, that chapter can grow into a more
                 permanent and fully integrated node of the Association.
@@ -399,9 +399,8 @@ export default function App() {
 
           <p className="roadmap-footnote">
             All of these initiatives are coordinated and supported through Polo
-            Patronium, the patronage token of the United States Polo Patrons
-            Association, uniting patrons, players, and clubs in a shared Polo
-            ecosystem.
+            Patronium, the patronage token of the Polo Patrons Association,
+            uniting patrons, players, and clubs in a shared Polo ecosystem.
           </p>
         </section>
 
@@ -416,10 +415,10 @@ export default function App() {
             }}
           >
             <div className="copy-block">
-              <h3>Patronium — The Patron Token of the USPPA</h3>
+              <h3>Patronium — The Patron Token of the PPA</h3>
               <p>
-                Patronium is the patronage token of the United States Polo
-                Patrons Association.
+                Patronium is the patronage token of the Polo Patrons
+                Association.
               </p>
               <p>
                 It gives patrons a clear way to enter the ecosystem, participate
@@ -443,10 +442,10 @@ export default function App() {
             </div>
 
             <div className="copy-block">
-              <h3>Horse Syndicates and the Association Remuda</h3>
+              <h3>Horse Syndicates and the Association STRINGPOOL</h3>
               <p>
                 One of the most important uses of the system is the creation of
-                dedicated association horses and a managed remuda.
+                dedicated association horses and a managed STRINGPOOL.
               </p>
 
               {/* Inline digital baseball-card style prospect NFT display */}
@@ -479,7 +478,7 @@ export default function App() {
                       marginBottom: "10px",
                     }}
                   >
-                    THREE SEVENS REMUDA
+                    POLOBRED STRINGPOOL
                   </div>
 
                   <div
@@ -666,7 +665,7 @@ export default function App() {
             <div className="copy-block">
               <h3>An Invitation to Patrons and Partners</h3>
               <p>
-                The USPPA welcomes patrons, horsemen, landholders, hosts, and
+                The PPA welcomes patrons, horsemen, landholders, hosts, and
                 professionals who want to help build a more stable American polo
                 future.
               </p>
@@ -689,7 +688,7 @@ export default function App() {
       </main>
 
       <footer>
-        <div>© {year} US POLO PATRONS ASSOCIATION — POLO PATRONIUM</div>
+        <div>© {year} POLO PATRONS ASSOCIATION — POLO PATRONIUM</div>
         <div>BUILT ON BASE</div>
       </footer>
     </div>

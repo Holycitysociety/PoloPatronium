@@ -122,39 +122,154 @@ export default function App() {
         </a>
       </header>
 
-      {/* Masthead / copied PPA wordmark */}
+      {/* Masthead / Polo Patrons Association wordmark */}
       <div className="masthead">
-        <div className="masthead-inner">
-          <h1
-            className="masthead-wordmark"
+        <div
+          className="masthead-inner"
+          style={{
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <div
             aria-label="Polo Patrons Association"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textTransform: "uppercase",
+              marginBottom: "42px",
+            }}
           >
-            <span
-              className="wordmark-kicker"
+            <div
               aria-label="United States, Argentina, Canada, United Kingdom"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.6em",
+                fontFamily:
+                  '"Cormorant Garamond", "EB Garamond", Garamond, serif',
+                fontSize: "clamp(0.96rem, 2.55vw, 1.16rem)",
+                letterSpacing: "0.18em",
+                color: "#c7b08a",
+                lineHeight: 1.15,
+                marginBottom: "1.15rem",
+              }}
             >
-              <span className="country-code">US</span>
-              <span className="country-sep" aria-hidden="true">
+              <span style={{ display: "inline-block", minWidth: "2ch" }}>
+                US
+              </span>
+              <span
+                aria-hidden="true"
+                style={{
+                  fontSize: "0.62em",
+                  lineHeight: 1,
+                  color: "#b8965a",
+                  transform: "translateY(-0.03em)",
+                }}
+              >
                 ✠
               </span>
-              <span className="country-code">AR</span>
-              <span className="country-sep" aria-hidden="true">
+              <span style={{ display: "inline-block", minWidth: "2ch" }}>
+                AR
+              </span>
+              <span
+                aria-hidden="true"
+                style={{
+                  fontSize: "0.62em",
+                  lineHeight: 1,
+                  color: "#b8965a",
+                  transform: "translateY(-0.03em)",
+                }}
+              >
                 ✠
               </span>
-              <span className="country-code">CA</span>
-              <span className="country-sep" aria-hidden="true">
+              <span style={{ display: "inline-block", minWidth: "2ch" }}>
+                CA
+              </span>
+              <span
+                aria-hidden="true"
+                style={{
+                  fontSize: "0.62em",
+                  lineHeight: 1,
+                  color: "#b8965a",
+                  transform: "translateY(-0.03em)",
+                }}
+              >
                 ✠
               </span>
-              <span className="country-code">UK</span>
-            </span>
+              <span style={{ display: "inline-block", minWidth: "2ch" }}>
+                UK
+              </span>
+            </div>
 
-            <span className="wordmark-main">
-              <span className="wordmark-line">POLO PATRONS</span>
-              <span className="wordmark-line">ASSOCIATION</span>
-            </span>
-          </h1>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "0.62rem",
+                lineHeight: 1,
+              }}
+            >
+              <span
+                style={{
+                  display: "block",
+                  whiteSpace: "nowrap",
+                  fontFamily:
+                    '"Cormorant Garamond", "EB Garamond", Garamond, serif',
+                  fontWeight: 300,
+                  fontSize: "clamp(1.5rem, 7vw, 2.42rem)",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  background:
+                    "linear-gradient(to bottom, #f8f0db 0%, #ebd7ad 40%, #d6b777 72%, #f3e2bc 100%)",
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                  color: "transparent",
+                  textShadow:
+                    "0 0 0.5px rgba(227,191,114,0.18), 0 8px 24px rgba(0,0,0,0.48)",
+                }}
+              >
+                POLO PATRONS
+              </span>
 
-          <p className="est">FOUNDING AD MMXXVI</p>
+              <span
+                style={{
+                  display: "block",
+                  whiteSpace: "nowrap",
+                  fontFamily:
+                    '"Cormorant Garamond", "EB Garamond", Garamond, serif',
+                  fontWeight: 400,
+                  fontSize: "clamp(0.92rem, 2.65vw, 1.2rem)",
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  color: "#ddcfad",
+                  textShadow:
+                    "0 0 0.5px rgba(227,191,114,0.18), 0 8px 24px rgba(0,0,0,0.48)",
+                }}
+              >
+                ASSOCIATION
+              </span>
+            </div>
+
+            <div
+              style={{
+                marginTop: "1.2rem",
+                fontFamily:
+                  '"Cormorant Garamond", "EB Garamond", Garamond, serif',
+                fontSize: "clamp(0.82rem, 2.15vw, 0.98rem)",
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: "#c7b08a",
+              }}
+            >
+              FOUNDING AD MMXXVI
+            </div>
+          </div>
 
           <div className="masthead-rule"></div>
 

@@ -36,7 +36,11 @@ export default function App() {
   }, []);
 
   const navTabs = [
-    { id: "usppa", label: "PPA", href: "https://uspolopatrons.org" },
+    {
+      id: "usppa",
+      label: "Polo Patrons Assn",
+      href: "https://uspolopatrons.org",
+    },
     {
       id: "patronium",
       label: "Polo Patronium",

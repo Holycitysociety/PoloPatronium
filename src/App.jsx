@@ -579,8 +579,7 @@ export default function App() {
             <div className="copy-block">
               <h3>Horse Syndicates and the PoloBred Registry &amp; Stringpool</h3>
               <p>
-                One of the most important uses of the system is the creation of
-                dedicated association horses and a managed PoloBred Registry
+                One of the most important uses of the system is the creation of a managed PoloBred Registry
                 &amp; Stringpool.
               </p>
 

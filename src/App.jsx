@@ -122,14 +122,42 @@ export default function App() {
         </a>
       </header>
 
-      {/* Masthead */}
+      {/* Masthead / copied PPA wordmark */}
       <div className="masthead">
         <div className="masthead-inner">
-          <div className="masthead-line-1">
-            <span>POLO</span>
-            <span>PATRONS ASSOCIATION</span>
-          </div>
+          <h1
+            className="masthead-wordmark"
+            aria-label="Polo Patrons Association"
+          >
+            <span
+              className="wordmark-kicker"
+              aria-label="United States, Argentina, Canada, United Kingdom"
+            >
+              <span className="country-code">US</span>
+              <span className="country-sep" aria-hidden="true">
+                ✠
+              </span>
+              <span className="country-code">AR</span>
+              <span className="country-sep" aria-hidden="true">
+                ✠
+              </span>
+              <span className="country-code">CA</span>
+              <span className="country-sep" aria-hidden="true">
+                ✠
+              </span>
+              <span className="country-code">UK</span>
+            </span>
+
+            <span className="wordmark-main">
+              <span className="wordmark-line">POLO PATRONS</span>
+              <span className="wordmark-line">ASSOCIATION</span>
+            </span>
+          </h1>
+
+          <p className="est">FOUNDING AD MMXXVI</p>
+
           <div className="masthead-rule"></div>
+
           <div className="masthead-line-2 masthead-presents">PRESENTS THE</div>
           <div className="masthead-line-2 masthead-stewardship">
             OFFICIAL POLO PATRONAGE TOKEN

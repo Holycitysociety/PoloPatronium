@@ -380,25 +380,6 @@ export default function App() {
           </div>
 
           <div className="brand-grid">
-            {/* COWBOY POLO CIRCUIT */}
-            <div className="logo-block">
-              <div
-                className="logo-cowboy-polo-circuit"
-                style={{
-                  borderColor: "#c7b08a",
-                  color: "#f5eedc",
-                }}
-              >
-                <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
-              </div>
-              <p className="initiative-text">
-                An American endeavour to broaden Polo&apos;s reach, nurture
-                emerging talent, and encourage the next generation of American
-                players — where riders not only learn to play, but learn to make
-                the horses of the PoloBred Registry &amp; Stringpool.
-              </p>
-            </div>
-
             {/* POLOBRED REGISTRY & STRINGPOOL */}
             <div className="logo-block">
               <div
@@ -464,6 +445,25 @@ export default function App() {
                 Association, assigned to operating patrons, trainers and local
                 players, and developed for play, exhibition and training across
                 our programmes.
+              </p>
+            </div>
+
+            {/* COWBOY POLO CIRCUIT */}
+            <div className="logo-block">
+              <div
+                className="logo-cowboy-polo-circuit"
+                style={{
+                  borderColor: "#c7b08a",
+                  color: "#f5eedc",
+                }}
+              >
+                <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
+              </div>
+              <p className="initiative-text">
+                An American endeavour to broaden Polo&apos;s reach, nurture
+                emerging talent, and encourage the next generation of American
+                players — where riders not only learn to play, but learn to make
+                the horses of the PoloBred Registry &amp; Stringpool.
               </p>
             </div>
 

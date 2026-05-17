@@ -16,12 +16,23 @@ export default function App() {
   // Determine active tab from hostname
   useEffect(() => {
     if (typeof window === "undefined") return;
+
     const host = window.location.hostname.toLowerCase();
-    if (host.includes("uspolopatrons")) setActiveSite("usppa");
-    else if (host.includes("polopatronium")) setActiveSite("patronium");
-    else if (host.includes("cowboypolo")) setActiveSite("cowboy");
-    else if (host.includes("thepoloway")) setActiveSite("poloway");
-    else if (host.includes("charlestonpolo")) setActiveSite("charleston");
+
+    if (host.includes("polopatronium")) {
+      setActiveSite("patronium");
+    } else if (
+      host.includes("uspolopatrons") ||
+      host.includes("polopatrons")
+    ) {
+      setActiveSite("usppa");
+    } else if (host.includes("cowboypolo")) {
+      setActiveSite("cowboy");
+    } else if (host.includes("thepoloway")) {
+      setActiveSite("poloway");
+    } else if (host.includes("charlestonpolo")) {
+      setActiveSite("charleston");
+    }
   }, []);
 
   const navTabs = [
@@ -33,7 +44,7 @@ export default function App() {
     },
     {
       id: "cowboy",
-      label: "Cowboy Polo Circuit",
+      label: "Cowboy Polo",
       href: "https://cowboypolo.com",
     },
     { id: "poloway", label: "The Polo Way", href: "https://thepoloway.com" },
@@ -92,7 +103,9 @@ export default function App() {
                     ? "1px solid transparent"
                     : "1px solid #3a2b16",
                   color: isActive ? "#f5eedc" : "#c7b08a",
-                  background: "transparent",
+                  background: isActive
+                    ? "rgba(227,191,114,0.08)"
+                    : "transparent",
                   whiteSpace: "nowrap",
                   flex: "0 0 auto",
                 }}
@@ -114,7 +127,7 @@ export default function App() {
         }}
       >
         <a
-          className="btn btn-outline"
+          className="btn btn-primary"
           style={{
             minWidth: "auto",
             padding: "8px 30px",

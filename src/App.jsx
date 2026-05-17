@@ -104,18 +104,22 @@ export default function App() {
         </nav>
       </div>
 
-      {/* Top-right Patron Wallet button */}
+      {/* Patron Wallet button */}
       <header
         style={{
           display: "flex",
-          justifyContent: "flex-end",
+          justifyContent: "center",
           alignItems: "center",
-          padding: "8px 0",
+          padding: "22px 0 26px",
         }}
       >
         <a
           className="btn btn-outline"
-          style={{ minWidth: "auto", padding: "6px 16px" }}
+          style={{
+            minWidth: "auto",
+            padding: "8px 30px",
+            margin: "4px 0",
+          }}
           href="https://cowboypolo.com/#/wallet"
         >
           PATRON WALLET
@@ -254,20 +258,6 @@ export default function App() {
               >
                 ASSOCIATION
               </span>
-            </div>
-
-            <div
-              style={{
-                marginTop: "1.2rem",
-                fontFamily:
-                  '"Cormorant Garamond", "EB Garamond", Garamond, serif',
-                fontSize: "clamp(0.82rem, 2.15vw, 0.98rem)",
-                letterSpacing: "0.16em",
-                textTransform: "uppercase",
-                color: "#c7b08a",
-              }}
-            >
-              FOUNDING AD MMXXVI
             </div>
           </div>
 

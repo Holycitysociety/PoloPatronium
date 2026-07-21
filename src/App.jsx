@@ -282,14 +282,14 @@ export default function App() {
 
           <div className="masthead-line-2 masthead-presents">PRESENTS THE</div>
           <div className="masthead-line-2 masthead-stewardship">
-            OFFICIAL POLO PATRONAGE TOKEN
+            OFFICIAL PATRONAGE TOKEN
           </div>
         </div>
       </div>
 
       {/* Hero */}
       <header>
-        <h1 className="hero-title">PATRONIUM</h1>
+        <h1 className="hero-title">PATRON PATRONIUM</h1>
 
         <div className="hero-symbol">
           <div className="hero-symbol-main">

@@ -255,7 +255,7 @@ export default function App() {
                     "0 0 0.5px rgba(227,191,114,0.18), 0 8px 24px rgba(0,0,0,0.48)",
                 }}
               >
-                POLO PATRONS
+                THE PATRONS SOCIETY
               </span>
 
               <span
@@ -273,7 +273,7 @@ export default function App() {
                     "0 0 0.5px rgba(227,191,114,0.18), 0 8px 24px rgba(0,0,0,0.48)",
                 }}
               >
-                ASSOCIATION
+              
               </span>
             </div>
           </div>

@@ -163,12 +163,30 @@ export default function App() {
           }}
         >
           <div
+            style={{
+              fontSize: "11px",
+              letterSpacing: "0.24em",
+              textTransform: "uppercase",
+              color: "#c7b08a",
+              lineHeight: 1.5,
+              marginBottom: "12px",
+            }}
+          >
+            SOCIETATIS CIVITATIS SANCTAE PATRONI
+          </div>
+
+          <div className="masthead-line-2 masthead-presents">
+            PRESENT
+          </div>
+
+          <div
             aria-label="The Patrons Society"
             style={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               textTransform: "uppercase",
+              marginTop: "16px",
               marginBottom: "42px",
             }}
           >
@@ -208,11 +226,11 @@ export default function App() {
           <div className="masthead-rule"></div>
 
           <div className="masthead-line-2 masthead-presents">
-            PRESENTS THE
+            INTRODUCING THE
           </div>
 
           <div className="masthead-line-2 masthead-stewardship">
-            OFFICIAL PATRONAGE TOKEN
+            OFFICIAL SOCIETY PATRONAGE TOKEN
           </div>
         </div>
       </div>

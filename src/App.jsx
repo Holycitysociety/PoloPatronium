@@ -178,7 +178,10 @@ export default function App() {
             <div className="logo-block">
               <div className="logo-the-polo-way">
                 <span className="top">THE</span>
-                <span className="main">POLO WAY</span>
+
+                <span className="main">
+                  POLO WAY
+                </span>
               </div>
 
               <p className="initiative-text">
@@ -218,7 +221,7 @@ export default function App() {
                 <br />
                 The goal is not simply to stage occasional polo activity, but to
                 build a repeatable local structure where players, ponies,
-                patrons, and hosts are tied together in a practical ecosystem.
+                patrons, and hosts are tied together in a practical network.
               </p>
             </div>
           </div>
@@ -226,8 +229,8 @@ export default function App() {
           <p className="roadmap-footnote">
             All of these polo initiatives are coordinated and supported through
             Patrons Society using Patronium, the Society&apos;s patronage token,
-            uniting patrons, players, horses, and clubs in a shared polo
-            ecosystem.
+            uniting patrons, players, horses, and clubs within a shared polo
+            framework.
           </p>
         </section>
 
@@ -243,23 +246,23 @@ export default function App() {
           <div className="copy-section-inner">
             <div className="copy-block">
               <h3>
-                Patronium — The Patron Token of Patrons Society
+                Patronium — The Official Society Patronage Token
               </h3>
 
               <p>
-                Patronium is the patronage token of Patrons Society.
+                Patronium is the official Society patronage token and utility
+                layer of the Patrons Society.
               </p>
 
               <p>
-                It gives patrons a clear way to enter the ecosystem, participate
-                in real initiatives, and direct support where it is needed most
-                — especially horses, teams, events, and long-term polo
-                infrastructure.
+                It gives patrons a clear way to enter the Society&apos;s
+                patronage framework, participate in real initiatives, and
+                direct support where it is needed most — especially horses,
+                teams, events, and long-term polo infrastructure.
               </p>
 
               <p>
-                Patronium is the utility layer of Patrons Society. Patrons
-                acquire PATRON, then use that position to engage with
+                Patrons acquire PATRON, then use that position to engage with
                 initiatives, access opportunities, and designate support within
                 the Society.
               </p>
@@ -379,8 +382,9 @@ export default function App() {
               </p>
 
               <p>
-                Direct allocation is a utility action within the ecosystem,
-                similar to governance or designation, not a claim on proceeds.
+                Direct allocation is a utility action within the patronage
+                framework, similar to governance or designation, not a claim on
+                proceeds.
               </p>
             </div>
 

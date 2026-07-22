@@ -1,5 +1,5 @@
 // App.jsx
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 
 // ---------------------------------------------
 // Main App
@@ -7,144 +7,15 @@ import React, { useEffect, useRef, useState } from "react";
 export default function App() {
   const year = new Date().getFullYear();
 
-  // Roadmap section ref kept in place in case you want future scroll logic again
+  // Roadmap section ref kept in place for possible future scroll logic
   const roadmapGateRef = useRef(null);
-
-  // Shared site tab state
-  const [activeSite, setActiveSite] = useState("");
-
-  // Determine active tab from hostname
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const host = window.location.hostname.toLowerCase();
-
-    if (
-      host.includes("patronssociety") ||
-      host.includes("polopatronium")
-    ) {
-      setActiveSite("patrons");
-    } else if (
-      host.includes("uspolopatrons") ||
-      host.includes("polopatrons")
-    ) {
-      setActiveSite("usppa");
-    } else if (host.includes("cowboypolo")) {
-      setActiveSite("cowboy");
-    } else if (host.includes("thepoloway")) {
-      setActiveSite("poloway");
-    } else if (host.includes("charlestonpolo")) {
-      setActiveSite("charleston");
-    }
-  }, []);
-
-  const navTabs = [
-    {
-      id: "usppa",
-      label: "Polo Patrons Assn",
-      href: "https://uspolopatrons.org",
-    },
-    {
-      id: "patrons",
-      label: "Patrons Society",
-      href: "https://patronssociety.org",
-    },
-    {
-      id: "cowboy",
-      label: "Cowboy Polo",
-      href: "https://cowboypolo.com",
-    },
-    {
-      id: "poloway",
-      label: "The Polo Way",
-      href: "https://thepoloway.com",
-    },
-    {
-      id: "charleston",
-      label: "Charleston Polo",
-      href: "https://charlestonpoloclub.com",
-    },
-  ];
 
   return (
     <div className="page">
-      {/* SHARED TAB HEADER (global nav) */}
-      <div
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 9000,
-          padding: "6px 10px 0",
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
-          marginBottom: 6,
-        }}
-      >
-        <nav
-          aria-label="Patrons Society family sites"
-          style={{
-            display: "flex",
-            gap: 4,
-            maxWidth: 680,
-            margin: "0 auto",
-            paddingBottom: 4,
-            overflowX: "auto",
-            whiteSpace: "nowrap",
-            WebkitOverflowScrolling: "touch",
-          }}
-        >
-          {navTabs.map((tab) => {
-            const isActive = tab.id === activeSite;
-
-            return (
-              <a
-                key={tab.id}
-                href={tab.href}
-                style={{
-                  textDecoration: "none",
-                  fontSize: 10,
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                  padding: "6px 12px 4px",
-                  borderTopLeftRadius: 10,
-                  borderTopRightRadius: 10,
-                  borderLeft: "1px solid #3a2b16",
-                  borderRight: "1px solid #3a2b16",
-                  borderTop: "1px solid #3a2b16",
-                  borderBottom: isActive
-                    ? "1px solid transparent"
-                    : "1px solid #3a2b16",
-                  color: isActive ? "#f5eedc" : "#c7b08a",
-                  background: isActive
-                    ? "rgba(227,191,114,0.08)"
-                    : "transparent",
-                  whiteSpace: "nowrap",
-                  flex: "0 0 auto",
-                }}
-              >
-                {tab.label}
-              </a>
-            );
-          })}
-        </nav>
-      </div>
-
       {/* Patron Wallet button */}
-      <header
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "22px 0 26px",
-        }}
-      >
+      <header className="wallet-header">
         <a
-          className="btn btn-primary"
-          style={{
-            minWidth: "auto",
-            padding: "8px 30px",
-            margin: "4px 0",
-          }}
+          className="btn btn-primary wallet-button"
           href="https://cowboypolo.com/#/wallet"
         >
           PATRON WALLET
@@ -153,25 +24,8 @@ export default function App() {
 
       {/* Masthead / Patrons Society wordmark */}
       <div className="masthead">
-        <div
-          className="masthead-inner"
-          style={{
-            textAlign: "center",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              fontSize: "11px",
-              letterSpacing: "0.24em",
-              textTransform: "uppercase",
-              color: "#c7b08a",
-              lineHeight: 1.5,
-              marginBottom: "12px",
-            }}
-          >
+        <div className="masthead-inner">
+          <div className="institutional-latin">
             SOCIETATIS CIVITATIS SANCTAE PATRONI
           </div>
 
@@ -180,52 +34,17 @@ export default function App() {
           </div>
 
           <div
+            className="patrons-wordmark"
             aria-label="The Patrons Society"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              textTransform: "uppercase",
-              marginTop: "16px",
-              marginBottom: "42px",
-            }}
           >
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "0.62rem",
-                lineHeight: 1,
-              }}
-            >
-              <span
-                style={{
-                  display: "block",
-                  whiteSpace: "nowrap",
-                  fontFamily:
-                    '"Cormorant Garamond", "EB Garamond", Garamond, serif',
-                  fontWeight: 300,
-                  fontSize: "clamp(1.5rem, 7vw, 2.42rem)",
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                  background:
-                    "linear-gradient(to bottom, #f8f0db 0%, #ebd7ad 40%, #d6b777 72%, #f3e2bc 100%)",
-                  WebkitBackgroundClip: "text",
-                  backgroundClip: "text",
-                  color: "transparent",
-                  textShadow:
-                    "0 0 0.5px rgba(227,191,114,0.18), 0 8px 24px rgba(0,0,0,0.48)",
-                }}
-              >
-                THE PATRONS SOCIETY
-              </span>
-            </div>
+            <span className="patrons-title">
+              THE PATRONS SOCIETY
+            </span>
           </div>
 
-          <div className="masthead-rule"></div>
+          <div className="masthead-rule" />
 
-          <div className="masthead-line-2 masthead-presents">
+          <div className="masthead-line-2 masthead-introducing">
             INTRODUCING THE
           </div>
 
@@ -236,7 +55,7 @@ export default function App() {
       </div>
 
       {/* Hero */}
-      <header>
+      <header className="hero-header">
         <h1 className="hero-title">PATRONIUM</h1>
 
         <div className="hero-symbol">
@@ -244,10 +63,14 @@ export default function App() {
             ERC-20 TOKEN SYMBOL &quot;PATRON&quot;
           </div>
 
-          <div className="hero-network">ON BASE NETWORK BY COINBASE</div>
+          <div className="hero-network">
+            ON BASE NETWORK BY COINBASE
+          </div>
 
           <div className="hero-contract">
-            <span className="hero-contract-label">CA:</span>
+            <span className="hero-contract-label">
+              CA:
+            </span>
 
             <span className="hero-contract-value">
               0xD766a771887fFB6c528434d5710B406313CAe03A
@@ -290,48 +113,21 @@ export default function App() {
       {/* Brand / roadmap + copy sections */}
       <main>
         {/* Roadmap */}
-        <section className="brand-row" id="brands" ref={roadmapGateRef}>
-          <div
-            className="roadmap-title"
-            style={{
-              textAlign: "center",
-              marginBottom: "34px",
-            }}
-          >
-            <div
-              style={{
-                fontSize: "11px",
-                letterSpacing: "0.28em",
-                textTransform: "uppercase",
-                color: "#9f8a64",
-                marginBottom: "4px",
-              }}
-            >
+        <section
+          className="brand-row"
+          id="brands"
+          ref={roadmapGateRef}
+        >
+          <div className="roadmap-heading">
+            <div className="roadmap-kicker">
               INITIATIVE
             </div>
 
-            <div
-              style={{
-                fontSize: "20px",
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-                color: "#f5eedc",
-              }}
-            >
+            <div className="roadmap-main-title">
               ROADMAP
             </div>
 
-            <div
-              style={{
-                marginTop: "10px",
-                height: "1px",
-                width: "80px",
-                marginLeft: "auto",
-                marginRight: "auto",
-                background: "#3a2b16",
-                opacity: 0.9,
-              }}
-            />
+            <div className="roadmap-heading-rule" />
           </div>
 
           <div className="brand-grid">
@@ -340,56 +136,17 @@ export default function App() {
               <div
                 className="logo-usp-string-remuda"
                 aria-label="The PoloBred Registry and Stringpool wordmark"
-                style={{
-                  textAlign: "center",
-                }}
               >
-                <div
-                  style={{
-                    maxWidth: "560px",
-                    margin: "0 auto",
-                  }}
-                >
-                  <div
-                    style={{
-                      height: "1px",
-                      background: "#c7b08a",
-                      opacity: 0.9,
-                      marginBottom: "16px",
-                    }}
-                  />
+                <div className="stringpool-wordmark-inner">
+                  <div className="stringpool-rule" />
 
-                  <div
-                    style={{
-                      fontSize: "15px",
-                      letterSpacing: "0.15em",
-                      color: "#c7b08a",
-                      lineHeight: 1.45,
-                      whiteSpace: "normal",
-                    }}
-                  >
-                    the PoloBred Registry &
+                  <div className="stringpool-prefix">
+                    the PoloBred Registry &amp;
                   </div>
 
-                  <div
-                    style={{
-                      height: "1px",
-                      background: "#c7b08a",
-                      opacity: 0.9,
-                      marginTop: "16px",
-                      marginBottom: "14px",
-                    }}
-                  />
+                  <div className="stringpool-rule stringpool-rule-lower" />
 
-                  <div
-                    style={{
-                      fontSize: "24px",
-                      letterSpacing: "0.24em",
-                      textTransform: "uppercase",
-                      color: "#f5eedc",
-                      lineHeight: 1.25,
-                    }}
-                  >
+                  <div className="stringpool-name">
                     PPA Stringpool
                   </div>
                 </div>
@@ -405,13 +162,7 @@ export default function App() {
 
             {/* COWBOY POLO CIRCUIT */}
             <div className="logo-block">
-              <div
-                className="logo-cowboy-polo-circuit"
-                style={{
-                  borderColor: "#c7b08a",
-                  color: "#f5eedc",
-                }}
-              >
+              <div className="logo-cowboy-polo-circuit">
                 <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
               </div>
 
@@ -426,15 +177,7 @@ export default function App() {
             {/* THE POLO WAY */}
             <div className="logo-block">
               <div className="logo-the-polo-way">
-                <span
-                  className="top"
-                  style={{
-                    color: "#c7b08a",
-                  }}
-                >
-                  THE
-                </span>
-
+                <span className="top">THE</span>
                 <span className="main">POLO WAY</span>
               </div>
 
@@ -447,22 +190,14 @@ export default function App() {
 
             {/* CHARLESTON POLO */}
             <div className="logo-block">
-              <div
-                className="logo-charleston-polo"
-                style={{
-                  borderColor: "#c7b08a",
-                }}
-              >
-                <span
-                  className="top"
-                  style={{
-                    color: "#c7b08a",
-                  }}
-                >
+              <div className="logo-charleston-polo">
+                <span className="top">
                   CHARLESTON
                 </span>
 
-                <span className="main">P O L O</span>
+                <span className="main">
+                  P O L O
+                </span>
               </div>
 
               <p className="initiative-text">
@@ -497,17 +232,19 @@ export default function App() {
         </section>
 
         {/* Patronium Framework */}
-        <section className="copy-section" id="patronium-framework">
-          <div className="copy-section-title">THE PATRONIUM FRAMEWORK</div>
+        <section
+          className="copy-section"
+          id="patronium-framework"
+        >
+          <div className="copy-section-title">
+            THE PATRONIUM FRAMEWORK
+          </div>
 
-          <div
-            style={{
-              position: "relative",
-              marginTop: "8px",
-            }}
-          >
+          <div className="copy-section-inner">
             <div className="copy-block">
-              <h3>Patronium — The Patron Token of Patrons Society</h3>
+              <h3>
+                Patronium — The Patron Token of Patrons Society
+              </h3>
 
               <p>
                 Patronium is the patronage token of Patrons Society.
@@ -547,147 +284,40 @@ export default function App() {
               </p>
 
               {/* Simplified branded horse card */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  margin: "18px 0 22px",
-                }}
-              >
-                <div
-                  style={{
-                    width: "100%",
-                    maxWidth: "340px",
-                    border: "1px solid #3a2b16",
-                    borderRadius: "18px",
-                    padding: "14px",
-                    background:
-                      "linear-gradient(180deg, rgba(199,176,138,0.10), rgba(0,0,0,0.22)), #050505",
-                    boxShadow: "0 14px 36px rgba(0,0,0,0.36)",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: "10px",
-                      letterSpacing: "0.28em",
-                      textTransform: "uppercase",
-                      color: "#c7b08a",
-                      textAlign: "center",
-                      marginBottom: "12px",
-                    }}
-                  >
+              <div className="horse-card-wrap">
+                <div className="horse-card">
+                  <div className="horse-card-heading">
                     PoloBred Registry &amp; Stringpool
                   </div>
 
-                  <div
-                    style={{
-                      border: "1px solid rgba(199,176,138,0.25)",
-                      borderRadius: "12px",
-                      minHeight: "180px",
-                      background:
-                        "radial-gradient(circle at top, rgba(227,191,114,0.10), rgba(0,0,0,0.10) 45%, rgba(0,0,0,0.25) 100%)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginBottom: "12px",
-                      position: "relative",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <div
-                      style={{
-                        textAlign: "center",
-                        padding: "20px 14px",
-                      }}
-                    >
-                      <div
-                        style={{
-                          fontSize: "11px",
-                          letterSpacing: "0.18em",
-                          textTransform: "uppercase",
-                          color: "#c7b08a",
-                          marginBottom: "10px",
-                        }}
-                      >
+                  <div className="horse-card-display">
+                    <div className="horse-card-display-inner">
+                      <div className="horse-card-kicker">
                         Association Horse
                       </div>
 
-                      <div
-                        style={{
-                          fontSize: "26px",
-                          letterSpacing: "0.14em",
-                          textTransform: "uppercase",
-                          color: "#f5eedc",
-                          lineHeight: 1.1,
-                          marginBottom: "10px",
-                        }}
-                      >
+                      <div className="horse-card-name">
                         Horse ID
                       </div>
 
-                      <div
-                        style={{
-                          fontSize: "10px",
-                          letterSpacing: "0.22em",
-                          textTransform: "uppercase",
-                          color: "#9f8a64",
-                        }}
-                      >
+                      <div className="horse-card-record">
                         PoloBred Registry Record
                       </div>
                     </div>
                   </div>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      gap: "10px",
-                    }}
-                  >
+                  <div className="horse-card-footer">
                     <div>
-                      <div
-                        style={{
-                          fontSize: "9px",
-                          letterSpacing: "0.18em",
-                          textTransform: "uppercase",
-                          color: "#9f8a64",
-                          marginBottom: "4px",
-                        }}
-                      >
+                      <div className="horse-card-standard-label">
                         Standard
                       </div>
 
-                      <div
-                        style={{
-                          fontSize: "14px",
-                          letterSpacing: "0.16em",
-                          textTransform: "uppercase",
-                          color: "#f5eedc",
-                        }}
-                      >
+                      <div className="horse-card-standard">
                         ERC-1155
                       </div>
                     </div>
 
-                    <div
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        padding: "6px 14px 5px",
-                        border: "1px solid #c7b08a",
-                        borderRadius: "999px",
-                        fontSize: "10px",
-                        letterSpacing: "0.18em",
-                        textTransform: "uppercase",
-                        color: "#181210",
-                        background:
-                          "linear-gradient(180deg, #e3bf72, #b89047)",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
+                    <div className="horse-card-badge">
                       Horse Card
                     </div>
                   </div>
@@ -755,7 +385,9 @@ export default function App() {
             </div>
 
             <div className="copy-block">
-              <h3>An Invitation to Patrons and Partners</h3>
+              <h3>
+                An Invitation to Patrons and Partners
+              </h3>
 
               <p>
                 Patrons Society welcomes patrons, horsemen, landholders, hosts,
@@ -777,15 +409,22 @@ export default function App() {
                 other worthy causes.
               </p>
 
-              <p>Patronium is the tool that helps make that possible.</p>
+              <p>
+                Patronium is the tool that helps make that possible.
+              </p>
             </div>
           </div>
         </section>
       </main>
 
       <footer>
-        <div>© {year} PATRONS SOCIETY — PATRONIUM</div>
-        <div>BUILT ON BASE</div>
+        <div>
+          © {year} PATRONS SOCIETY — PATRONIUM
+        </div>
+
+        <div>
+          BUILT ON BASE
+        </div>
       </footer>
     </div>
   );

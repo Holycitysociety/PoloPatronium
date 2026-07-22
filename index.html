@@ -33,13 +33,15 @@
         --bg: #050505;
         --fg: #f5f5f5;
         --muted: #a7a7a7;
+
         --accent: #e3bf72;
         --accent-soft: #c7b08a;
         --accent-muted: #9f8a64;
+
         --border: #2b2b2b;
         --border-warm: #3a2b16;
 
-        --font-lg: clamp(2.1rem, 5vw, 2.7rem);
+        --font-lg: clamp(2rem, 4.8vw, 2.6rem);
         --font-md: clamp(1.1rem, 3.2vw, 1.4rem);
         --font-sm: 0.85rem;
 
@@ -107,15 +109,17 @@
       }
 
       .wallet-button {
-        min-width: auto;
+        width: auto;
+        min-width: 220px;
+        max-width: 245px;
         margin: 0;
-        padding: 8px 30px;
+        padding: 8px 28px;
       }
 
       /* Masthead */
 
       .masthead {
-        margin-bottom: var(--block-gap);
+        margin-bottom: 52px;
         padding: 4px 0 0;
         text-align: center;
       }
@@ -130,7 +134,7 @@
 
       .institutional-latin {
         max-width: 100%;
-        margin-bottom: 12px;
+        margin-bottom: 11px;
         padding-inline: 12px;
         color: var(--accent-soft);
         font-family:
@@ -144,10 +148,27 @@
         text-transform: uppercase;
       }
 
+      .masthead-line-2 {
+        color: #f0f0f0;
+        font-family:
+          "Cormorant Garamond",
+          "EB Garamond",
+          serif;
+        font-size: 0.82rem;
+        font-weight: 400;
+        letter-spacing: 0.22em;
+        line-height: 1.5;
+        text-transform: uppercase;
+      }
+
+      .masthead-presents {
+        margin: 0;
+      }
+
       .patrons-wordmark {
         display: flex;
         width: 100%;
-        margin: 16px 0 42px;
+        margin: 15px 0 34px;
         align-items: center;
         flex-direction: column;
         text-align: center;
@@ -174,9 +195,9 @@
           "EB Garamond",
           Garamond,
           serif;
-        font-size: clamp(1.65rem, 6vw, 2.42rem);
+        font-size: clamp(1.9rem, 6.2vw, 2.65rem);
         font-weight: 300;
-        letter-spacing: 0.18em;
+        letter-spacing: 0.17em;
         line-height: 1.05;
         text-shadow:
           0 0 0.5px rgba(227, 191, 114, 0.18),
@@ -187,35 +208,22 @@
 
       .masthead-rule {
         width: 100%;
-        margin: 0 auto 25px;
+        margin: 0 auto 24px;
         border-top: 1px solid var(--border);
       }
 
-      .masthead-line-2 {
-        color: #f0f0f0;
-        font-family:
-          "Cormorant Garamond",
-          "EB Garamond",
-          serif;
-        font-size: var(--font-sm);
-        font-weight: 500;
-        letter-spacing: 0.2em;
-        line-height: 1.5;
-        text-transform: uppercase;
-      }
-
-      .masthead-presents {
-        margin: 0;
-      }
-
       .masthead-introducing {
-        margin: 0 0 4px;
+        margin: 0 0 3px;
+        font-size: 0.77rem;
+        letter-spacing: 0.24em;
       }
 
       .masthead-stewardship {
         max-width: 640px;
         margin: 0 auto;
         padding-inline: 12px;
+        font-size: 0.86rem;
+        letter-spacing: 0.2em;
         line-height: 1.6;
       }
 
@@ -227,27 +235,27 @@
       }
 
       .hero-title {
-        margin: 0 0 14px;
+        margin: 0 0 15px;
         color: var(--fg);
         font-family:
           "Cormorant Garamond",
           "EB Garamond",
           serif;
         font-size: var(--font-lg);
-        font-weight: 500;
+        font-weight: 400;
         letter-spacing: 0.18em;
         line-height: 1.1;
         text-transform: uppercase;
       }
 
       .hero-symbol {
-        margin-bottom: var(--block-gap);
+        margin-bottom: 50px;
         padding-inline: 8px;
         font-family:
           "Cormorant Garamond",
           serif;
-        font-size: var(--font-sm);
-        letter-spacing: 0.2em;
+        font-size: 0.8rem;
+        letter-spacing: 0.18em;
         line-height: 1.6;
         text-transform: uppercase;
       }
@@ -255,15 +263,15 @@
       .hero-symbol-main {
         margin-bottom: 6px;
         color: var(--fg);
-        font-weight: 500;
+        font-weight: 400;
       }
 
       .hero-network {
         margin-bottom: 4px;
         color: var(--fg);
-        font-size: var(--font-sm);
-        font-weight: 500;
-        letter-spacing: 0.16em;
+        font-size: 0.8rem;
+        font-weight: 400;
+        letter-spacing: 0.15em;
       }
 
       .hero-contract {
@@ -271,9 +279,9 @@
         max-width: 100%;
         justify-content: center;
         color: var(--fg);
-        font-size: var(--font-sm);
-        font-weight: 500;
-        letter-spacing: 0.16em;
+        font-size: 0.78rem;
+        font-weight: 400;
+        letter-spacing: 0.12em;
         overflow-wrap: anywhere;
       }
 
@@ -290,7 +298,7 @@
           Georgia,
           serif;
         font-size: 0.9em;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.035em;
         overflow-wrap: anywhere;
         word-break: break-word;
       }
@@ -301,7 +309,7 @@
         margin: 0 auto var(--block-gap);
         align-items: center;
         flex-direction: column;
-        gap: 26px;
+        gap: 22px;
       }
 
       /* Buttons */
@@ -310,7 +318,7 @@
         display: inline-flex;
         width: auto;
         min-width: 220px;
-        max-width: 260px;
+        max-width: 280px;
         margin: 0 auto;
         padding: 10px 28px;
         align-items: center;
@@ -358,6 +366,10 @@
         border-color: #777;
         background: #181818;
         color: var(--fg);
+      }
+
+      .hero-actions .btn {
+        width: min(74%, 280px);
       }
 
       /* Main */
@@ -756,7 +768,7 @@
 
       @media (max-width: 600px) {
         :root {
-          --font-lg: clamp(2rem, 10.5vw, 2.55rem);
+          --font-lg: clamp(1.95rem, 9.7vw, 2.4rem);
           --font-md: clamp(1rem, 4.8vw, 1.22rem);
           --font-sm: 0.78rem;
 
@@ -775,26 +787,31 @@
         }
 
         .wallet-button {
-          padding: 7px 27px;
+          width: auto;
+          min-width: 220px;
+          max-width: 245px;
+          padding: 7px 26px;
+          font-size: 0.75rem;
+          letter-spacing: 0.15em;
         }
 
         .masthead {
-          margin-bottom: 42px;
+          margin-bottom: 40px;
           padding-top: 0;
         }
 
         .institutional-latin {
           max-width: 310px;
-          margin-bottom: 10px;
+          margin-bottom: 9px;
           padding-inline: 8px;
-          font-size: 0.66rem;
-          letter-spacing: 0.17em;
+          font-size: 0.64rem;
+          letter-spacing: 0.165em;
           line-height: 1.5;
         }
 
         .masthead-line-2 {
-          font-size: 0.72rem;
-          letter-spacing: 0.17em;
+          font-size: 0.71rem;
+          letter-spacing: 0.18em;
         }
 
         .masthead-presents {
@@ -802,46 +819,48 @@
         }
 
         .patrons-wordmark {
-          margin-top: 15px;
-          margin-bottom: 30px;
+          margin-top: 13px;
+          margin-bottom: 28px;
         }
 
         .patrons-title {
           width: 100%;
           padding-inline: 4px;
-          font-size: clamp(1.45rem, 7.6vw, 1.95rem);
-          letter-spacing: 0.095em;
+          font-size: clamp(1.58rem, 7.9vw, 2.02rem);
+          letter-spacing: 0.09em;
           line-height: 1.04;
           white-space: nowrap;
         }
 
         .masthead-rule {
-          margin-bottom: 20px;
+          margin-bottom: 19px;
         }
 
         .masthead-introducing {
-          margin-bottom: 3px;
+          margin-bottom: 2px;
+          font-size: 0.68rem;
+          letter-spacing: 0.19em;
         }
 
         .masthead-stewardship {
-          max-width: 310px;
+          max-width: 330px;
           padding-inline: 8px;
-          font-size: 0.7rem;
-          letter-spacing: 0.14em;
+          font-size: 0.72rem;
+          letter-spacing: 0.145em;
           line-height: 1.5;
         }
 
         .hero-title {
           margin-bottom: 12px;
-          font-size: clamp(2rem, 11vw, 2.6rem);
-          letter-spacing: 0.11em;
+          font-size: clamp(1.95rem, 9.8vw, 2.4rem);
+          letter-spacing: 0.12em;
         }
 
         .hero-symbol {
-          margin-bottom: 42px;
+          margin-bottom: 40px;
           padding-inline: 4px;
-          font-size: 0.72rem;
-          letter-spacing: 0.12em;
+          font-size: 0.7rem;
+          letter-spacing: 0.11em;
           line-height: 1.55;
         }
 
@@ -850,14 +869,14 @@
         }
 
         .hero-network {
-          font-size: 0.72rem;
-          letter-spacing: 0.11em;
+          font-size: 0.7rem;
+          letter-spacing: 0.1em;
         }
 
         .hero-contract {
           display: block;
-          font-size: 0.68rem;
-          letter-spacing: 0.08em;
+          font-size: 0.66rem;
+          letter-spacing: 0.07em;
           line-height: 1.45;
         }
 
@@ -869,7 +888,7 @@
           display: inline;
           margin-left: 0.25em;
           font-size: 0.92em;
-          letter-spacing: 0.025em;
+          letter-spacing: 0.02em;
           overflow-wrap: anywhere;
           word-break: break-all;
         }
@@ -880,7 +899,7 @@
           gap: 22px;
         }
 
-        .btn {
+        .hero-actions .btn {
           width: min(74%, 280px);
           min-width: 0;
           max-width: 280px;
@@ -998,33 +1017,38 @@
           width: min(calc(100% - 16px), 820px);
         }
 
+        .wallet-button {
+          min-width: 205px;
+          max-width: 230px;
+        }
+
         .institutional-latin {
           max-width: 290px;
-          font-size: 0.62rem;
-          letter-spacing: 0.145em;
+          font-size: 0.61rem;
+          letter-spacing: 0.14em;
         }
 
         .patrons-title {
-          font-size: clamp(1.32rem, 7.25vw, 1.7rem);
-          letter-spacing: 0.075em;
+          font-size: clamp(1.43rem, 7.3vw, 1.76rem);
+          letter-spacing: 0.07em;
         }
 
         .masthead-stewardship {
-          font-size: 0.66rem;
+          font-size: 0.67rem;
           letter-spacing: 0.12em;
         }
 
         .hero-title {
-          font-size: clamp(1.9rem, 10.5vw, 2.35rem);
-          letter-spacing: 0.09em;
+          font-size: clamp(1.85rem, 9.7vw, 2.25rem);
+          letter-spacing: 0.1em;
         }
 
         .hero-symbol {
-          font-size: 0.68rem;
-          letter-spacing: 0.09em;
+          font-size: 0.66rem;
+          letter-spacing: 0.085em;
         }
 
-        .btn {
+        .hero-actions .btn {
           width: min(78%, 270px);
         }
 

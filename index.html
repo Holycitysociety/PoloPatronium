@@ -12,6 +12,11 @@
       content="width=device-width, initial-scale=1.0"
     />
 
+    <meta
+      name="description"
+      content="Patronium is the official Society patronage token and utility layer of the Patrons Society."
+    />
+
     <link
       rel="preconnect"
       href="https://fonts.googleapis.com"
@@ -34,17 +39,18 @@
         --fg: #f5f5f5;
         --muted: #a7a7a7;
         --accent: #e3bf72;
+        --accent-light: #f1d694;
         --accent-soft: #c7b08a;
         --accent-muted: #9f8a64;
         --border: #2b2b2b;
         --border-warm: #3a2b16;
 
-        --font-lg: clamp(2.1rem, 5vw, 2.7rem);
-        --font-md: clamp(1.1rem, 3.2vw, 1.4rem);
-        --font-sm: 0.85rem;
+        --font-large: clamp(2.2rem, 5vw, 2.8rem);
+        --font-medium: clamp(1.08rem, 3vw, 1.35rem);
+        --font-small: 0.85rem;
 
-        --block-gap: 56px;
-        --block-gap-sm: 24px;
+        --section-gap: 56px;
+        --content-gap: 24px;
       }
 
       * {
@@ -53,9 +59,11 @@
 
       html {
         overflow-x: hidden;
+        background: var(--bg);
       }
 
       body {
+        min-width: 0;
         margin: 0;
         overflow-x: hidden;
         background:
@@ -76,10 +84,10 @@
           Georgia,
           "Times New Roman",
           serif;
-        font-size: var(--font-md);
+        font-size: var(--font-medium);
         line-height: 1.6;
-        -webkit-font-smoothing: antialiased;
         text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
       }
 
       a {
@@ -87,71 +95,149 @@
         text-decoration: none;
       }
 
-      a:hover {
-        text-decoration: none;
+      button,
+      a {
+        -webkit-tap-highlight-color: transparent;
       }
 
       .page {
         width: min(calc(100% - 24px), 820px);
-        margin: 34px auto 96px;
+        margin: 28px auto 96px;
       }
 
-      /* Wallet */
+      /* Buttons */
+
+      .btn {
+        display: inline-flex;
+        width: auto;
+        min-width: 220px;
+        max-width: 270px;
+        margin: 0 auto;
+        padding: 10px 28px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: transparent;
+        color: var(--fg);
+        cursor: pointer;
+        font-family:
+          "Cormorant Garamond",
+          "EB Garamond",
+          serif;
+        font-size: var(--font-small);
+        font-weight: 500;
+        letter-spacing: 0.16em;
+        line-height: 1.3;
+        text-align: center;
+        text-transform: uppercase;
+        transition:
+          background 0.15s ease,
+          border-color 0.15s ease,
+          color 0.15s ease,
+          box-shadow 0.15s ease,
+          transform 0.15s ease;
+      }
+
+      .btn-primary {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: #090704;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
+      }
+
+      .btn-primary:hover {
+        border-color: var(--accent-light);
+        background: var(--accent-light);
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.7);
+        transform: translateY(-1px);
+      }
+
+      .btn-outline {
+        border-color: #555;
+        color: var(--muted);
+      }
+
+      .btn-outline:hover {
+        border-color: #777;
+        background: #181818;
+        color: var(--fg);
+      }
+
+      /* Wallet utility */
 
       .wallet-header {
         display: flex;
+        padding: 6px 0 38px;
         align-items: center;
         justify-content: center;
-        padding: 8px 0 30px;
-        text-align: center;
       }
 
-      /* Masthead */
+      .wallet-button {
+        width: auto;
+        min-width: 178px;
+        max-width: 200px;
+        margin: 0;
+        padding: 8px 24px;
+        font-size: 0.78rem;
+        letter-spacing: 0.15em;
+      }
+
+      /* Society masthead */
 
       .masthead {
-        margin-bottom: var(--block-gap);
-        padding: 4px 0 0;
+        margin-bottom: 48px;
         text-align: center;
       }
 
       .masthead-inner {
         display: flex;
-        max-width: 100%;
-        margin: 0 auto;
+        width: 100%;
         align-items: center;
         flex-direction: column;
       }
 
       .institutional-latin {
         max-width: 100%;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
         padding-inline: 12px;
         color: var(--accent-soft);
         font-family:
           "Cormorant Garamond",
           "EB Garamond",
           serif;
-        font-size: 0.72rem;
+        font-size: 0.69rem;
         font-weight: 400;
-        letter-spacing: 0.24em;
+        letter-spacing: 0.23em;
         line-height: 1.5;
+        text-transform: uppercase;
+      }
+
+      .masthead-presents {
+        color: #eeeeee;
+        font-family:
+          "Cormorant Garamond",
+          "EB Garamond",
+          serif;
+        font-size: 0.8rem;
+        font-weight: 500;
+        letter-spacing: 0.27em;
+        line-height: 1.4;
         text-transform: uppercase;
       }
 
       .patrons-wordmark {
         display: flex;
         width: 100%;
-        margin: 16px 0 42px;
+        margin: 22px 0 40px;
         align-items: center;
-        flex-direction: column;
-        text-align: center;
-        text-transform: uppercase;
+        justify-content: center;
       }
 
       .patrons-title {
         display: block;
         max-width: 100%;
-        padding-inline: 10px;
+        padding-inline: 8px;
         white-space: nowrap;
         background:
           linear-gradient(
@@ -168,10 +254,10 @@
           "EB Garamond",
           Garamond,
           serif;
-        font-size: clamp(1.65rem, 6vw, 2.42rem);
+        font-size: clamp(2.1rem, 6.1vw, 2.8rem);
         font-weight: 300;
-        letter-spacing: 0.18em;
-        line-height: 1.05;
+        letter-spacing: 0.16em;
+        line-height: 1.04;
         text-shadow:
           0 0 0.5px rgba(227, 191, 114, 0.18),
           0 8px 24px rgba(0, 0, 0, 0.48);
@@ -181,39 +267,40 @@
 
       .masthead-rule {
         width: 100%;
-        margin: 0 auto 25px;
+        margin: 0 auto 28px;
         border-top: 1px solid var(--border);
       }
 
-      .masthead-line-2 {
-        color: #f0f0f0;
+      .masthead-introducing {
+        margin-bottom: 4px;
+        color: #eeeeee;
         font-family:
           "Cormorant Garamond",
           "EB Garamond",
           serif;
-        font-size: var(--font-sm);
+        font-size: 0.76rem;
         font-weight: 500;
-        letter-spacing: 0.2em;
+        letter-spacing: 0.24em;
         line-height: 1.5;
         text-transform: uppercase;
       }
 
-      .masthead-presents {
-        margin: 0;
-      }
-
-      .masthead-introducing {
-        margin: 0 0 4px;
-      }
-
-      .masthead-stewardship {
+      .masthead-token-line {
         max-width: 640px;
-        margin: 0 auto;
         padding-inline: 12px;
-        line-height: 1.6;
+        color: #f4f4f4;
+        font-family:
+          "Cormorant Garamond",
+          "EB Garamond",
+          serif;
+        font-size: 0.88rem;
+        font-weight: 500;
+        letter-spacing: 0.21em;
+        line-height: 1.5;
+        text-transform: uppercase;
       }
 
-      /* Hero */
+      /* Patronium hero */
 
       .hero-header {
         padding: 0;
@@ -227,27 +314,37 @@
           "Cormorant Garamond",
           "EB Garamond",
           serif;
-        font-size: var(--font-lg);
+        font-size: clamp(2.25rem, 5.6vw, 2.7rem);
         font-weight: 500;
-        letter-spacing: 0.18em;
-        line-height: 1.1;
+        letter-spacing: 0.17em;
+        line-height: 1.05;
         text-transform: uppercase;
       }
 
+      .hero-definition {
+        max-width: 570px;
+        margin: 0 auto 25px;
+        padding-inline: 14px;
+        color: var(--accent-soft);
+        font-size: 0.91rem;
+        letter-spacing: 0.025em;
+        line-height: 1.55;
+      }
+
       .hero-symbol {
-        margin-bottom: var(--block-gap);
+        margin-bottom: 46px;
         padding-inline: 8px;
         font-family:
           "Cormorant Garamond",
           serif;
-        font-size: var(--font-sm);
-        letter-spacing: 0.2em;
+        font-size: var(--font-small);
+        letter-spacing: 0.16em;
         line-height: 1.6;
         text-transform: uppercase;
       }
 
       .hero-symbol-main {
-        margin-bottom: 6px;
+        margin-bottom: 5px;
         color: var(--fg);
         font-weight: 500;
       }
@@ -255,9 +352,9 @@
       .hero-network {
         margin-bottom: 4px;
         color: var(--fg);
-        font-size: var(--font-sm);
+        font-size: var(--font-small);
         font-weight: 500;
-        letter-spacing: 0.16em;
+        letter-spacing: 0.14em;
       }
 
       .hero-contract {
@@ -265,9 +362,9 @@
         max-width: 100%;
         justify-content: center;
         color: var(--fg);
-        font-size: var(--font-sm);
+        font-size: var(--font-small);
         font-weight: 500;
-        letter-spacing: 0.16em;
+        letter-spacing: 0.08em;
         overflow-wrap: anywhere;
       }
 
@@ -283,8 +380,8 @@
           "EB Garamond",
           Georgia,
           serif;
-        font-size: 0.9em;
-        letter-spacing: 0.04em;
+        font-size: 0.88em;
+        letter-spacing: 0.025em;
         overflow-wrap: anywhere;
         word-break: break-word;
       }
@@ -292,93 +389,20 @@
       .hero-actions {
         display: flex;
         max-width: 460px;
-        margin: 0 auto var(--block-gap);
+        margin: 0 auto var(--section-gap);
         align-items: center;
         flex-direction: column;
-        gap: 26px;
+        gap: 22px;
       }
 
-      /* Buttons */
-
-      .btn {
-        display: inline-flex;
-        width: auto;
-        min-width: 220px;
-        max-width: 260px;
-        margin: 0 auto;
-        padding: 10px 28px;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid var(--border);
-        border-radius: 999px;
-        background: transparent;
-        color: var(--fg);
-        cursor: pointer;
-        font-family:
-          "Cormorant Garamond",
-          "EB Garamond",
-          serif;
-        font-size: var(--font-sm);
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        transition:
-          background 0.15s ease,
-          border-color 0.15s ease,
-          color 0.15s ease,
-          box-shadow 0.15s ease,
-          transform 0.15s ease;
-      }
-
-      .btn-primary {
-        border-color: var(--accent);
-        background: var(--accent);
-        color: #000;
-        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
-      }
-
-      .btn-primary:hover {
-        border-color: #f1cf86;
-        background: #f1cf86;
-        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.7);
-        transform: translateY(-1px);
-      }
-
-      .btn-outline {
-        border-color: #555;
-        color: var(--muted);
-      }
-
-      .btn-outline:hover {
-        border-color: #777;
-        background: #181818;
-        color: var(--fg);
-      }
-
-      /*
-        Compact utility button.
-        This comes after the general .btn rule so the
-        base button minimum width cannot override it.
-      */
-
-      .btn.wallet-button {
-        width: auto;
-        min-width: 0;
-        max-width: none;
-        margin: 0;
-        padding: 8px 30px;
-      }
-
-      /* Main */
+      /* Main content */
 
       main {
-        margin-top: var(--block-gap);
+        margin-top: var(--section-gap);
       }
 
-      /* Roadmap */
-
       .brand-row {
-        padding-top: 32px;
-        padding-bottom: 40px;
+        padding: 34px 0 40px;
         border-top: 1px solid var(--border);
         background:
           radial-gradient(
@@ -396,14 +420,17 @@
       .roadmap-kicker {
         margin-bottom: 4px;
         color: var(--accent-muted);
-        font-size: 11px;
+        font-size: 0.68rem;
         letter-spacing: 0.28em;
         text-transform: uppercase;
       }
 
       .roadmap-main-title {
         color: #f5eedc;
-        font-size: 20px;
+        font-family:
+          "Cormorant Garamond",
+          serif;
+        font-size: 1.22rem;
         letter-spacing: 0.22em;
         text-transform: uppercase;
       }
@@ -435,7 +462,7 @@
         max-width: 720px;
         margin: 12px auto 0;
         color: var(--muted);
-        font-size: var(--font-sm);
+        font-size: var(--font-small);
         text-align: justify;
         text-justify: inter-word;
       }
@@ -444,12 +471,12 @@
         max-width: 720px;
         margin: 32px auto 0;
         color: var(--muted);
-        font-size: var(--font-sm);
+        font-size: var(--font-small);
         text-align: justify;
         text-justify: inter-word;
       }
 
-      /* Stringpool wordmark */
+      /* Stringpool */
 
       .logo-usp-string-remuda {
         display: block;
@@ -479,14 +506,14 @@
 
       .stringpool-prefix {
         color: var(--accent-soft);
-        font-size: 15px;
+        font-size: 0.94rem;
         letter-spacing: 0.15em;
         line-height: 1.45;
       }
 
       .stringpool-name {
         color: #f5eedc;
-        font-size: 24px;
+        font-size: 1.5rem;
         letter-spacing: 0.24em;
         line-height: 1.25;
         text-transform: uppercase;
@@ -499,7 +526,7 @@
         font-family:
           "Cormorant Garamond",
           serif;
-        font-size: var(--font-md);
+        font-size: var(--font-medium);
         letter-spacing: 0.18em;
         text-transform: uppercase;
       }
@@ -523,14 +550,14 @@
         display: block;
         margin-bottom: 2px;
         color: var(--accent-soft);
-        font-size: var(--font-sm);
+        font-size: var(--font-small);
         letter-spacing: 0.18em;
         text-transform: uppercase;
       }
 
       .logo-the-polo-way .main {
         display: block;
-        font-size: var(--font-lg);
+        font-size: var(--font-large);
         letter-spacing: 0.12em;
         text-transform: uppercase;
       }
@@ -541,7 +568,7 @@
         font-family:
           "Cormorant Garamond",
           serif;
-        font-size: var(--font-md);
+        font-size: var(--font-medium);
         letter-spacing: 0.2em;
         text-transform: uppercase;
       }
@@ -550,7 +577,7 @@
         display: block;
         margin-bottom: 2px;
         color: var(--accent-soft);
-        font-size: var(--font-sm);
+        font-size: var(--font-small);
       }
 
       .logo-charleston-polo .main {
@@ -559,25 +586,25 @@
         border-bottom: 1px solid var(--accent-soft);
       }
 
-      /* Copy sections */
+      /* Copy */
 
       .copy-section {
         max-width: 680px;
-        margin: var(--block-gap) auto 0;
+        margin: var(--section-gap) auto 0;
         padding-top: 32px;
         border-top: 1px solid var(--border);
         color: var(--muted);
-        font-size: var(--font-sm);
+        font-size: var(--font-small);
       }
 
       .copy-section-title {
-        margin-bottom: 24px;
+        margin-bottom: 28px;
         color: #f0f0f0;
         font-family:
           "Cormorant Garamond",
           "EB Garamond",
           serif;
-        font-size: var(--font-sm);
+        font-size: 0.82rem;
         letter-spacing: 0.18em;
         text-align: center;
         text-transform: uppercase;
@@ -589,17 +616,18 @@
       }
 
       .copy-block {
-        margin-bottom: var(--block-gap-sm);
+        margin-bottom: var(--content-gap);
       }
 
-      .copy-block h3 {
-        margin: 0 0 8px;
+      .copy-block h2 {
+        margin: 0 0 9px;
         color: #f5f5f5;
         font-family:
           "Cormorant Garamond",
           serif;
-        font-size: 1.02rem;
-        letter-spacing: 0.08em;
+        font-size: 1.03rem;
+        font-weight: 500;
+        letter-spacing: 0.07em;
         line-height: 1.4;
         text-transform: uppercase;
       }
@@ -610,15 +638,9 @@
         text-justify: inter-word;
       }
 
-      .copy-block ul {
-        margin: 6px 0 0 18px;
-        padding: 0;
-      }
-
-      .copy-block li {
-        margin-bottom: 4px;
-        text-align: justify;
-        text-justify: inter-word;
+      .copy-lead {
+        color: #d2c2a5;
+        font-size: 1.03em;
       }
 
       /* Horse card */
@@ -648,14 +670,13 @@
       .horse-card-heading {
         margin-bottom: 12px;
         color: var(--accent-soft);
-        font-size: 10px;
+        font-size: 0.63rem;
         letter-spacing: 0.28em;
         text-align: center;
         text-transform: uppercase;
       }
 
       .horse-card-display {
-        position: relative;
         display: flex;
         min-height: 180px;
         margin-bottom: 12px;
@@ -681,7 +702,7 @@
       .horse-card-kicker {
         margin-bottom: 10px;
         color: var(--accent-soft);
-        font-size: 11px;
+        font-size: 0.69rem;
         letter-spacing: 0.18em;
         text-transform: uppercase;
       }
@@ -689,7 +710,7 @@
       .horse-card-name {
         margin-bottom: 10px;
         color: #f5eedc;
-        font-size: 26px;
+        font-size: 1.63rem;
         letter-spacing: 0.14em;
         line-height: 1.1;
         text-transform: uppercase;
@@ -697,7 +718,7 @@
 
       .horse-card-record {
         color: var(--accent-muted);
-        font-size: 10px;
+        font-size: 0.63rem;
         letter-spacing: 0.22em;
         text-transform: uppercase;
       }
@@ -712,14 +733,14 @@
       .horse-card-standard-label {
         margin-bottom: 4px;
         color: var(--accent-muted);
-        font-size: 9px;
+        font-size: 0.56rem;
         letter-spacing: 0.18em;
         text-transform: uppercase;
       }
 
       .horse-card-standard {
         color: #f5eedc;
-        font-size: 14px;
+        font-size: 0.88rem;
         letter-spacing: 0.16em;
         text-transform: uppercase;
       }
@@ -738,7 +759,7 @@
             #b89047
           );
         color: #181210;
-        font-size: 10px;
+        font-size: 0.63rem;
         letter-spacing: 0.18em;
         white-space: nowrap;
         text-transform: uppercase;
@@ -748,14 +769,14 @@
 
       footer {
         display: flex;
-        margin-top: var(--block-gap);
+        margin-top: var(--section-gap);
         padding: 18px 0 10px;
         align-items: center;
         flex-direction: column;
         gap: 4px;
         border-top: 1px solid var(--border);
         color: var(--muted);
-        font-size: var(--font-sm);
+        font-size: var(--font-small);
         text-align: center;
         text-transform: uppercase;
       }
@@ -764,12 +785,12 @@
 
       @media (max-width: 600px) {
         :root {
-          --font-lg: clamp(2rem, 10.5vw, 2.55rem);
-          --font-md: clamp(1rem, 4.8vw, 1.22rem);
-          --font-sm: 0.78rem;
+          --font-large: clamp(2rem, 10vw, 2.5rem);
+          --font-medium: clamp(1rem, 4.8vw, 1.2rem);
+          --font-small: 0.78rem;
 
-          --block-gap: 38px;
-          --block-gap-sm: 22px;
+          --section-gap: 40px;
+          --content-gap: 22px;
         }
 
         .page {
@@ -779,85 +800,94 @@
         }
 
         .wallet-header {
-          padding: 4px 0 30px;
+          padding: 4px 0 34px;
         }
 
-        /*
-          Keep Patron Wallet narrow on mobile.
-          The general .btn mobile width does not apply to it.
-        */
-
-        .btn.wallet-button {
-          width: auto;
+        .btn {
+          width: min(74%, 280px);
           min-width: 0;
-          max-width: none;
-          padding: 7px 26px;
+          max-width: 280px;
+          padding: 9px 20px;
+          font-size: 0.76rem;
+          letter-spacing: 0.14em;
+        }
+
+        .wallet-button {
+          width: 184px;
+          min-width: 184px;
+          max-width: 184px;
+          padding: 8px 18px;
+          font-size: 0.72rem;
+          letter-spacing: 0.14em;
         }
 
         .masthead {
           margin-bottom: 42px;
-          padding-top: 0;
         }
 
         .institutional-latin {
-          max-width: 310px;
+          max-width: 320px;
           margin-bottom: 10px;
           padding-inline: 8px;
-          font-size: 0.66rem;
+          font-size: 0.64rem;
           letter-spacing: 0.17em;
           line-height: 1.5;
         }
 
-        .masthead-line-2 {
-          font-size: 0.72rem;
-          letter-spacing: 0.17em;
-        }
-
         .masthead-presents {
-          margin-top: 1px;
+          font-size: 0.73rem;
+          letter-spacing: 0.25em;
         }
 
         .patrons-wordmark {
-          margin-top: 15px;
-          margin-bottom: 30px;
+          margin: 20px 0 32px;
         }
 
         .patrons-title {
           width: 100%;
           padding-inline: 4px;
-          font-size: clamp(1.45rem, 7.6vw, 1.95rem);
+          font-size: clamp(1.47rem, 7.5vw, 1.95rem);
           letter-spacing: 0.095em;
           line-height: 1.04;
-          white-space: nowrap;
         }
 
         .masthead-rule {
-          margin-bottom: 20px;
+          margin-bottom: 21px;
         }
 
         .masthead-introducing {
           margin-bottom: 3px;
+          font-size: 0.69rem;
+          letter-spacing: 0.2em;
         }
 
-        .masthead-stewardship {
-          max-width: 310px;
+        .masthead-token-line {
+          max-width: 330px;
           padding-inline: 8px;
-          font-size: 0.7rem;
-          letter-spacing: 0.14em;
+          font-size: 0.76rem;
+          letter-spacing: 0.15em;
           line-height: 1.5;
         }
 
         .hero-title {
-          margin-bottom: 12px;
-          font-size: clamp(2rem, 11vw, 2.6rem);
+          margin-bottom: 13px;
+          font-size: clamp(2.08rem, 10.3vw, 2.5rem);
           letter-spacing: 0.11em;
+        }
+
+        .hero-definition {
+          max-width: 335px;
+          margin-bottom: 23px;
+          padding-inline: 12px;
+          font-size: 0.83rem;
+          line-height: 1.5;
         }
 
         .hero-symbol {
           margin-bottom: 42px;
           padding-inline: 4px;
-          font-size: 0.72rem;
-          letter-spacing: 0.12em;
+          font-size: 0.7rem;
+          letter-spacing: 0.1em;
           line-height: 1.55;
         }
 
@@ -866,26 +896,26 @@
         }
 
         .hero-network {
-          font-size: 0.72rem;
-          letter-spacing: 0.11em;
+          font-size: 0.7rem;
+          letter-spacing: 0.1em;
         }
 
         .hero-contract {
           display: block;
-          font-size: 0.68rem;
-          letter-spacing: 0.08em;
+          font-size: 0.66rem;
+          letter-spacing: 0.04em;
           line-height: 1.45;
         }
 
-        .hero-contract-label {
+        .hero-contract-label,
+        .hero-contract-value {
           display: inline;
         }
 
         .hero-contract-value {
-          display: inline;
           margin-left: 0.25em;
           font-size: 0.92em;
-          letter-spacing: 0.025em;
+          letter-spacing: 0.015em;
           overflow-wrap: anywhere;
           word-break: break-all;
         }
@@ -896,22 +926,8 @@
           gap: 22px;
         }
 
-        /*
-          Broad transactional buttons only.
-          Patron Wallet is excluded by the more specific rule above.
-        */
-
-        .hero-actions .btn {
-          width: min(74%, 280px);
-          min-width: 0;
-          max-width: 280px;
-          padding: 9px 20px;
-          font-size: 0.76rem;
-          letter-spacing: 0.14em;
-        }
-
         main {
-          margin-top: 38px;
+          margin-top: 40px;
         }
 
         .brand-row {
@@ -924,12 +940,12 @@
         }
 
         .roadmap-kicker {
-          font-size: 10px;
+          font-size: 0.63rem;
           letter-spacing: 0.24em;
         }
 
         .roadmap-main-title {
-          font-size: 18px;
+          font-size: 1.12rem;
           letter-spacing: 0.18em;
         }
 
@@ -943,12 +959,12 @@
         }
 
         .stringpool-prefix {
-          font-size: 14px;
+          font-size: 0.88rem;
           letter-spacing: 0.11em;
         }
 
         .stringpool-name {
-          font-size: 20px;
+          font-size: 1.25rem;
           letter-spacing: 0.16em;
         }
 
@@ -974,8 +990,7 @@
 
         .initiative-text,
         .roadmap-footnote,
-        .copy-block p,
-        .copy-block li {
+        .copy-block p {
           text-align: left;
           text-justify: auto;
         }
@@ -985,14 +1000,14 @@
         }
 
         .copy-section-title {
-          margin-bottom: 22px;
-          font-size: 0.76rem;
+          margin-bottom: 24px;
+          font-size: 0.75rem;
           letter-spacing: 0.15em;
         }
 
-        .copy-block h3 {
+        .copy-block h2 {
           font-size: 0.96rem;
-          letter-spacing: 0.06em;
+          letter-spacing: 0.055em;
           line-height: 1.35;
         }
 
@@ -1012,45 +1027,60 @@
         }
       }
 
-      /* Narrow mobile */
+      /* Narrow phones */
 
       @media (max-width: 380px) {
         .page {
           width: min(calc(100% - 16px), 820px);
         }
 
+        .wallet-button {
+          width: 174px;
+          min-width: 174px;
+          max-width: 174px;
+        }
+
         .institutional-latin {
           max-width: 290px;
-          font-size: 0.62rem;
+          font-size: 0.61rem;
           letter-spacing: 0.145em;
         }
 
         .patrons-title {
-          font-size: clamp(1.32rem, 7.25vw, 1.7rem);
+          font-size: clamp(1.33rem, 7.2vw, 1.7rem);
           letter-spacing: 0.075em;
         }
 
-        .masthead-stewardship {
-          font-size: 0.66rem;
-          letter-spacing: 0.12em;
+        .masthead-token-line {
+          font-size: 0.7rem;
+          letter-spacing: 0.125em;
         }
 
         .hero-title {
-          font-size: clamp(1.9rem, 10.5vw, 2.35rem);
+          font-size: clamp(1.95rem, 10vw, 2.35rem);
           letter-spacing: 0.09em;
+        }
+
+        .hero-definition {
+          max-width: 305px;
+          font-size: 0.79rem;
         }
 
         .hero-symbol {
-          font-size: 0.68rem;
-          letter-spacing: 0.09em;
+          font-size: 0.67rem;
+          letter-spacing: 0.075em;
         }
 
-        .hero-actions .btn {
+        .btn {
           width: min(78%, 270px);
         }
 
+        .wallet-button {
+          width: 174px;
+        }
+
         .stringpool-name {
-          font-size: 18px;
+          font-size: 1.13rem;
           letter-spacing: 0.13em;
         }
 
@@ -1059,7 +1089,7 @@
         }
 
         .horse-card-name {
-          font-size: 23px;
+          font-size: 1.44rem;
         }
       }
     </style>

@@ -1,18 +1,13 @@
 // App.jsx
 import React, { useRef } from "react";
 
-// ---------------------------------------------
-// Main App
-// ---------------------------------------------
 export default function App() {
   const year = new Date().getFullYear();
-
-  // Roadmap section ref kept in place for possible future scroll logic
   const roadmapGateRef = useRef(null);
 
   return (
     <div className="page">
-      {/* Patron Wallet button */}
+      {/* Utility control */}
       <header className="wallet-header">
         <a
           className="btn btn-primary wallet-button"
@@ -22,21 +17,18 @@ export default function App() {
         </a>
       </header>
 
-      {/* Masthead / Patrons Society wordmark */}
-      <div className="masthead">
+      {/* Society masthead */}
+      <section className="masthead" aria-label="Patrons Society masthead">
         <div className="masthead-inner">
           <div className="institutional-latin">
             SOCIETATIS CIVITATIS SANCTAE PATRONI
           </div>
 
-          <div className="masthead-line-2 masthead-presents">
+          <div className="masthead-presents">
             PRESENT
           </div>
 
-          <div
-            className="patrons-wordmark"
-            aria-label="The Patrons Society"
-          >
+          <div className="patrons-wordmark">
             <span className="patrons-title">
               THE PATRONS SOCIETY
             </span>
@@ -44,19 +36,26 @@ export default function App() {
 
           <div className="masthead-rule" />
 
-          <div className="masthead-line-2 masthead-introducing">
+          <div className="masthead-introducing">
             INTRODUCING THE
           </div>
 
-          <div className="masthead-line-2 masthead-stewardship">
+          <div className="masthead-token-line">
             OFFICIAL SOCIETY PATRONAGE TOKEN
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Hero */}
+      {/* Patronium hero */}
       <header className="hero-header">
-        <h1 className="hero-title">PATRONIUM</h1>
+        <h1 className="hero-title">
+          PATRONIUM
+        </h1>
+
+        <p className="hero-definition">
+          Patronium is the official Society patronage token and utility layer
+          of the Patrons Society.
+        </p>
 
         <div className="hero-symbol">
           <div className="hero-symbol-main">
@@ -110,9 +109,8 @@ export default function App() {
         </div>
       </header>
 
-      {/* Brand / roadmap + copy sections */}
       <main>
-        {/* Roadmap */}
+        {/* Initiative roadmap */}
         <section
           className="brand-row"
           id="brands"
@@ -131,11 +129,11 @@ export default function App() {
           </div>
 
           <div className="brand-grid">
-            {/* POLOBRED REGISTRY & STRINGPOOL */}
-            <div className="logo-block">
+            {/* PoloBred Registry and Stringpool */}
+            <article className="logo-block">
               <div
                 className="logo-usp-string-remuda"
-                aria-label="The PoloBred Registry and Stringpool wordmark"
+                aria-label="The PoloBred Registry and Stringpool"
               >
                 <div className="stringpool-wordmark-inner">
                   <div className="stringpool-rule" />
@@ -154,30 +152,34 @@ export default function App() {
 
               <p className="initiative-text">
                 Our managed pool of PPA horses — consigned or owned by the
-                Association, assigned to operating patrons, trainers and local
-                players, and developed for play, exhibition and training across
-                our programmes.
+                Association, assigned to operating patrons, trainers, and local
+                players, and developed for play, exhibition, and training
+                across our programmes.
               </p>
-            </div>
+            </article>
 
-            {/* COWBOY POLO CIRCUIT */}
-            <div className="logo-block">
+            {/* Cowboy Polo Circuit */}
+            <article className="logo-block">
               <div className="logo-cowboy-polo-circuit">
-                <span>COWBOY&nbsp;POLO&nbsp;CIRCUIT</span>
+                <span>
+                  COWBOY&nbsp;POLO&nbsp;CIRCUIT
+                </span>
               </div>
 
               <p className="initiative-text">
-                An American endeavour to broaden Polo&apos;s reach, nurture
+                An American endeavour to broaden polo&apos;s reach, nurture
                 emerging talent, and encourage the next generation of American
-                players — where riders not only learn to play, but learn to make
-                the horses of the PoloBred Registry &amp; Stringpool.
+                players — where riders not only learn to play, but learn to
+                make the horses of the PoloBred Registry &amp; Stringpool.
               </p>
-            </div>
+            </article>
 
-            {/* THE POLO WAY */}
-            <div className="logo-block">
+            {/* The Polo Way */}
+            <article className="logo-block">
               <div className="logo-the-polo-way">
-                <span className="top">THE</span>
+                <span className="top">
+                  THE
+                </span>
 
                 <span className="main">
                   POLO WAY
@@ -189,10 +191,10 @@ export default function App() {
                 of polo to new audiences in the digital age — following our
                 horses, patrons, and players across the Cowboy Polo Circuit.
               </p>
-            </div>
+            </article>
 
-            {/* CHARLESTON POLO */}
-            <div className="logo-block">
+            {/* Charleston Polo */}
+            <article className="logo-block">
               <div className="logo-charleston-polo">
                 <span className="top">
                   CHARLESTON
@@ -212,29 +214,29 @@ export default function App() {
                 <br />
                 <br />
                 Charleston Polo serves as the first chapter test model for the
-                broader PPA framework. In the early stage, a chapter may operate
-                through multiple partner locations rather than a single
-                permanent club. Over time, as horse supply, patronage, and event
-                structure become stable, that chapter can grow into a more
-                permanent and fully integrated node of the Association.
+                broader PPA framework. In the early stage, a chapter may
+                operate through multiple partner locations rather than a single
+                permanent club. Over time, as horse supply, patronage, and
+                event structure become stable, that chapter can grow into a
+                more permanent and fully integrated node of the Association.
                 <br />
                 <br />
-                The goal is not simply to stage occasional polo activity, but to
-                build a repeatable local structure where players, ponies,
-                patrons, and hosts are tied together in a practical network.
+                The goal is not simply to stage occasional polo activity, but
+                to build a repeatable local structure where players, ponies,
+                patrons, and hosts are tied together in a practical framework.
               </p>
-            </div>
+            </article>
           </div>
 
           <p className="roadmap-footnote">
-            All of these polo initiatives are coordinated and supported through
+            These polo initiatives are coordinated and supported through the
             Patrons Society using Patronium, the Society&apos;s patronage token,
-            uniting patrons, players, horses, and clubs within a shared polo
-            framework.
+            uniting patrons, players, horses, and clubs through a shared
+            patronage framework.
           </p>
         </section>
 
-        {/* Patronium Framework */}
+        {/* Patronium framework */}
         <section
           className="copy-section"
           id="patronium-framework"
@@ -244,12 +246,12 @@ export default function App() {
           </div>
 
           <div className="copy-section-inner">
-            <div className="copy-block">
-              <h3>
-                Patronium — The Official Society Patronage Token
-              </h3>
+            <article className="copy-block">
+              <h2>
+                Patronium — The Patron Token of the Patrons Society
+              </h2>
 
-              <p>
+              <p className="copy-lead">
                 Patronium is the official Society patronage token and utility
                 layer of the Patrons Society.
               </p>
@@ -257,36 +259,37 @@ export default function App() {
               <p>
                 It gives patrons a clear way to enter the Society&apos;s
                 patronage framework, participate in real initiatives, and
-                direct support where it is needed most — especially horses,
-                teams, events, and long-term polo infrastructure.
+                direct support where it is needed most — especially toward
+                horses, teams, events, chapters, and long-term polo
+                infrastructure.
               </p>
 
               <p>
-                Patrons acquire PATRON, then use that position to engage with
-                initiatives, access opportunities, and designate support within
-                the Society.
+                Patrons acquire PATRON and may then use that position to engage
+                with Society initiatives, access designated opportunities, and
+                direct support within the Patrons Society.
               </p>
 
               <p>
                 Patron support may be acknowledged through discretionary patron
-                recognition determined in light of the needs of Patrons Society.
-                Any patron-facing benefits, tribute, or related recognitions
-                remain discretionary and are determined in light of operational
-                needs, long-term stewardship, and the good of the mission.
+                recognition determined in light of the needs of the Patrons
+                Society. Any patron-facing benefits, tribute, or related
+                recognition remain discretionary and are determined according
+                to operational needs, long-term stewardship, and the good of
+                the mission.
               </p>
-            </div>
+            </article>
 
-            <div className="copy-block">
-              <h3>
+            <article className="copy-block">
+              <h2>
                 Horse Syndicates and the PoloBred Registry &amp; Stringpool
-              </h3>
+              </h2>
 
               <p>
-                One of the most important uses of the system is the creation of
-                a managed PoloBred Registry &amp; Stringpool.
+                One of the most important uses of the framework is the creation
+                of a managed PoloBred Registry &amp; Stringpool.
               </p>
 
-              {/* Simplified branded horse card */}
               <div className="horse-card-wrap">
                 <div className="horse-card">
                   <div className="horse-card-heading">
@@ -330,50 +333,56 @@ export default function App() {
               <p>
                 Rather than leaving new players to navigate the sport through
                 overpriced horse sales, fragmented advice, or one-off
-                arrangements, the Association can build and manage its own horse
-                structure through dedicated syndicates and association-backed
-                mounts. That creates a cleaner and more trustworthy entry into
-                the sport, with sound horses, clearer financial pathways, and a
+                arrangements, the Association can build and manage its own
+                horse structure through dedicated syndicates and
+                association-backed mounts.
+              </p>
+
+              <p>
+                This creates a cleaner and more trustworthy entry into the
+                sport, with sound horses, clearer financial pathways, and a
                 less painful early experience for new players.
               </p>
 
               <p>
-                This allows the Association to support the full ladder of the
-                game. At the entry level, it helps provide reliable horses for
-                lessons, practices, and early development. At the higher end, it
-                supports the maintenance of stronger strings for exhibitions,
-                featured events, and tournament play.
+                It also allows the Association to support the full ladder of
+                the game. At the entry level, it helps provide reliable horses
+                for lessons, practices, and early development. At the higher
+                end, it supports stronger strings for exhibitions, featured
+                events, and tournament play.
               </p>
 
               <p>
                 Each horse has its own ERC-1155 token ID, so support can be
-                recorded and tracked horse by horse over the course of that
+                recorded and tracked horse by horse throughout that
                 horse&apos;s career. This makes it possible to organize
-                horse-specific support, preserve the history of who helped bring
-                a horse along, and reserve funds for old age, turnout, and
-                retirement care.
+                horse-specific support, preserve the history of who helped
+                bring a horse along, and reserve funds for old age, turnout,
+                and retirement care.
               </p>
 
               <p>
                 The goal is not to treat horses as disposable expenses or
                 one-time transactions, but to create a more stable and enduring
-                relationship between horses, patrons, players, and the
+                relationship among horses, patrons, players, and the
                 Association itself.
               </p>
-            </div>
+            </article>
 
-            <div className="copy-block">
-              <h3>How Patronium Works</h3>
+            <article className="copy-block">
+              <h2>
+                How Patronium Works
+              </h2>
 
               <p>
-                Patronium begins at the Patrons Society level, then flows toward
-                specific initiatives.
+                Patronium begins at the Patrons Society level and then flows
+                toward specific initiatives.
               </p>
 
               <p>
-                A patron may use PATRON to support a horse syndicate, a team, an
-                event, a chapter, a training property, a clubhouse initiative,
-                or another approved project within Patrons Society.
+                A patron may use PATRON to support a horse syndicate, team,
+                event, chapter, training property, clubhouse initiative, or
+                another approved project within the Patrons Society.
               </p>
 
               <p>
@@ -382,41 +391,41 @@ export default function App() {
               </p>
 
               <p>
-                Direct allocation is a utility action within the patronage
-                framework, similar to governance or designation, not a claim on
-                proceeds.
+                Direct allocation is a utility action within the Society&apos;s
+                patronage framework, similar to designation or governance, and
+                does not constitute a claim on proceeds.
               </p>
-            </div>
+            </article>
 
-            <div className="copy-block">
-              <h3>
+            <article className="copy-block">
+              <h2>
                 An Invitation to Patrons and Partners
-              </h3>
+              </h2>
 
               <p>
-                Patrons Society welcomes patrons, horsemen, landholders, hosts,
-                and professionals who want to help build a more stable American
-                polo future.
+                The Patrons Society welcomes patrons, horsemen, landholders,
+                hosts, and professionals who want to help build a more stable
+                American polo future.
               </p>
 
               <p>
-                Whether that means helping support a horse, back a team, host an
-                event, or build a permanent node for the sport, the aim is the
-                same: to restore a stronger and more durable framework for
-                American polo.
+                Whether that means helping support a horse, backing a team,
+                hosting an event, or building a permanent node for the sport,
+                the aim is the same: to restore a stronger and more durable
+                framework for American polo.
               </p>
 
               <p>
                 In a sense, this is the cause before the cause: building the
                 underlying horses, teams, and patron structure through which
-                polo can later become a meaningful fundraising platform for many
-                other worthy causes.
+                polo can later become a meaningful fundraising platform for
+                many other worthy causes.
               </p>
 
               <p>
                 Patronium is the tool that helps make that possible.
               </p>
-            </div>
+            </article>
           </div>
         </section>
       </main>

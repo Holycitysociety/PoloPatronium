@@ -35,15 +35,15 @@
 
     <style>
       :root {
-        --bg: #050505;
-        --fg: #f5f5f5;
-        --muted: #a7a7a7;
+        --bg: #06111f;
+        --fg: #f4f6f8;
+        --muted: #aab5c3;
         --accent: #e3bf72;
         --accent-light: #f1d694;
         --accent-soft: #c7b08a;
         --accent-muted: #9f8a64;
-        --border: #2b2b2b;
-        --border-warm: #3a2b16;
+        --border: #20344b;
+        --border-warm: #3a3425;
 
         --font-large: clamp(2.2rem, 5vw, 2.8rem);
         --font-medium: clamp(1.08rem, 3vw, 1.35rem);
@@ -69,15 +69,21 @@
         background:
           radial-gradient(
             circle at 50% 0%,
-            rgba(255, 255, 255, 0.07) 0,
-            rgba(0, 0, 0, 0.95) 40%
+            rgba(145, 188, 226, 0.13) 0,
+            rgba(14, 36, 61, 0.88) 28%,
+            rgba(6, 17, 31, 0.98) 56%
           ),
           radial-gradient(
-            circle at 50% 65%,
-            rgba(255, 255, 255, 0.05) 0,
-            rgba(0, 0, 0, 0.98) 55%
+            circle at 50% 68%,
+            rgba(77, 119, 160, 0.1) 0,
+            rgba(6, 17, 31, 0.98) 56%
           ),
-          var(--bg);
+          linear-gradient(
+            180deg,
+            #08182a 0%,
+            #06111f 48%,
+            #040c17 100%
+          );
         color: var(--fg);
         font-family:
           "EB Garamond",
@@ -154,13 +160,13 @@
       }
 
       .btn-outline {
-        border-color: #555;
+        border-color: #526174;
         color: var(--muted);
       }
 
       .btn-outline:hover {
-        border-color: #777;
-        background: #181818;
+        border-color: #718197;
+        background: rgba(22, 43, 67, 0.72);
         color: var(--fg);
       }
 
@@ -407,8 +413,9 @@
         background:
           radial-gradient(
             circle at top,
-            rgba(255, 255, 255, 0.06) 0,
-            transparent 60%
+            rgba(116, 161, 203, 0.09) 0,
+            rgba(20, 43, 68, 0.32) 34%,
+            transparent 68%
           );
       }
 
@@ -661,9 +668,9 @@
           linear-gradient(
             180deg,
             rgba(199, 176, 138, 0.1),
-            rgba(0, 0, 0, 0.22)
+            rgba(5, 19, 34, 0.38)
           ),
-          #050505;
+          #071526;
         box-shadow: 0 14px 36px rgba(0, 0, 0, 0.36);
       }
 
@@ -688,9 +695,9 @@
         background:
           radial-gradient(
             circle at top,
-            rgba(227, 191, 114, 0.1),
-            rgba(0, 0, 0, 0.1) 45%,
-            rgba(0, 0, 0, 0.25) 100%
+            rgba(150, 188, 221, 0.1),
+            rgba(14, 38, 63, 0.24) 45%,
+            rgba(5, 15, 27, 0.42) 100%
           );
       }
 
@@ -813,7 +820,7 @@
       }
 
       .footer-divider {
-        color: #5e5549;
+        color: #5e6370;
         font-size: 0.9em;
       }
 
@@ -823,7 +830,7 @@
       }
 
       .footer-network {
-        color: #777;
+        color: #788596;
       }
 
       /* Mobile */

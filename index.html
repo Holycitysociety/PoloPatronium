@@ -770,15 +770,60 @@
       footer {
         display: flex;
         margin-top: var(--section-gap);
-        padding: 18px 0 10px;
+        padding: 24px 0 10px;
         align-items: center;
         flex-direction: column;
-        gap: 4px;
+        gap: 6px;
         border-top: 1px solid var(--border);
         color: var(--muted);
         font-size: var(--font-small);
         text-align: center;
         text-transform: uppercase;
+      }
+
+      .footer-links {
+        display: flex;
+        width: 100%;
+        max-width: 720px;
+        margin-bottom: 18px;
+        padding: 0 12px 22px;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        column-gap: 12px;
+        row-gap: 8px;
+        border-bottom: 1px solid var(--border);
+        font-family:
+          "Cormorant Garamond",
+          "EB Garamond",
+          serif;
+        font-size: 0.76rem;
+        font-weight: 500;
+        letter-spacing: 0.13em;
+        line-height: 1.4;
+      }
+
+      .footer-links a {
+        color: var(--accent-soft);
+        transition: color 0.15s ease;
+      }
+
+      .footer-links a:hover {
+        color: var(--accent-light);
+      }
+
+      .footer-divider {
+        color: #5e5549;
+        font-size: 0.9em;
+      }
+
+      .footer-identity,
+      .footer-network {
+        letter-spacing: 0.06em;
+      }
+
+      .footer-network {
+        color: #777;
       }
 
       /* Mobile */
@@ -1021,9 +1066,24 @@
 
         footer {
           margin-top: 42px;
-          padding-bottom: 32px;
+          padding: 24px 0 32px;
           font-size: 0.72rem;
           letter-spacing: 0.06em;
+        }
+
+        .footer-links {
+          display: grid;
+          max-width: 330px;
+          margin-bottom: 17px;
+          padding: 0 8px 20px;
+          grid-template-columns: 1fr;
+          gap: 9px;
+          font-size: 0.7rem;
+          letter-spacing: 0.12em;
+        }
+
+        .footer-divider {
+          display: none;
         }
       }
 
@@ -1090,6 +1150,12 @@
 
         .horse-card-name {
           font-size: 1.44rem;
+        }
+
+        .footer-links {
+          max-width: 300px;
+          font-size: 0.67rem;
+          letter-spacing: 0.1em;
         }
       }
     </style>

@@ -431,11 +431,44 @@ export default function App() {
       </main>
 
       <footer>
-        <div>
+        <nav
+          className="footer-links"
+          aria-label="Related Patrons Society sites"
+        >
+          <a href="https://patronssociety.org">
+            PATRONS SOCIETY
+          </a>
+
+          <span className="footer-divider" aria-hidden="true">
+            ·
+          </span>
+
+          <a href="https://uspolopatrons.org">
+            US POLO PATRONS ASSOCIATION
+          </a>
+
+          <span className="footer-divider" aria-hidden="true">
+            ·
+          </span>
+
+          <a href="https://charlestonpolo.com">
+            CHARLESTON POLO
+          </a>
+
+          <span className="footer-divider" aria-hidden="true">
+            ·
+          </span>
+
+          <a href="https://cowboypolo.com">
+            COWBOY POLO
+          </a>
+        </nav>
+
+        <div className="footer-identity">
           © {year} PATRONS SOCIETY — PATRONIUM
         </div>
 
-        <div>
+        <div className="footer-network">
           BUILT ON BASE
         </div>
       </footer>

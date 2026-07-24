@@ -41,7 +41,7 @@ export default function App() {
           </div>
 
           <div className="masthead-token-line">
-            OFFICIAL SOCIETY PATRONAGE TOKEN
+            OFFICIAL SOCIETY PATRONAGE TOKEN & REGISTER
           </div>
         </div>
       </section>
@@ -252,8 +252,7 @@ export default function App() {
               </h2>
 
               <p className="copy-lead">
-                Patronium is the official Society patronage token and utility
-                layer of the Patrons Society.
+              
               </p>
 
               <p>

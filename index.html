@@ -35,22 +35,32 @@
 
     <style>
       :root {
-        --bg: #06111f;
-        --fg: #f4f6f8;
-        --muted: #aab5c3;
-        --accent: #e3bf72;
-        --accent-light: #f1d694;
-        --accent-soft: #c7b08a;
-        --accent-muted: #9f8a64;
-        --border: #20344b;
-        --border-warm: #3a3425;
+        --bg-deep: #041221;
+        --bg: #07192b;
+        --bg-mid: #0c2238;
+        --bg-light: #142b43;
 
-        --font-large: clamp(2.2rem, 5vw, 2.8rem);
-        --font-medium: clamp(1.08rem, 3vw, 1.35rem);
-        --font-small: 0.85rem;
+        --fg: #f5f7f8;
+        --fg-soft: #e4e9ee;
+        --muted: #aab7c5;
+        --muted-dark: #8190a1;
 
-        --section-gap: 56px;
-        --content-gap: 24px;
+        --accent: #e5c273;
+        --accent-light: #f2d891;
+        --accent-mid: #d8ae58;
+        --accent-soft: #c9b083;
+        --accent-muted: #a98b56;
+
+        --border: #263f59;
+        --border-soft: rgba(135, 172, 205, 0.22);
+        --border-warm: rgba(203, 164, 90, 0.42);
+
+        --font-large: clamp(2.15rem, 5vw, 2.75rem);
+        --font-medium: clamp(1rem, 2.6vw, 1.18rem);
+        --font-small: 0.82rem;
+
+        --section-gap: 52px;
+        --content-gap: 25px;
       }
 
       * {
@@ -59,7 +69,7 @@
 
       html {
         overflow-x: hidden;
-        background: var(--bg);
+        background: var(--bg-deep);
       }
 
       body {
@@ -68,21 +78,22 @@
         overflow-x: hidden;
         background:
           radial-gradient(
-            circle at 50% 0%,
-            rgba(145, 188, 226, 0.13) 0,
-            rgba(14, 36, 61, 0.88) 28%,
-            rgba(6, 17, 31, 0.98) 56%
+            ellipse at 50% -8%,
+            rgba(174, 211, 240, 0.17) 0%,
+            rgba(80, 127, 169, 0.08) 27%,
+            transparent 54%
           ),
           radial-gradient(
-            circle at 50% 68%,
-            rgba(77, 119, 160, 0.1) 0,
-            rgba(6, 17, 31, 0.98) 56%
+            ellipse at 50% 58%,
+            rgba(77, 124, 164, 0.08) 0%,
+            transparent 56%
           ),
           linear-gradient(
             180deg,
-            #08182a 0%,
-            #06111f 48%,
-            #040c17 100%
+            var(--bg-light) 0%,
+            var(--bg-mid) 38%,
+            var(--bg) 72%,
+            var(--bg-deep) 100%
           );
         color: var(--fg);
         font-family:
@@ -91,9 +102,27 @@
           "Times New Roman",
           serif;
         font-size: var(--font-medium);
-        line-height: 1.6;
+        font-weight: 400;
+        line-height: 1.52;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
+      }
+
+      body::before {
+        position: fixed;
+        z-index: -1;
+        top: 0;
+        right: 0;
+        left: 0;
+        height: 240px;
+        background:
+          linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.035),
+            transparent
+          );
+        content: "";
+        pointer-events: none;
       }
 
       a {
@@ -124,7 +153,13 @@
         justify-content: center;
         border: 1px solid var(--border);
         border-radius: 999px;
-        background: transparent;
+        background:
+          linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.025),
+            rgba(255, 255, 255, 0)
+          ),
+          rgba(6, 22, 38, 0.3);
         color: var(--fg);
         cursor: pointer;
         font-family:
@@ -134,9 +169,12 @@
         font-size: var(--font-small);
         font-weight: 500;
         letter-spacing: 0.16em;
-        line-height: 1.3;
+        line-height: 1.25;
         text-align: center;
         text-transform: uppercase;
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.045),
+          0 10px 20px rgba(0, 0, 0, 0.12);
         transition:
           background 0.15s ease,
           border-color 0.15s ease,
@@ -146,27 +184,58 @@
       }
 
       .btn-primary {
-        border-color: var(--accent);
-        background: var(--accent);
-        color: #090704;
-        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
+        border-color: var(--accent-light);
+        background:
+          linear-gradient(
+            180deg,
+            #f1d58f 0%,
+            #e7c573 48%,
+            #d8ae58 100%
+          );
+        color: #100c05;
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.42),
+          inset 0 -1px 0 rgba(91, 60, 10, 0.28),
+          0 12px 26px rgba(0, 0, 0, 0.3);
       }
 
       .btn-primary:hover {
-        border-color: var(--accent-light);
-        background: var(--accent-light);
-        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.7);
+        border-color: #f5dea2;
+        background:
+          linear-gradient(
+            180deg,
+            #f6dfa0 0%,
+            #eccb79 48%,
+            #dfb661 100%
+          );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.48),
+          inset 0 -1px 0 rgba(91, 60, 10, 0.24),
+          0 15px 32px rgba(0, 0, 0, 0.35);
         transform: translateY(-1px);
       }
 
       .btn-outline {
-        border-color: #526174;
-        color: var(--muted);
+        border-color: rgba(134, 161, 190, 0.58);
+        background:
+          linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.025),
+            rgba(255, 255, 255, 0)
+          ),
+          rgba(10, 31, 51, 0.3);
+        color: #abb8c6;
       }
 
       .btn-outline:hover {
-        border-color: #718197;
-        background: rgba(22, 43, 67, 0.72);
+        border-color: rgba(166, 192, 218, 0.78);
+        background:
+          linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.045),
+            rgba(255, 255, 255, 0.005)
+          ),
+          rgba(19, 47, 74, 0.62);
         color: var(--fg);
       }
 
@@ -185,14 +254,14 @@
         max-width: 200px;
         margin: 0;
         padding: 8px 24px;
-        font-size: 0.78rem;
+        font-size: 0.76rem;
         letter-spacing: 0.15em;
       }
 
       /* Society masthead */
 
       .masthead {
-        margin-bottom: 48px;
+        margin-bottom: 46px;
         text-align: center;
       }
 
@@ -205,37 +274,37 @@
 
       .institutional-latin {
         max-width: 100%;
-        margin-bottom: 10px;
+        margin-bottom: 9px;
         padding-inline: 12px;
         color: var(--accent-soft);
         font-family:
           "Cormorant Garamond",
           "EB Garamond",
           serif;
-        font-size: 0.69rem;
+        font-size: 0.65rem;
         font-weight: 400;
-        letter-spacing: 0.23em;
-        line-height: 1.5;
+        letter-spacing: 0.22em;
+        line-height: 1.45;
         text-transform: uppercase;
       }
 
       .masthead-presents {
-        color: #eeeeee;
+        color: #e3e8ed;
         font-family:
           "Cormorant Garamond",
           "EB Garamond",
           serif;
-        font-size: 0.8rem;
+        font-size: 0.69rem;
         font-weight: 500;
-        letter-spacing: 0.27em;
-        line-height: 1.4;
+        letter-spacing: 0.25em;
+        line-height: 1.35;
         text-transform: uppercase;
       }
 
       .patrons-wordmark {
         display: flex;
         width: 100%;
-        margin: 22px 0 40px;
+        margin: 20px 0 36px;
         align-items: center;
         justify-content: center;
       }
@@ -247,11 +316,11 @@
         white-space: nowrap;
         background:
           linear-gradient(
-            to bottom,
-            #f8f0db 0%,
-            #ebd7ad 40%,
-            #d6b777 72%,
-            #f3e2bc 100%
+            180deg,
+            #fff8e6 0%,
+            #efd8a8 34%,
+            #dcb96f 66%,
+            #f5dfad 100%
           );
         background-clip: text;
         color: transparent;
@@ -260,49 +329,50 @@
           "EB Garamond",
           Garamond,
           serif;
-        font-size: clamp(2.1rem, 6.1vw, 2.8rem);
+        font-size: clamp(2.05rem, 5.9vw, 2.72rem);
         font-weight: 300;
-        letter-spacing: 0.16em;
-        line-height: 1.04;
+        letter-spacing: 0.155em;
+        line-height: 1.02;
         text-shadow:
-          0 0 0.5px rgba(227, 191, 114, 0.18),
-          0 8px 24px rgba(0, 0, 0, 0.48);
+          0 1px 0 rgba(255, 255, 255, 0.1),
+          0 9px 24px rgba(0, 0, 0, 0.3);
         text-transform: uppercase;
         -webkit-background-clip: text;
       }
 
       .masthead-rule {
         width: 100%;
-        margin: 0 auto 28px;
-        border-top: 1px solid var(--border);
+        margin: 0 auto 25px;
+        border-top: 1px solid var(--border-soft);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.015);
       }
 
       .masthead-introducing {
-        margin-bottom: 4px;
-        color: #eeeeee;
+        margin-bottom: 3px;
+        color: #cbd4dd;
         font-family:
           "Cormorant Garamond",
           "EB Garamond",
           serif;
-        font-size: 0.76rem;
+        font-size: 0.65rem;
         font-weight: 500;
-        letter-spacing: 0.24em;
-        line-height: 1.5;
+        letter-spacing: 0.22em;
+        line-height: 1.4;
         text-transform: uppercase;
       }
 
       .masthead-token-line {
         max-width: 640px;
         padding-inline: 12px;
-        color: #f4f4f4;
+        color: #e8edf1;
         font-family:
           "Cormorant Garamond",
           "EB Garamond",
           serif;
-        font-size: 0.88rem;
+        font-size: 0.76rem;
         font-weight: 500;
-        letter-spacing: 0.21em;
-        line-height: 1.5;
+        letter-spacing: 0.18em;
+        line-height: 1.45;
         text-transform: uppercase;
       }
 
@@ -314,63 +384,62 @@
       }
 
       .hero-title {
-        margin: 0 0 14px;
+        margin: 0 0 12px;
         color: var(--fg);
         font-family:
           "Cormorant Garamond",
           "EB Garamond",
           serif;
-        font-size: clamp(2.25rem, 5.6vw, 2.7rem);
+        font-size: clamp(2.05rem, 5.2vw, 2.5rem);
         font-weight: 500;
-        letter-spacing: 0.17em;
-        line-height: 1.05;
+        letter-spacing: 0.15em;
+        line-height: 1;
+        text-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.04),
+          0 12px 28px rgba(0, 0, 0, 0.22);
         text-transform: uppercase;
       }
 
       .hero-definition {
-        max-width: 570px;
-        margin: 0 auto 25px;
+        max-width: 535px;
+        margin: 0 auto 23px;
         padding-inline: 14px;
         color: var(--accent-soft);
-        font-size: 0.91rem;
-        letter-spacing: 0.025em;
-        line-height: 1.55;
+        font-size: 0.88rem;
+        letter-spacing: 0.015em;
+        line-height: 1.48;
       }
 
       .hero-symbol {
-        margin-bottom: 46px;
+        margin-bottom: 43px;
         padding-inline: 8px;
+        color: #e5ebf0;
         font-family:
           "Cormorant Garamond",
           serif;
-        font-size: var(--font-small);
-        letter-spacing: 0.16em;
-        line-height: 1.6;
+        font-size: 0.76rem;
+        font-weight: 500;
+        letter-spacing: 0.13em;
+        line-height: 1.52;
         text-transform: uppercase;
       }
 
       .hero-symbol-main {
-        margin-bottom: 5px;
-        color: var(--fg);
-        font-weight: 500;
+        margin-bottom: 4px;
       }
 
       .hero-network {
-        margin-bottom: 4px;
-        color: var(--fg);
-        font-size: var(--font-small);
-        font-weight: 500;
-        letter-spacing: 0.14em;
+        margin-bottom: 3px;
+        font-size: inherit;
+        letter-spacing: 0.12em;
       }
 
       .hero-contract {
         display: flex;
         max-width: 100%;
         justify-content: center;
-        color: var(--fg);
-        font-size: var(--font-small);
-        font-weight: 500;
-        letter-spacing: 0.08em;
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
         overflow-wrap: anywhere;
       }
 
@@ -386,8 +455,8 @@
           "EB Garamond",
           Georgia,
           serif;
-        font-size: 0.88em;
-        letter-spacing: 0.025em;
+        font-size: 0.92em;
+        letter-spacing: 0.012em;
         overflow-wrap: anywhere;
         word-break: break-word;
       }
@@ -408,37 +477,71 @@
       }
 
       .brand-row {
-        padding: 34px 0 40px;
-        border-top: 1px solid var(--border);
+        position: relative;
+        overflow: hidden;
+        padding: 34px 12px 42px;
+        border: 1px solid rgba(112, 151, 188, 0.12);
         background:
+          linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.028) 0%,
+            rgba(255, 255, 255, 0.008) 16%,
+            rgba(255, 255, 255, 0) 42%
+          ),
           radial-gradient(
-            circle at top,
-            rgba(116, 161, 203, 0.09) 0,
-            rgba(20, 43, 68, 0.32) 34%,
-            transparent 68%
+            ellipse at 50% 0%,
+            rgba(120, 171, 215, 0.1) 0%,
+            rgba(41, 80, 116, 0.05) 34%,
+            transparent 67%
+          ),
+          linear-gradient(
+            180deg,
+            rgba(22, 52, 82, 0.84),
+            rgba(11, 33, 56, 0.78)
           );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.045),
+          0 18px 42px rgba(0, 0, 0, 0.12);
+      }
+
+      .brand-row::before {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        height: 1px;
+        background:
+          linear-gradient(
+            90deg,
+            transparent,
+            rgba(184, 216, 241, 0.2),
+            transparent
+          );
+        content: "";
       }
 
       .roadmap-heading {
-        margin-bottom: 34px;
+        margin-bottom: 32px;
         text-align: center;
       }
 
       .roadmap-kicker {
-        margin-bottom: 4px;
+        margin-bottom: 3px;
         color: var(--accent-muted);
-        font-size: 0.68rem;
-        letter-spacing: 0.28em;
+        font-size: 0.62rem;
+        font-weight: 500;
+        letter-spacing: 0.25em;
         text-transform: uppercase;
       }
 
       .roadmap-main-title {
-        color: #f5eedc;
+        color: #f3f5f6;
         font-family:
           "Cormorant Garamond",
           serif;
-        font-size: 1.22rem;
-        letter-spacing: 0.22em;
+        font-size: 1.12rem;
+        font-weight: 500;
+        letter-spacing: 0.2em;
         text-transform: uppercase;
       }
 
@@ -446,22 +549,28 @@
         width: 80px;
         height: 1px;
         margin: 10px auto 0;
-        background: var(--border-warm);
-        opacity: 0.9;
+        background:
+          linear-gradient(
+            90deg,
+            transparent,
+            var(--accent-muted),
+            transparent
+          );
+        opacity: 0.72;
       }
 
       .brand-grid {
         display: grid;
         max-width: 100%;
-        margin: 22px auto 0;
+        margin: 20px auto 0;
         grid-template-columns: 1fr;
-        gap: 44px;
+        gap: 38px;
       }
 
       .logo-block {
-        max-width: 90%;
+        max-width: 94%;
         margin: 0 auto;
-        padding: 8px 4px;
+        padding: 7px 4px;
         text-align: center;
       }
 
@@ -469,16 +578,18 @@
         max-width: 720px;
         margin: 12px auto 0;
         color: var(--muted);
-        font-size: var(--font-small);
+        font-size: 0.82rem;
+        line-height: 1.52;
         text-align: justify;
         text-justify: inter-word;
       }
 
       .roadmap-footnote {
         max-width: 720px;
-        margin: 32px auto 0;
+        margin: 30px auto 0;
         color: var(--muted);
-        font-size: var(--font-small);
+        font-size: 0.82rem;
+        line-height: 1.52;
         text-align: justify;
         text-justify: inter-word;
       }
@@ -501,47 +612,65 @@
 
       .stringpool-rule {
         height: 1px;
-        margin-bottom: 16px;
-        background: var(--accent-soft);
-        opacity: 0.9;
+        margin-bottom: 15px;
+        background:
+          linear-gradient(
+            90deg,
+            transparent,
+            var(--accent-light),
+            transparent
+          );
+        opacity: 0.88;
       }
 
       .stringpool-rule-lower {
-        margin-top: 16px;
-        margin-bottom: 14px;
+        margin-top: 15px;
+        margin-bottom: 13px;
       }
 
       .stringpool-prefix {
         color: var(--accent-soft);
-        font-size: 0.94rem;
-        letter-spacing: 0.15em;
-        line-height: 1.45;
+        font-size: 0.86rem;
+        letter-spacing: 0.13em;
+        line-height: 1.4;
       }
 
       .stringpool-name {
-        color: #f5eedc;
-        font-size: 1.5rem;
-        letter-spacing: 0.24em;
-        line-height: 1.25;
+        color: #f3f5f6;
+        font-size: 1.32rem;
+        font-weight: 500;
+        letter-spacing: 0.21em;
+        line-height: 1.2;
+        text-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
         text-transform: uppercase;
       }
 
       /* Cowboy Polo */
 
       .logo-cowboy-polo-circuit {
-        color: #f5eedc;
+        color: #f3f5f6;
         font-family:
           "Cormorant Garamond",
           serif;
-        font-size: var(--font-medium);
-        letter-spacing: 0.18em;
+        font-size: 1.08rem;
+        font-weight: 500;
+        letter-spacing: 0.16em;
         text-transform: uppercase;
       }
 
       .logo-cowboy-polo-circuit span {
         display: inline-block;
-        padding: 8px 28px;
-        border: 1px solid var(--accent-soft);
+        padding: 8px 24px;
+        border: 1px solid var(--accent-light);
+        background:
+          linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.025),
+            rgba(255, 255, 255, 0)
+          );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.04),
+          0 10px 20px rgba(0, 0, 0, 0.1);
       }
 
       /* Polo Way */
@@ -557,15 +686,19 @@
         display: block;
         margin-bottom: 2px;
         color: var(--accent-soft);
-        font-size: var(--font-small);
-        letter-spacing: 0.18em;
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.17em;
         text-transform: uppercase;
       }
 
       .logo-the-polo-way .main {
         display: block;
-        font-size: var(--font-large);
-        letter-spacing: 0.12em;
+        font-size: clamp(1.9rem, 4.8vw, 2.45rem);
+        font-weight: 500;
+        letter-spacing: 0.105em;
+        line-height: 1.05;
+        text-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
         text-transform: uppercase;
       }
 
@@ -575,8 +708,9 @@
         font-family:
           "Cormorant Garamond",
           serif;
-        font-size: var(--font-medium);
-        letter-spacing: 0.2em;
+        font-size: 1.05rem;
+        font-weight: 500;
+        letter-spacing: 0.18em;
         text-transform: uppercase;
       }
 
@@ -584,13 +718,13 @@
         display: block;
         margin-bottom: 2px;
         color: var(--accent-soft);
-        font-size: var(--font-small);
+        font-size: 0.72rem;
       }
 
       .logo-charleston-polo .main {
         display: inline-block;
         padding-bottom: 4px;
-        border-bottom: 1px solid var(--accent-soft);
+        border-bottom: 1px solid var(--accent-light);
       }
 
       /* Copy */
@@ -598,21 +732,22 @@
       .copy-section {
         max-width: 680px;
         margin: var(--section-gap) auto 0;
-        padding-top: 32px;
-        border-top: 1px solid var(--border);
+        padding-top: 30px;
+        border-top: 1px solid var(--border-soft);
         color: var(--muted);
-        font-size: var(--font-small);
+        font-size: 0.84rem;
       }
 
       .copy-section-title {
-        margin-bottom: 28px;
-        color: #f0f0f0;
+        margin-bottom: 27px;
+        color: #e9edf1;
         font-family:
           "Cormorant Garamond",
           "EB Garamond",
           serif;
-        font-size: 0.82rem;
-        letter-spacing: 0.18em;
+        font-size: 0.74rem;
+        font-weight: 500;
+        letter-spacing: 0.17em;
         text-align: center;
         text-transform: uppercase;
       }
@@ -627,58 +762,91 @@
       }
 
       .copy-block h2 {
-        margin: 0 0 9px;
-        color: #f5f5f5;
+        margin: 0 0 10px;
+        color: #eef2f5;
         font-family:
           "Cormorant Garamond",
           serif;
-        font-size: 1.03rem;
+        font-size: 0.98rem;
         font-weight: 500;
-        letter-spacing: 0.07em;
-        line-height: 1.4;
+        letter-spacing: 0.06em;
+        line-height: 1.34;
         text-transform: uppercase;
       }
 
       .copy-block p {
-        margin: 0 0 10px;
+        margin: 0 0 12px;
+        line-height: 1.52;
         text-align: justify;
         text-justify: inter-word;
       }
 
       .copy-lead {
-        color: #d2c2a5;
-        font-size: 1.03em;
+        color: #d5c19a;
+        font-size: 1em;
       }
 
       /* Horse card */
 
       .horse-card-wrap {
         display: flex;
-        margin: 18px 0 22px;
+        margin: 19px 0 23px;
         justify-content: center;
       }
 
       .horse-card {
+        position: relative;
         width: 100%;
         max-width: 340px;
+        overflow: hidden;
         padding: 14px;
         border: 1px solid var(--border-warm);
         border-radius: 18px;
         background:
           linear-gradient(
             180deg,
-            rgba(199, 176, 138, 0.1),
-            rgba(5, 19, 34, 0.38)
+            rgba(255, 255, 255, 0.035),
+            rgba(255, 255, 255, 0.006) 24%,
+            rgba(255, 255, 255, 0) 50%
           ),
-          #071526;
-        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.36);
+          radial-gradient(
+            ellipse at 50% 0%,
+            rgba(133, 177, 215, 0.11),
+            transparent 52%
+          ),
+          linear-gradient(
+            180deg,
+            #182b3c,
+            #0d2032
+          );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.055),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+          0 17px 38px rgba(0, 0, 0, 0.22);
+      }
+
+      .horse-card::before {
+        position: absolute;
+        top: 0;
+        right: 18px;
+        left: 18px;
+        height: 1px;
+        background:
+          linear-gradient(
+            90deg,
+            transparent,
+            rgba(240, 218, 166, 0.28),
+            transparent
+          );
+        content: "";
       }
 
       .horse-card-heading {
         margin-bottom: 12px;
         color: var(--accent-soft);
-        font-size: 0.63rem;
-        letter-spacing: 0.28em;
+        font-size: 0.59rem;
+        font-weight: 500;
+        letter-spacing: 0.24em;
         text-align: center;
         text-transform: uppercase;
       }
@@ -690,15 +858,23 @@
         overflow: hidden;
         align-items: center;
         justify-content: center;
-        border: 1px solid rgba(199, 176, 138, 0.25);
+        border: 1px solid rgba(199, 176, 138, 0.28);
         border-radius: 12px;
         background:
+          linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.025),
+            rgba(255, 255, 255, 0)
+          ),
           radial-gradient(
-            circle at top,
-            rgba(150, 188, 221, 0.1),
-            rgba(14, 38, 63, 0.24) 45%,
-            rgba(5, 15, 27, 0.42) 100%
+            ellipse at 50% 0%,
+            rgba(150, 188, 221, 0.12),
+            rgba(20, 48, 74, 0.14) 44%,
+            rgba(6, 20, 34, 0.34) 100%
           );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.035),
+          inset 0 -10px 24px rgba(0, 0, 0, 0.08);
       }
 
       .horse-card-display-inner {
@@ -709,24 +885,28 @@
       .horse-card-kicker {
         margin-bottom: 10px;
         color: var(--accent-soft);
-        font-size: 0.69rem;
-        letter-spacing: 0.18em;
+        font-size: 0.64rem;
+        font-weight: 500;
+        letter-spacing: 0.17em;
         text-transform: uppercase;
       }
 
       .horse-card-name {
         margin-bottom: 10px;
-        color: #f5eedc;
-        font-size: 1.63rem;
-        letter-spacing: 0.14em;
-        line-height: 1.1;
+        color: #f3f5f6;
+        font-size: 1.48rem;
+        font-weight: 500;
+        letter-spacing: 0.13em;
+        line-height: 1.08;
+        text-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
         text-transform: uppercase;
       }
 
       .horse-card-record {
         color: var(--accent-muted);
-        font-size: 0.63rem;
-        letter-spacing: 0.22em;
+        font-size: 0.58rem;
+        font-weight: 500;
+        letter-spacing: 0.2em;
         text-transform: uppercase;
       }
 
@@ -740,15 +920,16 @@
       .horse-card-standard-label {
         margin-bottom: 4px;
         color: var(--accent-muted);
-        font-size: 0.56rem;
-        letter-spacing: 0.18em;
+        font-size: 0.54rem;
+        letter-spacing: 0.16em;
         text-transform: uppercase;
       }
 
       .horse-card-standard {
-        color: #f5eedc;
-        font-size: 0.88rem;
-        letter-spacing: 0.16em;
+        color: #edf1f4;
+        font-size: 0.82rem;
+        font-weight: 500;
+        letter-spacing: 0.14em;
         text-transform: uppercase;
       }
 
@@ -757,19 +938,23 @@
         padding: 6px 14px 5px;
         align-items: center;
         justify-content: center;
-        border: 1px solid var(--accent-soft);
+        border: 1px solid var(--accent-light);
         border-radius: 999px;
         background:
           linear-gradient(
             180deg,
-            #e3bf72,
-            #b89047
+            #efd493,
+            #c99e4a
           );
-        color: #181210;
-        font-size: 0.63rem;
-        letter-spacing: 0.18em;
+        color: #181108;
+        font-size: 0.58rem;
+        font-weight: 500;
+        letter-spacing: 0.16em;
         white-space: nowrap;
         text-transform: uppercase;
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.36),
+          inset 0 -1px 0 rgba(89, 56, 8, 0.24);
       }
 
       /* Footer */
@@ -781,9 +966,9 @@
         align-items: center;
         flex-direction: column;
         gap: 6px;
-        border-top: 1px solid var(--border);
+        border-top: 1px solid var(--border-soft);
         color: var(--muted);
-        font-size: var(--font-small);
+        font-size: 0.76rem;
         text-align: center;
         text-transform: uppercase;
       }
@@ -799,14 +984,14 @@
         flex-wrap: wrap;
         column-gap: 12px;
         row-gap: 8px;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--border-soft);
         font-family:
           "Cormorant Garamond",
           "EB Garamond",
           serif;
-        font-size: 0.76rem;
+        font-size: 0.72rem;
         font-weight: 500;
-        letter-spacing: 0.13em;
+        letter-spacing: 0.12em;
         line-height: 1.4;
       }
 
@@ -820,29 +1005,34 @@
       }
 
       .footer-divider {
-        color: #5e6370;
+        color: #687686;
         font-size: 0.9em;
       }
 
       .footer-identity,
       .footer-network {
-        letter-spacing: 0.06em;
+        letter-spacing: 0.055em;
       }
 
       .footer-network {
-        color: #788596;
+        color: var(--muted-dark);
       }
 
       /* Mobile */
 
       @media (max-width: 600px) {
         :root {
-          --font-large: clamp(2rem, 10vw, 2.5rem);
-          --font-medium: clamp(1rem, 4.8vw, 1.2rem);
-          --font-small: 0.78rem;
+          --font-large: clamp(1.9rem, 9.4vw, 2.35rem);
+          --font-medium: 1rem;
+          --font-small: 0.74rem;
 
           --section-gap: 40px;
           --content-gap: 22px;
+        }
+
+        body {
+          font-size: 1rem;
+          line-height: 1.5;
         }
 
         .page {
@@ -860,8 +1050,8 @@
           min-width: 0;
           max-width: 280px;
           padding: 9px 20px;
-          font-size: 0.76rem;
-          letter-spacing: 0.14em;
+          font-size: 0.72rem;
+          letter-spacing: 0.135em;
         }
 
         .wallet-button {
@@ -869,94 +1059,93 @@
           min-width: 184px;
           max-width: 184px;
           padding: 8px 18px;
-          font-size: 0.72rem;
-          letter-spacing: 0.14em;
+          font-size: 0.69rem;
+          letter-spacing: 0.135em;
         }
 
         .masthead {
-          margin-bottom: 42px;
+          margin-bottom: 39px;
         }
 
         .institutional-latin {
           max-width: 320px;
-          margin-bottom: 10px;
+          margin-bottom: 7px;
           padding-inline: 8px;
-          font-size: 0.64rem;
-          letter-spacing: 0.17em;
-          line-height: 1.5;
+          font-size: 0.58rem;
+          letter-spacing: 0.155em;
+          line-height: 1.45;
         }
 
         .masthead-presents {
-          font-size: 0.73rem;
-          letter-spacing: 0.25em;
+          font-size: 0.61rem;
+          letter-spacing: 0.22em;
         }
 
         .patrons-wordmark {
-          margin: 20px 0 32px;
+          margin: 18px 0 29px;
         }
 
         .patrons-title {
           width: 100%;
           padding-inline: 4px;
-          font-size: clamp(1.47rem, 7.5vw, 1.95rem);
-          letter-spacing: 0.095em;
-          line-height: 1.04;
+          font-size: clamp(1.46rem, 7.4vw, 1.9rem);
+          letter-spacing: 0.09em;
+          line-height: 1;
         }
 
         .masthead-rule {
-          margin-bottom: 21px;
+          margin-bottom: 18px;
         }
 
         .masthead-introducing {
-          margin-bottom: 3px;
-          font-size: 0.69rem;
-          letter-spacing: 0.2em;
+          margin-bottom: 2px;
+          font-size: 0.57rem;
+          letter-spacing: 0.17em;
         }
 
         .masthead-token-line {
           max-width: 330px;
           padding-inline: 8px;
-          font-size: 0.76rem;
-          letter-spacing: 0.15em;
-          line-height: 1.5;
+          font-size: 0.65rem;
+          letter-spacing: 0.12em;
+          line-height: 1.38;
         }
 
         .hero-title {
-          margin-bottom: 13px;
-          font-size: clamp(2.08rem, 10.3vw, 2.5rem);
-          letter-spacing: 0.11em;
+          margin-bottom: 11px;
+          font-size: clamp(1.88rem, 9.2vw, 2.25rem);
+          letter-spacing: 0.105em;
         }
 
         .hero-definition {
-          max-width: 335px;
-          margin-bottom: 23px;
-          padding-inline: 12px;
-          font-size: 0.83rem;
-          line-height: 1.5;
+          max-width: 325px;
+          margin-bottom: 21px;
+          padding-inline: 10px;
+          font-size: 0.8rem;
+          line-height: 1.43;
         }
 
         .hero-symbol {
-          margin-bottom: 42px;
+          margin-bottom: 39px;
           padding-inline: 4px;
-          font-size: 0.7rem;
-          letter-spacing: 0.1em;
-          line-height: 1.55;
+          font-size: 0.62rem;
+          letter-spacing: 0.075em;
+          line-height: 1.48;
         }
 
         .hero-symbol-main {
-          margin-bottom: 5px;
+          margin-bottom: 4px;
         }
 
         .hero-network {
-          font-size: 0.7rem;
-          letter-spacing: 0.1em;
+          letter-spacing: 0.075em;
         }
 
         .hero-contract {
           display: block;
-          font-size: 0.66rem;
-          letter-spacing: 0.04em;
-          line-height: 1.45;
+          font-size: 0.58rem;
+          letter-spacing: 0.012em;
+          line-height: 1.38;
         }
 
         .hero-contract-label,
@@ -965,17 +1154,17 @@
         }
 
         .hero-contract-value {
-          margin-left: 0.25em;
-          font-size: 0.92em;
-          letter-spacing: 0.015em;
+          margin-left: 0.22em;
+          font-size: 0.94em;
+          letter-spacing: 0;
           overflow-wrap: anywhere;
           word-break: break-all;
         }
 
         .hero-actions {
           max-width: 100%;
-          margin-bottom: 42px;
-          gap: 22px;
+          margin-bottom: 40px;
+          gap: 21px;
         }
 
         main {
@@ -983,84 +1172,108 @@
         }
 
         .brand-row {
-          padding-top: 28px;
-          padding-bottom: 34px;
+          padding: 27px 11px 34px;
         }
 
         .roadmap-heading {
-          margin-bottom: 30px;
+          margin-bottom: 28px;
         }
 
         .roadmap-kicker {
-          font-size: 0.63rem;
-          letter-spacing: 0.24em;
+          font-size: 0.57rem;
+          letter-spacing: 0.21em;
         }
 
         .roadmap-main-title {
-          font-size: 1.12rem;
-          letter-spacing: 0.18em;
+          font-size: 1rem;
+          letter-spacing: 0.16em;
         }
 
         .brand-grid {
-          gap: 38px;
+          gap: 33px;
         }
 
         .logo-block {
           max-width: 100%;
-          padding-inline: 6px;
-        }
-
-        .stringpool-prefix {
-          font-size: 0.88rem;
-          letter-spacing: 0.11em;
-        }
-
-        .stringpool-name {
-          font-size: 1.25rem;
-          letter-spacing: 0.16em;
-        }
-
-        .logo-cowboy-polo-circuit {
-          font-size: 1rem;
-          letter-spacing: 0.12em;
-        }
-
-        .logo-cowboy-polo-circuit span {
-          max-width: 100%;
-          padding: 8px 16px;
-        }
-
-        .logo-the-polo-way .main {
-          font-size: clamp(1.9rem, 10vw, 2.4rem);
-          letter-spacing: 0.09em;
-        }
-
-        .logo-charleston-polo {
-          font-size: 1.02rem;
-          letter-spacing: 0.15em;
+          padding-inline: 2px;
         }
 
         .initiative-text,
-        .roadmap-footnote,
-        .copy-block p {
+        .roadmap-footnote {
+          font-size: 0.76rem;
+          line-height: 1.5;
           text-align: left;
           text-justify: auto;
         }
 
+        .roadmap-footnote {
+          margin-top: 27px;
+        }
+
+        .stringpool-prefix {
+          font-size: 0.77rem;
+          letter-spacing: 0.09em;
+        }
+
+        .stringpool-name {
+          font-size: 1.12rem;
+          letter-spacing: 0.145em;
+        }
+
+        .logo-cowboy-polo-circuit {
+          font-size: 0.92rem;
+          letter-spacing: 0.1em;
+        }
+
+        .logo-cowboy-polo-circuit span {
+          max-width: 100%;
+          padding: 8px 15px;
+        }
+
+        .logo-the-polo-way .top {
+          font-size: 0.65rem;
+        }
+
+        .logo-the-polo-way .main {
+          font-size: clamp(1.72rem, 8.7vw, 2.15rem);
+          letter-spacing: 0.082em;
+        }
+
+        .logo-charleston-polo {
+          font-size: 0.92rem;
+          letter-spacing: 0.13em;
+        }
+
+        .logo-charleston-polo .top {
+          font-size: 0.65rem;
+        }
+
         .copy-section {
-          padding: 28px 8px 0;
+          padding: 27px 8px 0;
+          font-size: 0.78rem;
         }
 
         .copy-section-title {
-          margin-bottom: 24px;
-          font-size: 0.75rem;
-          letter-spacing: 0.15em;
+          margin-bottom: 23px;
+          font-size: 0.66rem;
+          letter-spacing: 0.135em;
+        }
+
+        .copy-block {
+          margin-bottom: 22px;
         }
 
         .copy-block h2 {
-          font-size: 0.96rem;
-          letter-spacing: 0.055em;
-          line-height: 1.35;
+          font-size: 0.88rem;
+          letter-spacing: 0.045em;
+          line-height: 1.3;
+        }
+
+        .copy-block p {
+          margin-bottom: 11px;
+          line-height: 1.5;
+          text-align: left;
+          text-justify: auto;
         }
 
         .horse-card {
@@ -1068,14 +1281,23 @@
         }
 
         .horse-card-heading {
-          letter-spacing: 0.2em;
+          font-size: 0.56rem;
+          letter-spacing: 0.18em;
+        }
+
+        .horse-card-kicker {
+          font-size: 0.6rem;
+        }
+
+        .horse-card-name {
+          font-size: 1.36rem;
         }
 
         footer {
           margin-top: 42px;
           padding: 24px 0 32px;
-          font-size: 0.72rem;
-          letter-spacing: 0.06em;
+          font-size: 0.68rem;
+          letter-spacing: 0.05em;
         }
 
         .footer-links {
@@ -1085,8 +1307,8 @@
           padding: 0 8px 20px;
           grid-template-columns: 1fr;
           gap: 9px;
-          font-size: 0.7rem;
-          letter-spacing: 0.12em;
+          font-size: 0.66rem;
+          letter-spacing: 0.1em;
         }
 
         .footer-divider {
@@ -1109,33 +1331,33 @@
 
         .institutional-latin {
           max-width: 290px;
-          font-size: 0.61rem;
-          letter-spacing: 0.145em;
+          font-size: 0.55rem;
+          letter-spacing: 0.13em;
         }
 
         .patrons-title {
-          font-size: clamp(1.33rem, 7.2vw, 1.7rem);
-          letter-spacing: 0.075em;
+          font-size: clamp(1.32rem, 7vw, 1.68rem);
+          letter-spacing: 0.07em;
         }
 
         .masthead-token-line {
-          font-size: 0.7rem;
-          letter-spacing: 0.125em;
+          font-size: 0.61rem;
+          letter-spacing: 0.1em;
         }
 
         .hero-title {
-          font-size: clamp(1.95rem, 10vw, 2.35rem);
-          letter-spacing: 0.09em;
+          font-size: clamp(1.77rem, 8.9vw, 2.08rem);
+          letter-spacing: 0.08em;
         }
 
         .hero-definition {
-          max-width: 305px;
-          font-size: 0.79rem;
+          max-width: 300px;
+          font-size: 0.76rem;
         }
 
         .hero-symbol {
-          font-size: 0.67rem;
-          letter-spacing: 0.075em;
+          font-size: 0.58rem;
+          letter-spacing: 0.055em;
         }
 
         .btn {
@@ -1143,12 +1365,31 @@
         }
 
         .wallet-button {
-          width: 174px;
+          width: 170px;
+          min-width: 170px;
+          max-width: 170px;
         }
 
         .stringpool-name {
-          font-size: 1.13rem;
-          letter-spacing: 0.13em;
+          font-size: 1.02rem;
+          letter-spacing: 0.11em;
+        }
+
+        .logo-cowboy-polo-circuit {
+          font-size: 0.84rem;
+        }
+
+        .initiative-text,
+        .roadmap-footnote {
+          font-size: 0.73rem;
+        }
+
+        .copy-section {
+          font-size: 0.75rem;
+        }
+
+        .copy-block h2 {
+          font-size: 0.84rem;
         }
 
         .horse-card {
@@ -1156,13 +1397,13 @@
         }
 
         .horse-card-name {
-          font-size: 1.44rem;
+          font-size: 1.3rem;
         }
 
         .footer-links {
           max-width: 300px;
-          font-size: 0.67rem;
-          letter-spacing: 0.1em;
+          font-size: 0.63rem;
+          letter-spacing: 0.09em;
         }
       }
     </style>
